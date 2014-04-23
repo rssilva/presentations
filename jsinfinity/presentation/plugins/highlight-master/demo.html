@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>SyntaxHighlighter Build Test Page</title>
+	<link type="text/css" rel="stylesheet" media="all" href="jquery.highlight.css" />
+	<style type="text/css">
+		body {
+			background:none repeat scroll 0 0 #FFFFFF;
+			color:#494949;
+			font-family:Verdana,sans-serif;
+			font-size:62.5%;
+			margin:0;
+			padding:0 1.0em;
+		}
+		p {
+			margin:0.5em 0 0;
+			padding:0 0 0.5em;
+			font-size:1.3em;
+			line-height:1.6em;
+		}
+		div.highlight ul.tabs li {
+			font-size: 14px;
+		}
+  </style>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.highlight.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('pre.code').highlight({source:1, zebra:1, indent:'space', list:'ol'});
+		});
+	</script>
+</head>
+<body>
+<h1>JQuery syntax Highlight Demo</h1>
+<p>This is a test file to insure that everything is working well.</p>
+<h2>CSS code</h2>
+<pre class="code" lang="css">
+div.highlight { 
+	background:#FFFFFF;
+	border:1px solid #E0E0E0;
+	font-family:"Courier New",Courier,monospace;
+	overflow: hidden;
+}
+div.highlight pre{
+	width: 100%;
+	overflow: auto;
+	padding:0;
+	margin:0;
+	font-size:13px;
+	clear: both;
+}
+
+/* tabs */
+div.highlight ul.tabs {
+	overflow: hidden;
+	padding: 5px 0 5px 0;
+	margin: 0;
+	list-style: none;
+	border-bottom: 1px solid #E0E0E0;
+	width: 100%;
+}
+div.highlight ul.tabs li {
+	padding: 0;
+	margin: 0 5px;
+	float: left;
+	background: none;
+	border-bottom: 1px dashed #CCC;
+	line-height:1.0em;
+	color: #CCC;
+	cursor: pointer;
+}
+div.highlight ul.tabs li.active {
+	border-bottom: none;
+	cursor: default;
+}
+</pre>
+
+<h2>HTML code</h2>
+<pre class="code" lang="html">
+<div id="page">
+  <div id="header">
+    <h1><a href="#">Burger Pointer</a></h1>              
+      <ul class="left">
+          <li><a href="#">Menu</a></li>
+          <li><a href="#">Location</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">BP Gear</a></li>
+      </ul>
+      <ul class="right">
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Work Here</a></li>
+          <li><a href="#">Customer Loyalty</a></li>
+      </ul>
+  </div>
+  <div id="main">
+      <div id="content">
+          <div class="leftcol">
+              <div class="box"><div class="box-top"><div class="box-bottom">
+                  <h2 class="operation">Hours of Operation</h2>
+                  <div class="image"><img src="images/img01.jpg" alt="" /></div>
+                  <p class="work"><strong>Tue-Thu:</strong> 10:30 - 10:00<br />
+                  <strong>Fri:</strong> 10:30 - 11:00<br />
+                  <strong>Sat:</strong> 10:30 - 11:00<br />
+                  <strong>Sun:</strong> 11:30 - 7:30</p>                            
+              </div></div></div>
+              <div class="box"><div class="box-top"><div class="box-bottom">
+                  <h2 class="specials">Specials</h2>
+                  <p>Suspendisse in nunc sed neque sagittis fermentum. Sed varius augue neque, sed euismod risus. Phasellus vitae massa nunc. Donec et mauris tortor. Duis nunc tortor, cursus sed gravida quis, tincidunt in orci. Morbi tristique consectetur velit quis mattis.</p>                            
+              </div></div></div>
+          </div>
+          <div class="rightcol">
+              <h2>“Where the Burgers are BETTER”</h2>
+              <div class="image"><img src="images/img-home.jpg" alt="" /></div>
+          </div>
+      </div>
+      <div id="sidebar">
+          <h2>Burger Pointer Smash</h2>
+          <div class="image"><img src="images/img02.jpg" alt="" /></div>
+          <p>Suspendisse in nunc sed neque sagittis fermentum. Sed varius augue neque</p>
+          <ul class="nav">
+              <li><h3 class="approach"><a href="#">Burger Pointe: A Different c to Burgers</a></h3></li>
+              <li><h3 class="smashingly"><a href="#">New Burger Pointe Chain Doing Smashingly</a></h3></li>
+              <li><h3 class="stores"><a href="#">Burger Pointe Plans to Open Several Tulsa, OKC Stores</a></h3></li>
+          </ul>
+      </div>
+  </div>
+  <div id="footer">
+      <div class="footer">
+          <div class="top">
+              <div class="left">
+                  <h3>Find Us:</h3>
+                  <ul>
+                      <li><a href="#"><img src="images/youtube.gif" alt="" /></a></li>
+                      <li><a href="#"><img src="images/facebook.gif" alt="" /></a></li>
+                      <li><a href="#"><img src="images/twitter.gif" alt="" /></a></li>
+                  </ul>
+              </div>
+              <div class="right">
+                  <h3><a href="#">Our Clients’ Testimonials</a></h3>    
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+</pre>
+
+<h2>PHP code</h2>
+<pre class="code" lang="php">
+$a = array(array('p', 'h'), array('p', 'r'), 'o');
+
+if (in_array(array('p', 'h'), $a)) {
+    echo "'ph' was foundn";
+}
+
+if (in_array(array('f', 'i'), $a)) {
+    echo "'fi' was foundn";
+}
+
+if (in_array('o', $a)) {
+    echo "'o' was foundn";
+}
+
+$array = array(0 => 'blue', 1 => 'red', 2 => 'green', 3 => 'red');
+
+$key = array_search('green', $array); // $key = 2;
+$key = array_search('red', $array);   // $key = 1;
+
+/* comment */
+
+/* foreach example 1: value only */
+
+$a = array(1, 2, 3, 17);
+
+foreach ($a as $v) {
+   echo "Current value of $a: $v.n";
+}
+
+/* foreach example 2: value (with key printed for illustration) */
+
+$a = array(1, 2, 3, 17);
+
+$i = 0; /* for illustrative purposes only */
+
+foreach ($a as $v) {
+    echo "$a[$i] => $v.n";
+    $i++;
+}
+
+/* foreach example 3: key and value */
+
+$a = array(
+    "one" => 1,
+    "two" => 2,
+    "three" => 3,
+    "seventeen" => 17
+);
+
+foreach ($a as $k => $v) {
+    echo "$a[$k] => $v.n";
+}
+
+/* foreach example 4: multi-dimensional arrays */
+$a = array();
+$a[0][0] = "a";
+$a[0][1] = "b";
+$a[1][0] = "y";
+$a[1][1] = "z";
+
+foreach ($a as $v1) {
+    foreach ($v1 as $v2) {
+        echo "$v2n";
+    }
+}
+
+/* foreach example 5: dynamic arrays */
+
+foreach (array(1, 2, 3, 4, 5) as $v) {
+    echo "$vn";
+}
+</pre>
+
+<h2>JS code (default)</h2>
+<pre class="code" lang="js">
+$(document).ready(function(){
+	//init boxes opacity
+	$('#login').css('opacity', '1');
+	$('#member').css('opacity', '0.52');
+	
+	//change boxes opacity on hover
+	$('#login').hover(function(){
+		$("#login").animate({'opacity': '1'}, 200);
+		$("#member").animate({'opacity': '0.52'}, 200);
+	});
+	$('#member').hover(function(){
+		$("#member").animate({'opacity': '1'}, 200);
+		$("#login").animate({'opacity': '0.52'}, 200);
+	});
+	
+	//request membership expand
+	$('#request_membership').click(function(){
+		$('#member_request > div:first').css('display', 'none');
+		$('#member_request > div:last').css('display', 'block');
+		$("#login").css('display', 'none');
+		return false;
+	});
+	
+	//back
+	$('#back').click(function(){
+		$('#member_request > div:first').css('display', 'block');
+		$('#member_request > div:last').css('display', 'none');
+		$("#login").css('display', 'block');
+		return false;
+	});
+	
+	//input 
+	$('input[type="text"],input[type="password"]').focus(function(){
+		$(this).parent().parent().addClass('focus');
+	});
+	$('input[type="text"],input[type="password"]').blur(function(){
+		$(this).parent().parent().removeClass('focus');
+	});
+	
+	initFontSize(); 
+});
+
+//scaling font size
+function initFontSize() {
+	ratio = $(window).width() / 1200 * 16;
+	ratio = Math.floor(ratio * 100) / 100;	
+	if (ratio < 11) ratio = 11;
+	if (ratio > 14) ratio = 14;	
+	$('body').css('font-size', ratio + 'px');
+}
+
+$(window).resize(function() {
+	initFontSize();
+});
+$(window).trigger('resize'); 	
+</pre>
+
+<h2>SQL code</h2>
+<pre class="code" lang="sql">
+SELECT * FROM stats;
+
+INSERT INTO station VALUES (13, 'Phoenix', 'AZ', 33, 112);
+
+DELETE FROM station WHERE long_w < 90; 
+
+SELECT MAX(temp_f), MIN(temp_f), AVG(rain_i), id
+	FROM stats
+GROUP BY id;
+</pre>
+
+<br />
+
+</body>
+</html>

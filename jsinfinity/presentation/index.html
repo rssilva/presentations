@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Javascript ao infinito e além</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="plugins/highlight-master/jquery.highlight.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="slide first">
+			<div class="center flare">
+				<h1 class="text-center title">Javascript ao infinito e além</h1>
+				<h2 class="text-center fs35">Como a linguagem que não sabe contar tem mudado a web</h2>
+				<h3 class="text-center fs35">@rafael_sps</h3>
+			</div>
+		</div>
+		<section class="slide">
+			<div class="center">
+				<h1 class="fs45">Javascript é uma linguagem bem legal, mas...</h1>
+				<div class="code hightlight">
+					<pre class="code" lang="js">
+0.3 === 0.1 + 0.2 //false
+
+//porque...
+
+0.2 + 0.1 === 0.30000000000000004 //true
+
+//exemplo by Douglas Crockford
+					</pre>
+				</div>
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="fs45">Isso é quase engraçado...</h1>
+				<img class="ml150" src="img/javascript_the_good_parts.jpg">
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="fs45">Isso é grave</h1>
+				<img class="ml150" src="img/grave.jpg">
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="fs65">Javascript é legal para...</h1>
+			</div>
+		</section>
+		<section class="slide clock">
+			<div class="center">
+				<h1 class="fs65">...fazer relógios</h1>
+				<h2 class="fs105 text-center clockEl"></h2>
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="fs65">...validar formulários</h1>
+				<img style="margin-left:262px" src="img/form-validation-alert.png">
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<div class="text-center fs55 flare">...AWESOMENESS</div>
+				<img style="margin-left:275px" width="350" src="img/batman-darth-vader-cosplay.jpeg">
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="fs55">"Existem mais APIs entre o ceu e a Terra do que sonha vossa vã filosofia"</h1>
+				<h2 class="text-center ">(talvez pra fazer o que já se fazia no desktop e/ou devices...)</h2>
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="fs55">Socket.io</h1>
+				<h2 class="fs45">"Se o seu projeto não pode ser demonstrado em 10 linhas, vai ser difícil torná-lo interessante" - Guillermo Rauch (@rauchg)</h2>
+
+			</div>
+		</section>
+		<section class="slide">
+				<div class="code hightlight">
+					<pre class="code" lang="js">
+var io = require('socket.io').listen(80);
+
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+					</pre>
+				</div>
+				<div class="code hightlight">
+					<pre class="code" lang="js">
+var socket = io.connect('http://localhost');
+socket.on('news', function (data) {
+  console.log(data);
+  socket.emit('my other event', { my: 'data' });
+});
+					</pre>
+				</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs55">Orientation API</h1>
+				<img style="margin-left:225px" src="img/orientation.png">
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs55">Websockets + Socket.io + Orientation</h1>
+				<a target="_blanck" href="http://localhost:3001/stream" class="fs45">Demo</a>
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs65">Talk is cheap...</h1>
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs45">Battery API</h1>
+				<h2 class="text-center ">console.log(window.navigator.battery)</h2>
+				<img style="width=100%" src="img/battery-api.png">
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs75">Web Audio API</h1>
+				<img style="margin-left:119px" src="img/0-graph.png">
+				<div style="margin-top:50px">
+					<a href="">Palestra do @almirfilho</a>
+				</div>
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs55">Ninguém disse que seria fácil...</h1>
+			</div>
+			<div class="code hightlight">
+				<pre class="code" lang="js">
+if (typeof AudioContext !== "undefined") {
+    context = new AudioContext();
+} else if (typeof webkitAudioContext !== "undefined") {
+    context = new webkitAudioContext();
+} else {
+    throw new Error('AudioContext not supported. :(');
+}
+				</pre>
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs55">Ondas...</h1>
+				<img style="height:400px; margin-left:251px" src="img/4-waveforms.png">
+			</div>
+		</section>
+
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs75">Demo</h1>
+				<a target="_blank" href="http://localhost/jsinfinity/soundGenerator/" class="fs45">Protejam seus ouvidos</a>
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs65">Talk is cheap...</h1>
+			</div>
+		</section>		
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs55">Manipular formas de onda, significa(?)...</h1>
+				<img style="width:600px; margin-left:150px" src="img/guitar.jpg">
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs55">Let's Rock</h1>
+				<h1 class="text-center">(esse senhor, Johnny Burnette, supostamente, "descobriu" a distorção)</h1>
+				<img style="height:400px; margin-left:250px" src="img/johnny_burnette.jpg">
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<img style="width:100%" src="img/overdrive.jpg">
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs65">Talk is cheap...</h1>
+			</div>
+		</section>
+		
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs65">Demo</h1>
+				<a href="http://localhost/jsinfinity/stream/" class="fs45">Protejam seus ouvidos(mesmo, eu sou horrível)</a>
+			</div>
+		</section>
+		<section class="slide">
+			<div class="center">
+				<h1 class="text-center fs65">8 bits</h1>
+				<img style="width:80%; margin-left:100px" src="img/Quantizing.jpg">
+				<div style="margin-top:50px">
+					<a href="">Palestra do @eshiota</a>
+				</div>
+			</div>
+			<iframe width="420" height="315" src="//www.youtube.com/embed/GpzH0WJ52kc" frameborder="0" allowfullscreen></iframe>
+		</section>
+		<section class="slide">
+			<h1 class="text-center fs55">1/8 do cartucho...</h1>
+			<div class="center">
+				<iframe style="margin-left:240px" width="420" height="315" src="//www.youtube.com/embed/GpzH0WJ52kc" frameborder="0" ></iframe>
+			</div>
+		</section>
+	</div>
+
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="plugins/highlight-master/jquery.highlight.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+	<script>
+		var date;
+		var clock = $('.clockEl');
+		var hours;
+		var minutes;
+		var seconds;
+
+		$(window).on('changed', function (e, data) {
+			if (data.slide && data.slide.hasClass('clock')) {
+				start();
+			} else {
+				clearInterval(window.clockInterval);
+			}
+		})
+
+		var start = function () {
+			window.clockInterval = setInterval(function () {
+				date = new Date();
+				
+				hours = ''+date.getHours();
+				minutes = ''+date.getMinutes();
+				seconds = ''+date.getSeconds();
+
+				hours = hours.length === 1 ? '0' + hours : hours;
+				minutes = minutes.length === 1 ? '0' + minutes : minutes;
+				seconds = seconds.length === 1 ? '0' + seconds : seconds;
+
+				clock.text(hours+':'+minutes+':'+seconds);
+			}, 1000);
+		}
+	</script>
+</body>
+</html>

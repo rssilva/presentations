@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio</title>
+</head>
+<body>
+    <button id="addButton">Add</button>
+    <ul id="oscillators"></ul>
+    
+    <script src="jquery.js"></script>
+    <script>
+        var context;
+
+        var $list = $('#oscillators');
+        var slider = $('#slider');
+        var oscillators = [];
+
+        var init = function () {
+            if (typeof AudioContext !== "undefined") {
+                context = new AudioContext();
+            } else if (typeof webkitAudioContext !== "undefined") {
+                context = new webkitAudioContext();
+            } else {
+                throw new Error('AudioContext not supported. :(');
+            }
+
+            bind();
+        }
+
+        var bind = function () {
+            $('#addButton').on('click', function () {
+                appendOscillator();
+            });
+        }
+
+        var appendOscillator = function () {
+            var el = '<li><input class="slider" type="range" min="20" max="20000" step="10" /><input type="text" class="sliderValue" size="5">  <button class="play">Play</button>  <button class="stop">Stop</button> <button class="sine">Sine</button><button class="square">Square</button><button class="sawtooth">Sawtooth</button><button class="triangle">Triangle</button></li>';
+
+            var $el = $(el);
+
+            var oscillator = new Oscillator({
+                $el: $el,
+                context: context
+            });
+
+            oscillator.init();
+
+            $list.append($el);
+        }
+
+        var Oscillator = function (options) {
+            return {
+                init: function () {
+                    this.options = options;
+
+                    this.$el = options.$el;
+                    this.context = options.context;
+
+                    this.slider = this.$el.find('.slider');
+                    this.sliderValue = this.$el.find('.sliderValue');
+
+                    this.bindEvents();
+                    this.startSlider();
+                },
+
+                startSlider: function () {
+                    var min = this.slider.attr('min');
+
+                    this.slider.val(min);
+                    this.$el.find('.sliderValue').val(min);
+                },
+
+
+                start: function (frequency) {
+                    this.oscillator = this.context.createOscillator();
+                    this.oscillator.frequency.value = frequency || this.slider.val();
+
+                    var bufferSize = 4096;
+
+                    // var input = this.context.createMediaStreamSource(this.oscillator);
+                    // input.connect(this.context.destination);
+
+                    audio_context = this.context;
+                    input = this.oscillator;
+
+                    var node = input.context.createGain(4096, 2, 2);
+                    node.connect(audio_context.destination);
+
+                    var processor = input.context.createScriptProcessor(4096,1,0);
+
+                    processor.onaudioprocess = function(e){
+                      console.log('done');
+                    }
+
+                    node.connect(processor);
+                    
+                    this.oscillator.connect(this.context.destination); // Connect sound to output
+                    this.oscillator.noteOn(0);
+                },
+
+                play: function (freq) {
+                    var frequency = freq || this.slider.val();
+
+                    if (this.oscillator) {
+                        this.oscillator.connect(this.context.destination); // Connect sound to output
+                        this.oscillator.frequency.value = frequency || this.slider.val();
+                    } else {
+                        this.start(frequency);
+                    }
+                },
+
+                stop: function () {
+                    if (this.oscillator) {
+                        this.oscillator.disconnect();
+                    }
+                },
+
+                switchToFrequency: function (frequency) {
+                    if (this.oscillator) {
+                        this.oscillator.disconnect();
+                        this.oscillator.frequency.value = frequency;
+                        this.oscillator.connect(context.destination);
+                    }
+                },
+
+                changeWaveType: function (type) {
+                    if (this.oscillator) {
+                        this.oscillator.type = type;
+                    }
+                },
+
+                bindEvents: function () {
+                    var that = this;
+
+                    this.slider.on('change', function () {
+                        that.switchToFrequency(this.value);
+                        that.sliderValue.val(this.value);
+                    });
+
+                    this.$el.find('.play').on('click', function () {
+                        that.play();
+                    });
+
+                    this.$el.find('.stop').on('click', function () {
+                        that.stop();
+                    });
+
+                    this.$el.find('.sine').on('click', function () {
+                        that.changeWaveType(0);
+                    });
+
+                    this.$el.find('.square').on('click', function () {
+                        that.changeWaveType(1);
+                    });
+
+                    socket = io.connect('http://192.168.0.5:3001');
+                    socket.on('connect', function () {
+                        console.log('connect');
+                    });
+
+                    socket.on('rotate', function (data) {
+                        console.log(data);
+                    })
+                }
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <title></title>
+  
+  <style type="text/css">
+    body {
+      font-family: sans-serif;
+    }
+  
+      .main {
+      border: 1px solid black;
+      box-shadow: 10px 10px 5px #888;
+      border-radius: 12px;
+      padding: 20px;
+      background-color: #ddd;
+      margin: 25px;
+      width: 450px;
+      margin-left:auto;
+      margin-right:auto;  
+    }
+    
+    .logo {
+      width:275px;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      padding: 15px;
+    }
+    
+    .container {
+      -webkit-perspective: 300; 
+      perspective: 300;
+    }
+
+    
+  </style>
+
+</head>
+<body>
+  <div class="main">
+    <h2>Device Motion</h2>
+    <table>
+      <tbody><tr>
+          <td>Event Supported</td><td id="dmEvent"></td>
+        </tr>
+      <tr>
+        <td>acceleration</td><td id="moAccel">[0, 0, 0]</td>
+      </tr>
+      <tr>
+        <td>accelerationIncludingGravity</td><td id="moAccelGrav">[0, 0, 0]</td>
+      </tr>
+      <tr>
+        <td>rotationRate</td><td id="moRotation">[0, 0, 0]</td>
+      </tr>
+      <tr>
+        <td>interval</td><td id="moInterval">0</td>
+      </tr>
+    </tbody></table>
+  </div>
+
+  <script src="jquery.js"></script>
+  <script src="http://192.168.0.5:3001/socket.io/socket.io.js"></script>
+  <script>
+    var socket;
+    var init = function () {
+      this.deathStar = $('#death-star');
+
+      if ((window.DeviceMotionEvent) || ('listenForDeviceMovement' in window)) {
+        window.addEventListener('devicemotion', deviceMotionHandler, false);
+      } else {
+        document.getElementById("dmEvent").innerHTML = "Not supported on your device or browser.  Sorry."
+      }
+
+      bind();
+    }
+
+    var bind = function () {
+      socket = io.connect('http://192.168.0.5:3001');
+      socket.on('connect', function () {
+        console.log('connect');
+      });
+
+      socket.on('rotate', function (data) {
+        console.log(data);
+      })
+    }
+    
+    var deviceMotionHandler = function (eventData) {
+      var info, xyz = "[X, Y, Z]";
+
+      // Grab the acceleration including gravity from the results
+      var acceleration = eventData.acceleration;
+      info = xyz.replace("X", round(acceleration.x));
+      info = info.replace("Y", round(acceleration.y));
+      info = info.replace("Z", round(acceleration.z));
+      document.getElementById("moAccel").innerHTML = info;
+
+      // Grab the acceleration including gravity from the results
+      acceleration = eventData.accelerationIncludingGravity;
+      info = xyz.replace("X", round(acceleration.x));
+      info = info.replace("Y", round(acceleration.y));
+      info = info.replace("Z", round(acceleration.z));
+      document.getElementById("moAccelGrav").innerHTML = info;
+
+      // Grab the acceleration including gravity from the results
+      var rotation = eventData.rotationRate;
+      info = xyz.replace("X", round(rotation.alpha));
+      info = info.replace("Y", round(rotation.beta));
+      info = info.replace("Z", round(rotation.gamma));
+      document.getElementById("moRotation").innerHTML = info;
+
+      info = eventData.interval;
+      document.getElementById("moInterval").innerHTML = info;
+
+      xdeg = evaluateAngle(round(acceleration.x));
+      ydeg = evaluateAngle(round(acceleration.y));
+      zdeg = evaluateAngle(round(acceleration.z));
+
+      if (socket) {
+        socket.emit('rotate', {
+          xdeg: xdeg,
+          ydeg: ydeg,
+          zdeg: zdeg
+        });
+      }
+    }
+
+    var rotateStar = function (xdeg, ydeg, zdeg) {
+      this.deathStar.css({'-webkit-transform': 'rotateX(' + xdeg +'deg)' + ' rotateY(' + ydeg +'deg)' + 'rotateZ(' + zdeg +'deg)'});
+    }
+
+    var round = function (val) {
+      var amt = 10;
+      return Math.round(val * amt) /  amt;
+    }
+
+    var evaluateAngle = function (grav) {
+      var angle = grav * 18;
+
+      return angle;
+    }
+
+    init();
+
+  </script>
+
+</body></html>

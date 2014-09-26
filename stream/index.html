@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+    <style type="text/css">
+        ul {
+            list-style: none;
+        }
+        body {
+            padding: 0 50px 0 50px; 
+            background-color: #222; 
+            color: #FFF;
+        }
+        .led {
+            margin: 10px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.25);
+            box-shadow: #000 0 -1px 6px 1px;
+            display: block;
+            float: left;
+        }
+        .led-red {
+            background-color: #F00;
+            box-shadow: #000 0 -1px 6px 1px, inset #600 0 -1px 8px, #F00 0 3px 11px;
+        }
+        .led-orange {
+            background-color: #FF7000;
+            box-shadow: #000 0 -1px 6px 1px, inset #630 0 -1px 8px, #FF7000 0 3px 11px;
+        }
+
+        .led-yellow {
+            background-color: #FF0;
+            box-shadow: #000 0 -1px 6px 1px, inset #660 0 -1px 8px, #FF0 0 3px 11px;
+        }
+
+        .led-green {
+            background-color: #80FF00;
+            box-shadow: #000 0 -1px 6px 1px, inset #460 0 -1px 8px, #80FF00 0 3px 11px;
+        }
+
+        .led-blue {
+            background-color: #06F;
+            box-shadow: #000 0 -1px 6px 1px, inset #006 0 -1px 8px, #06F 0 3px 11px;
+        }
+
+        .label {
+            width: 100px;
+            text-align: right;
+            display: block;
+            float: left;
+        }
+
+        .h30{height: 30px}
+    </style>
+</head>
+<body>
+    <h1>Pedals</h1>
+
+    <ul>
+        <li class="overdrive controls">
+            <h2>Overdrive</h2>
+            <div class="h30">
+                <span class="led"></span>
+                <button class="onOff">On/Off</button>
+            </div>
+            <div>
+                <span class="label">Volume/Gain</span>
+                <input class="gain" type="range" min="1" max="10" step="0.5" />
+                <input type="text" class="gainDisplay" size="5">
+            </div>
+            <div>
+                <span class="label">Clipping value</span>
+<!-- 
+                <input class="clipping" type="range" min="0.0005" max="0.1" step="0.005" />
+                 -->
+                 <input class="clipping" type="range" min="0.5" max="10" step="0.05" />
+                <input type="text" class="clippingDisplay" size="5">
+            </div>
+            <div>
+                <span class="label">Clipping factor</span>
+                <input class="clippingFactor" type="range" min="1" max="10" step="0.1" />
+                <input type="text" class="clippingFactorDisplay" size="5">
+            </div>
+        </li>
+        <li class="eightBits controls">
+            <h2>Overdrive</h2>
+            <div class="h30">
+                <span class="led"></span>
+                <button class="onOff">On/Off</button>
+            </div>
+        </li>
+    </ul>
+
+    <script src="jquery.js"></script>
+    <script src="overdrive.js"></script>
+    <script src="pedals.js"></script>
+	<script>
+
+	var audio_context;
+	var recorder;
+
+	var init = function() {
+	    if (!navigator.getUserMedia) {
+            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                              navigator.mozGetUserMedia || navigator.msGetUserMedia;
+        }
+
+        if (navigator.getUserMedia){
+            navigator.getUserMedia({audio:true}, success, function(e) {
+                console.log('error')
+            });
+        } else {
+            console.log('getUserMedia not supported in this browser.');
+        }
+	}
+
+    var success = function(stream){
+        audioContext = window.AudioContext || window.webkitAudioContext;
+        context = new audioContext();
+
+        volume = context.createGain();
+
+        audioInput = context.createMediaStreamSource(stream);
+
+        audioInput.connect(volume);
+
+        var bufferSize = 512;
+        var recorder = context.createScriptProcessor(bufferSize, 2, 2);
+
+        var counter = 0;
+
+        recorder.onaudioprocess = function(e){
+            var leftIn = e.inputBuffer.getChannelData(0);
+            var rightIn = e.inputBuffer.getChannelData(1);
+            var leftOut = e.outputBuffer.getChannelData(0);
+            var rightOut = e.outputBuffer.getChannelData(1);
+
+            pedalCollection.process({
+                leftIn: leftIn,
+                rightIn: rightIn,
+                leftOut: leftOut,
+                rightOut: rightOut
+            });
+
+            counter++
+        }
+
+        volume.connect (recorder);
+        recorder.connect (context.destination);
+
+        var pedalCollection = new PedalCollection();
+        pedalCollection.init();
+
+        var overdrive = new Overdrive({
+            $el: $('.overdrive')
+        });
+        overdrive.init();
+
+        var eightbits = new Eightbits({
+            $el: $('.eightBits')
+        });
+        eightbits.init();
+
+        pedalCollection.addPedal(overdrive);
+        pedalCollection.addPedal(eightbits);
+    }
+
+	init();
+	</script>
+</body>
+</html>

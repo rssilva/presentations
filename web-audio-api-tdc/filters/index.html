@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Filters</title>
+	<style type="text/css">
+		.slider {
+			width: 300px;
+		}
+	</style>
+</head>
+<body>
+	<ul>
+		<li><button class="play-pause">Play/Pause</button></li>
+		<li>
+			<button class="add-filter">Add Filter</button>
+			<select class="filter-type">
+				<option value="lowpass">Lowpass</option>
+				<option value="highpass">Highpass</option>
+				<option value="bandpass">Bandpass</option>
+			</select>
+		</li>
+	</ul>
+	<ul class="filters">
+		
+	</ul>
+	<canvas class="canvas2"></canvas>
+	
+	<script src="jquery.js"></script>
+	<script src="visualiser-sample.js"></script>
+	<script src="filter.js"></script>
+	<script src="main.js"></script>
+</body>
+</html>

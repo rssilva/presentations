@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>AMD</title>
+	</head>
+	<body>
+		<h1>AMD</h1>
+		<script src="js/require.js"></script>
+		<script>
+			require(['js/battery.js', 'js/robot.js'], function (Source, Robot) {
+				var source = new Source();
+				source.init(80);
+
+				var robot = new Robot();
+				robot.init(source);
+
+				robot.charge();
+				robot.charge();
+			});
+		</script>
+	</body>
+</html>

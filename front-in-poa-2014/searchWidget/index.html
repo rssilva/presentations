@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Users List</title>
+
+		<style type="text/css">
+			body, html {
+				margin: 0;
+				padding: 0;
+				font-size: 1.2em;
+			}
+
+			.searchWidget {
+				min-height: 200px;
+				background-color: #ABCDEF;
+				margin: 0;
+				padding: 10px;
+				font-size: 1.5em;
+			}
+
+			.searchWidget h3 {
+				text-align: center;
+			}
+
+			.searchWidget .search-input{
+				position: absolute;
+				left: 15%;
+				width: 70%;
+				margin: 0 auto;
+				border-radius: 20px;
+				padding-left: 10px;
+				font-size: 1.2em;
+			}
+
+			.searchWidget button {
+				position: absolute;
+				left: 90%;
+				font-size: 1.2em;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="searchWidget">
+			<h3>widget de busca (ir)responsável</h3>
+			<input class="search-input">
+			<button class="go-button">Go!</button>
+		</div>
+		<ul class="userList"></ul>
+		<script src="jquery.js"></script>
+		<script src="searchWidgetv2.js"></script>
+		<script src="userListPage.js"></script>
+	</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Harmony</title>
+	</head>
+	<body>
+		<h1>Harmony</h1>
+		<script src="js/require.js"></script>
+		<script>
+			// require(['build/js/battery.js', 'build/js/robot.js'], function (battery, Robot) {
+
+			// 	var source = new battery.Battery();
+			// 	source.init(80);
+
+			// 	var robot = new Robot.Robot();
+			// 	robot.init(source);
+
+			// 	robot.charge();
+			// 	robot.charge();
+			// });
+			require(['build/js/main.js', function () {
+				console.log(arguments)
+			}])
+		</script>
+	</body>
+</html>

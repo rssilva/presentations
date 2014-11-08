@@ -8,9 +8,6 @@ define([],
                 this.battery.level++;
                 console.log(this.battery.level)
             }
-            this.setWheel = function () {
-
-            }
         }
 
         return Robot;

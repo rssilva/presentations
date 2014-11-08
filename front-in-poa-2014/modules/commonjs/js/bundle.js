@@ -30,9 +30,6 @@ var Robot = function () {
         this.battery.level++;
         console.log(this.battery.level)
     }
-    this.setWheel = function () {
-
-    }
 }
 
 module.exports = Robot;

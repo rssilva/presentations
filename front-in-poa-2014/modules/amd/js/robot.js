@@ -14,5 +14,4 @@ define([],
         }
 
         return Robot;
-    }
-);
+    });

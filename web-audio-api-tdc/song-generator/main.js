@@ -137,15 +137,15 @@ var playGenerated = function () {
 	var melody = [ 200, 240, 360, 340, 180, 190, 200 ];
 	var note = 0
 
-	// var violinArr = violin();
-	// var accordionArr = accordion();
+	var violinArr = violin();
+	//var accordionArr = accordion();
 	var laserArr = laser();
 	
 
 	// diferentes equações para gerar áudio
 	for (i = 0; i < dataLeft.length; i++) {
 		// volume decrescente...
-	    // data[i] = 10000/i*Math.sin(2 * Math.PI * f * i);
+	    // dataLeft[i] = 10000/i*Math.sin(2 * 3.14 * f * i);
 
 	    // volume crescente...
 	    // data[i] = i/100*Math.sin(2 * Math.PI * f * i);
@@ -165,14 +165,14 @@ var playGenerated = function () {
 
 		// snare drum
 		// dataRight[i] = Math.random() * 1000/i
-		dataRight[i] =  laserArr[i]
+		// dataRight[i] =  violinArr[i]
 
 		//dataRight[i] = pluck(i % 0.5, 100, 10, 10);
 
 
 		// playing notes
 		// note = Math.floor( (i * 10) / (samples)/ melody.length );
-		// dataRight[i] = square2(melody[note]/20, 1, i) 
+		dataRight[i] = laserArr[i]
 
 
 

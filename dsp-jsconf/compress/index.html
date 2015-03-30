@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <script type="text/javascript" src="../compress.js"></script>
+  <script type="text/javascript">
+  	var arr = [];
+  	var col = [];
+
+  	for (var i = 0; i < 50; i++) {
+  	  col.push(i);
+  	  arr.push(Math.round(2 + 3* Math.random()*Math.sin(i/100)));
+  	}
+
+  	var compressed = compress(arr);
+  	var decompressed = decompress(compressed);
+
+  	// console.log(col)
+  	console.log(arr)
+  	// console.log(JSON.stringify(compressed), JSON.stringify(compressed).length)
+  	// console.log(compressed)
+  	console.log(decompressed)
+
+  	// console.log(JSON.stringify(arr).length, JSON.stringify(compressed).length)
+  	console.log(JSON.stringify(compressed).length/JSON.stringify(arr).length)
+
+  	arr.forEach(function (item, index) {
+  	  if (item != decompressed[index]) {
+  	    console.error('WARNING', item, index)
+  	  }
+  	})
+  </script>
+</body>
+</html>

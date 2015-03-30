@@ -63,17 +63,25 @@ function decompress (compressed) {
   var i;
   var endVal;
   var decompressed = [];
+  var endMatch;
 
   compressed.forEach(function (item, index) {
     if (typeof item === 'string') {
-      
-      endVal = Number(item.match(/[0-9]{1,}$/g)[0]);
+      endMatch = item.match(/ [0-9]{1,}$/g);
 
-      value = (item.match(/[0-9\.\-]{1,} /)[0].replace(' ', ''));
-      
-      for (i = 0; i < endVal; i++) {
-        decompressed.push(value);
+      if (endMatch) {
+        endVal = Number(endMatch[0]);
+        value = (item.match(/[0-9\.\-]{1,} /)[0].replace(' ', ''));
+
+        for (i = 0; i < endVal; i++) {
+          decompressed.push(value);
+        }
+
+      } else {
+        decompressed.push(item);
       }
+
+
     } else {
       decompressed.push(item);
     }

@@ -4,7 +4,7 @@ var startTime = 0;
 var filters = [];
 var panel = $('.direction-panel');
 var panelWidth = $('.direction-panel').width();
-var sample, analyser, soundBuffer, source, panelX;
+var soundBuffer, source, panelX;
 
 var init = function () {
 	bind();

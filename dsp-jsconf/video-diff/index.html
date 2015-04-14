@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Display Webcam Stream</title>
+ 
+<style>
+    #container {
+      margin: 0px auto;
+      width: 1100px;
+      height: 375px;
+    }
+    #videoElement {
+      width: 500px;
+      height: 375px;
+      border: 1px solid #000;
+      display: none;
+    }
+    #canvas {
+      width: 500px;
+      height: 375px;
+     
+      background-color: #CCC;
+    }
+    </style>
+
+</head>
+ 
+<body>
+  <!-- For devices that support getUserMedia and have a webcam we can display the feed in a video element -->
+  <div id="container">
+    <video autoplay id="videoElement"></video>
+    <canvas id="canvas" width="500" height="375"></canvas>
+  </div>
+
+
+  <script>
+    var video = document.querySelector("#videoElement");
+    var previous = [];
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var canDoDiff = true;
+    var canPlotDiff = true;
+    var workerDiff, workerPlotDiff;
+
+    if (!!window.Worker) {
+      workerDiff = new Worker('worker-diff.js');
+      workerPlotDiff = new Worker('worker-plot-diff.js');
+
+      workerDiff.onmessage = function(e) {
+        // console.log('onmessage')
+        // e.data[0] = diff
+        // e.data[1] = imgData
+
+        plotDiff(e.data[1], e.data[0])
+        previous = e.data[1];
+        canDoDiff = true;
+      }
+
+      workerPlotDiff.onmessage = function (e) {
+        // console.log('message2', e.data[1].length)
+        var dataArr = e.data[1];
+
+        var imgData = context.createImageData(e.data[0].width, e.data[0].height);
+        imgData.data.set(dataArr);
+        console.log('-', imgData.data.length)
+        context.putImageData(imgData, 0, 0)
+        console.log('putted')
+        canPlotDiff = true;
+      }
+    }
+
+    // check for getUserMedia support
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+     
+    if (navigator.getUserMedia) {      
+        // get webcam feed if available
+        navigator.getUserMedia({video: true}, handleVideo, videoError);
+    }
+     
+    function handleVideo(stream) {
+        // if found attach feed to video element
+        video.src = window.URL.createObjectURL(stream);
+    }
+     
+    function videoError(e) {
+        // no webcam found - do something
+    }
+
+    var v,canvas,context,w,h;
+    var imgtag = document.getElementById('imgtag'); // get reference to img tag
+
+    document.addEventListener('DOMContentLoaded', function(){
+        // when DOM loaded, get canvas 2D context and store width and height of element
+        v = document.getElementById('videoElement');
+        
+        w = canvas.width;
+        h = canvas.height;
+
+        setInterval(function () {
+          draw(v,context,w,h)
+        },10000)
+
+    },false);
+
+    function draw(v,c,w,h) {
+      if(v.paused || v.ended) return false; // if no video, exit here
+
+      context.drawImage(v,0,0,w,h); // draw video feed to canvas
+
+      getImageData();
+    }
+
+    function getImageData () {
+      var imgData = context.getImageData(0,0,canvas.width, canvas.height);
+
+      if (canDoDiff) {
+        canDoDiff = false;
+        
+        workerDiff.postMessage([previous, imgData]);
+      }
+    }
+
+    function plotDiff (current, diff) {
+      // var dataArr = new Uint8ClampedArray(current.data.length);
+      // var counter = 0;
+      // var counter2 = 0;
+
+      // var key;
+      
+
+      // for (var i = 0, len = current.data.length; i < len; i++) {
+      //   key = null;
+
+      //   if (diff[0]) {
+      //     key = Object.keys(diff[0])[0]
+      //   }
+
+      //   if (i == key) {
+      //     dataArr[i] = [diff[0][key]];
+      //     diff.splice(0, 1);
+      //   } else {
+      //     dataArr[i] = 250;
+      //   }
+      // }
+
+      if (canPlotDiff) {
+        canPlotDiff = false;
+
+        workerPlotDiff.postMessage([current, diff])
+      }
+
+    }
+
+  </script>
+</body>
+</html>

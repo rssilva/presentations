@@ -16,10 +16,9 @@
 </head>
 <body>
 
-	<canvas id="canvas" class="canvas" width="330" height="383"></canvas>
-	<canvas id="canvas2" class="canvas" width="330" height="383"></canvas>
+	<canvas id="canvas" class="canvas" width="259" height="194"></canvas>
+	<canvas id="canvas2" class="canvas" width="259" height="194"></canvas>
 
- 	<!-- <canvas id="canvas" class="canvas" width="259" height="194"></canvas> -->
 	<script type="text/javascript" src="../lodash.js"></script>
 
 	<script type="text/javascript">
@@ -32,30 +31,6 @@
 
 		var imageLoaded = function () {
 			var imgData = ctx.getImageData(0,0,canvas.width, canvas.height);
-			
-
-			for (var i = 4; i < imgData.data.length; i+=4) {
-				buffer[0] = imgData.data[i-4]
-				buffer[1] = imgData.data[i-3]
-				buffer[2] = imgData.data[i-2]
-				buffer[3] = imgData.data[i-1]
-
-				if (i % 10000 == 0) {
-					// console.log(buffer)
-				}
-
-				if (buffer[0] < imgData.data[i]) {
-					imgData.data[i] = buffer[0] + 0.05 * imgData.data[i];
-					imgData.data[i+1] = buffer[1] + 0.05 * imgData.data[i+1];
-					imgData.data[i+2] = buffer[2] + 0.05 * imgData.data[i+2];
-					imgData.data[i+3] = buffer[3] + 0.05 * imgData.data[i+3];
-				} else {
-					// imgData.data[i] = buffer[0] - 0.05 * imgData.data[i];
-					// imgData.data[i+1] = buffer[1] - 0.05 * imgData.data[i+1];
-					// imgData.data[i+2] = buffer[2] - 0.05 * imgData.data[i+2];
-					// imgData.data[i+3] = buffer[3] - 0.05 * imgData.data[i+3];
-				}
-			}
 
 			var diff = doDiff(previous, imgData);
 
@@ -64,23 +39,12 @@
 			if (diff && diff.length) {
 				plotDiff(imgData, diff)
 			}
-			// ctx2.putImageData(imgData, 0, 0)
 		}
 
 		function plotDiff (current, diff) {
-			// var imgData = {
-			// 	height: current.height,
-			// 	width: current.width,
-			// 	data: 
-			// }
-
 			var dataArr = new Uint8ClampedArray(current.data.length);
-			var counter = 0
-
-			// var imgData = new Image();
-			// imgData.height = current.height;
-			// imgData.width = current.width;
-			// imgData.data = new Uint8ClampedArray();
+			var counter = 0;
+			var counter2 = 0;
 
 			var key;
 
@@ -92,30 +56,35 @@
 				}
 
 				if (i == key) {
+					counter2++;
 					dataArr[i] = [diff[0][key]];
 					diff.splice(0, 1);
 				} else {
 					counter++
-					dataArr[i] = 200;
+					dataArr[i] = 250;
 				}
 			}
 
 			var imgData = ctx2.createImageData(current.width, current.height);
 			imgData.data.set(dataArr);
 
-			console.log(imgData)
-			console.log(counter)
+			console.log(counter, counter2)
+
 			ctx2.putImageData(imgData, 0, 0)
 		}
 
 		make_base('park.jpeg');
 
-		function make_base(src) {
+		function make_base(src, targetContext) {
 		  base_image = new Image();
-		  // base_image.src = 'black-spot.jpg';
 		  base_image.src = src;
 		  base_image.onload = function(){
-		    ctx.drawImage(base_image, 0, 0);
+		  	if (targetContext) {
+		  		targetContext.drawImage(base_image, 0, 0);
+		  	} else {
+		  		ctx.drawImage(base_image, 0, 0);
+		  	}
+		    
 		    imageLoaded(base_image);
 		  }
 		}
@@ -123,15 +92,15 @@
 		function doDiff (previous, current) {
 			var diff = [];
 			var len = current.data.length;
-			var diffObj = {}
+			var diffObj = {};
 			var i;
 			
 			if (previous && previous.data) {
 
 				for (i = 0; i < len; i++) {
 					diffObj = {};
-
-					if (previous.data[i] != current.data[i]) {
+					
+					if (Math.abs(previous.data[i] - current.data[i]) > 2) {
 						diffObj[i] = current.data[i];
 						diff.push(diffObj);
 					}

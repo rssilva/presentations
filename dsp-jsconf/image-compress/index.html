@@ -53,8 +53,6 @@
 			compressedBlue = compress(blue);
 			compressedAlpha = compress(alpha);
 
-			var quantizedRed = quantize(red, 10);
-
 			plot(compressedRed, compressedGreen, compressedBlue, compressedAlpha, imgData.width, imgData.height);
 
 			var compressedData = {
@@ -72,10 +70,14 @@
 		function quantize (data, factor) {
 			var len = data.length;
 			var quantized = [];
-			var i;
+			var newValue, i;
 
 			for (i = 0; i < len; i++) {
-				quantized[i] = Math.round(data[i]/factor)*factor;
+				newValue = Math.round(data[i]/factor)*factor;
+				if (newValue > 255) {
+					newValue = 255;
+				}
+				quantized[i] = newValue;
 			}
 
 			return quantized;

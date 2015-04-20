@@ -41,9 +41,6 @@
 		var imageLoaded = function () {
 			var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 			
-			// canvas.width = imgData.width;
-			// canvas.height = imgData.height;
-			
 			for (var i = 4; i < imgData.data.length; i+=4) {
 				red.push(imgData.data[i])
 				green.push(imgData.data[i+1])
@@ -56,9 +53,32 @@
 			compressedBlue = compress(blue);
 			compressedAlpha = compress(alpha);
 
+			var quantizedRed = quantize(red, 10);
+
 			plot(compressedRed, compressedGreen, compressedBlue, compressedAlpha, imgData.width, imgData.height);
-			console.log((compressedRed.length + compressedGreen.length + compressedBlue.length + compressedAlpha.length), JSON.stringify(imgData.data).length)
-			console.log((compressedRed.length + compressedGreen.length + compressedBlue.length + compressedAlpha.length)/JSON.stringify(imgData.data).length)
+
+			var compressedData = {
+				height: imgData.height,
+				width: imgData.width,
+				r: compressedRed,
+				g: compressedGreen,
+				b: compressedBlue,
+				a: compressedAlpha
+			}
+
+			console.log(JSON.stringify(compressedData).length/JSON.stringify(imgData).length)
+		}
+
+		function quantize (data, factor) {
+			var len = data.length;
+			var quantized = [];
+			var i;
+
+			for (i = 0; i < len; i++) {
+				quantized[i] = Math.round(data[i]/factor)*factor;
+			}
+
+			return quantized;
 		}
 
 		function plot (red, green, blue, alpha, w, h) {

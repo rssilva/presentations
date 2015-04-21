@@ -30,11 +30,11 @@ var playBuffer = function (buffer) {
 	source.buffer = buffer;
 	source.loop = true;
 
-	var recorder = context.createScriptProcessor(512, 2, 2);
-	recorder.onaudioprocess = onAudioProcess;
+	var processor = context.createScriptProcessor(512, 2, 2);
+	processor.onaudioprocess = onAudioProcess;
 
-	source.connect(recorder);
-	recorder.connect(context.destination);
+	source.connect(processor);
+	processor.connect(context.destination);
 
 	source[source.start ? 'start' : 'noteOn'](0, startOffset % buffer.duration);
 }

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Canvas Timelapser</title>
+ 
+<style>
+    #container {
+      margin: 0px auto;
+      width: 1100px;
+      height: 375px;
+    }
+    #videoElement {
+      width: 500px;
+      height: 375px;
+      border: 1px solid #000;
+      display: none;
+    }
+    #canvas {
+      width: 500px;
+      height: 375px;
+      /*display: none;*/
+      background-color: #CCC;
+    }
+    </style>
+
+</head>
+ 
+<body>
+  <!-- For devices that support getUserMedia and have a webcam we can display the feed in a video element -->
+  <div id="container">
+    <video autoplay id="videoElement"></video>
+    <ul>
+      <li>
+        <button class="start-record">start record</button>
+        <button class="stop-record">stop record</button>
+        <span>Record Period</span><input class="record-period" type="text" value="1000"><span>ms</span>
+      </li>
+      <li>
+        <button class="clear">clear</button>
+      </li>
+      <li>
+        <button class="play">play</button>
+        <button class="stop">stop</button>
+      </li>
+    </ul>
+    <canvas id="canvas" width="100" height="75"></canvas>
+  </div>
+
+  <script type="text/javascript" src="../compress.js"></script>
+  <script>
+    (function () {
+      var video = document.querySelector("#videoElement");
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      var recorderInterval, playerInterval, drawingInterval;
+      var v,w,h;
+
+      bindEvents();
+      getUserMedia();
+      // startDrawing(context);
+
+      function getUserMedia() {
+        // check for getUserMedia support
+        navigator.getUserMedia = navigator.getUserMedia || 
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia ||
+            navigator.oGetUserMedia;
+         
+        if (navigator.getUserMedia) {      
+          navigator.getUserMedia({video: true}, handleVideo, videoError);
+        }
+      }
+       
+      function handleVideo(stream) {
+        // if found attach feed to video element
+        video.src = window.URL.createObjectURL(stream);
+      }
+       
+      function videoError(e) {
+        // no webcam found - do something
+      }
+
+      function bindEvents () {
+        document.querySelector('.clear').addEventListener('click', function () {
+          window.localStorage.clear();
+        }, false);
+
+        document.querySelector('.start-record').addEventListener('click', function () {
+          startRecord();
+        }, false);
+
+        document.querySelector('.stop-record').addEventListener('click', function () {
+          stopRecord();
+        }, false);
+
+        document.querySelector('.play').addEventListener('click', function () {
+          play('timelapse');
+        }, false);
+      }
+
+      function play (name) {
+        var stored = window.localStorage.getItem(name);
+        var parsed = JSON.parse(stored);
+
+        var frame = 0;
+        var current = parsed[frame];
+
+        drawFrame(current);
+
+        frame++;
+
+        playerInterval = setInterval(function () {
+          current = parsed[frame];
+
+          if (current) {
+            drawFrame(current);
+          }
+
+          frame++;
+        }, 300);
+      }
+
+      function drawFrame (frame) {
+        plot(frame.r, frame.g, frame.b, frame.a, frame.width, frame.height);
+      }
+
+      function storeFrame (name, frame) {
+        var stored = window.localStorage.getItem(name);
+
+        if (!stored) {
+          stored = [];
+        }
+
+        if (typeof stored == 'string') {
+          stored = JSON.parse(stored);
+        }
+
+        stored.push(frame);
+
+        window.localStorage.setItem(name, JSON.stringify(stored));
+      }
+
+      function startRecord () {
+        var period = document.querySelector('.record-period').value;
+        startDrawing(context, period);
+
+        storeCurrentFrame();
+
+        recorderInterval = setInterval(function () {
+          storeCurrentFrame();
+        }, period);
+
+        console.log('recording...');
+      }
+
+      function storeCurrentFrame () {
+        var imageData = getImageData();
+
+        storeFrame('timelapse', imageData);
+
+        return imageData;
+      }
+
+      function stopRecord () {
+        console.log('STOP! In the name of love!');
+        clearInterval(recorderInterval);
+        clearInterval(drawingInterval);
+      }
+
+      function startDrawing (context, period) {
+        period = period || 5000;
+
+        v = document.getElementById('videoElement');
+        
+        w = canvas.width;
+        h = canvas.height;
+
+        draw(v,context,w,h);
+
+        drawingInterval = setInterval(function () {
+          draw(v,context,w,h);
+        }, period)
+      }
+
+      function draw(v,c,w,h) {
+        if(v.paused || v.ended) return false; // if no video, exit here
+
+        c.drawImage(v,0,0,w,h); // draw video feed to canvas
+      }
+
+      function getImageData () {
+        var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+        var red = [];
+        var green = [];
+        var blue = [];
+        var alpha = [];
+
+        for (var i = 4; i < imgData.data.length; i+=4) {
+          red.push(imgData.data[i])
+          green.push(imgData.data[i+1])
+          blue.push(imgData.data[i+2])
+          alpha.push(imgData.data[i+3])
+        }
+
+        compressedRed = compress(red);
+        compressedGreen = compress(green);
+        compressedBlue = compress(blue);
+        compressedAlpha = compress(alpha);
+
+        var compressedData = {
+          height: imgData.height,
+          width: imgData.width,
+          r: compressedRed,
+          g: compressedGreen,
+          b: compressedBlue,
+          a: compressedAlpha
+        }
+
+        // console.log(JSON.stringify(compressedData).length/JSON.stringify(imgData).length)
+
+        return compressedData;
+      }
+
+      function plot (red, green, blue, alpha, w, h) {
+        var decRed = decompress(red);
+        var decGreen = decompress(green);
+        var decBlue = decompress(blue);
+        var decAlpha = decompress(alpha);
+        var len = decRed.length * 4;
+        var dataArr = new Uint8ClampedArray(len);
+        var counter = 0
+        var key;
+        
+        var counter = 0;
+
+        var createdImage = context.createImageData(w, h);
+
+        for (var i = 0, len = dataArr.length; i < len; i+=4) {
+          counter++;
+          dataArr[i] = decRed[counter];
+          dataArr[i+1] = decGreen[counter];
+          dataArr[i+2] = decBlue[counter];
+          dataArr[i+3] = decAlpha[counter];
+        }
+
+        createdImage.data.set(dataArr);
+
+        context.putImageData(createdImage, 0, 0);
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -48,7 +48,7 @@
         <span>Execution Period</span><input class="play-period" type="text" value="1000"><span>ms</span>
       </li>
       <li>
-        <span>Audio</span><input class="audio" type="text">
+        <span>Audio</span><input class="audio-track" type="text" value="sfm_mp3_street_fighter_hadouken_sound_effect.mp3">
       </li>
     </ul>
     <canvas id="canvas" width="100" height="75"></canvas>
@@ -56,10 +56,11 @@
 
   <script type="text/javascript" src="../compress.js"></script>
   <script>
-    (function () {
+    // (function () {
       var video = document.querySelector("#videoElement");
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
+      var audioContext = new AudioContext();
       var recorderInterval, playerInterval, drawingInterval;
       var v,w,h;
 
@@ -257,31 +258,74 @@
       }
 
       function storeAudio () {
-        // Create an <audio> element dynamically.
-        var audio = new Audio();
-        // audio.src = 'http://dailydevtips.com/cards-no-cache/sfm_mp3_street_fighter_hadouken_sound_effect(1).mp3';
-        audio.src = document.querySelector('.audio').value;
-        audio.controls = true;
-        audio.autoplay = true;
-        document.body.appendChild(audio);
+        var audioSrc = document.querySelector('.audio-track').value.trim()
+        var audio = new Audio(audioSrc);
 
-        var context = new (webkitAudioContext || audioContext)();
-        // var analyser = context.createAnalyser();
+        var source = audioContext.createMediaElementSource(audio);
 
-        // Wait for window.onload to fire. See crbug.com/112368
+        var processor = audioContext.createScriptProcessor(1024, 2, 2);
+        processor.onaudioprocess = onAudioProcess;
 
-        // Our <audio> element will be the audio source.
-        var source = context.createMediaElementSource(audio);
-        console.log(source)
-        console.log(source.mediaElement.getChannelData(0))
-        console.log(audio)
-          // source.connect(analyser);
-          // analyser.connect(context.destination);
+        source.connect(processor)
+        processor.connect(audioContext.destination)
+        source.connect(audioContext.destination);
 
-          // ...call requestAnimationFrame() and render the analyser's output to canvas.
+        audio.play();
 
+        audio.addEventListener('ended', function() {
+          processor.onaudioprocess = false;
+        }, true);
       }
-    })();
+
+      function onAudioProcess (ev) {
+        inputBuffer = ev.inputBuffer;
+
+        outputBuffer = ev.outputBuffer;
+
+        inputData = inputBuffer.getChannelData(0);
+
+        outputData0 = outputBuffer.getChannelData(0);
+
+        storeFrame('audioTrack', inputData);
+      }
+
+      function getStoredAudio(name) {
+        var signal = [];
+        var stored = window.localStorage.getItem(name);
+
+        stored = JSON.parse(stored);
+
+        stored.forEach(function (arr) {
+          Object.keys(arr).forEach(function (value) {
+            signal.push(arr[value]);
+          })
+        });
+
+        return signal;
+      }
+
+      function playAudio (signal) {
+        var buffer = audioContext.createBuffer(2, signal.length - 1, 44100);
+        var leftChannelData = buffer.getChannelData(0);
+        var rightChannelData = buffer.getChannelData(1);
+
+        var data = buffer.getChannelData(0);
+        var dataRight = buffer.getChannelData(1);
+
+        for (var i = 0; i < data.length; i++) {
+          data[i] = signal[i];
+        }
+
+        var source = audioContext.createBufferSource();
+
+        source.connect(audioContext.destination);
+
+        source.buffer = buffer;
+        source.loop = false;
+
+        source.start();
+      }
+    // })();
   </script>
 </body>
 </html>

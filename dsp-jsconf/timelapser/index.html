@@ -29,6 +29,9 @@
 <body>
   <!-- For devices that support getUserMedia and have a webcam we can display the feed in a video element -->
   <div id="container">
+    <!--
+    <audio src="http://dailydevtips.com/cards-no-cache/sfm_mp3_street_fighter_hadouken_sound_effect(1).mp3" controls="true"></audio>
+ -->
     <video autoplay id="videoElement"></video>
     <ul>
       <li>
@@ -42,6 +45,10 @@
       <li>
         <button class="play">play</button>
         <button class="stop">stop</button>
+        <span>Execution Period</span><input class="play-period" type="text" value="1000"><span>ms</span>
+      </li>
+      <li>
+        <span>Audio</span><input class="audio" type="text">
       </li>
     </ul>
     <canvas id="canvas" width="100" height="75"></canvas>
@@ -103,23 +110,21 @@
       function play (name) {
         var stored = window.localStorage.getItem(name);
         var parsed = JSON.parse(stored);
+        var period = document.querySelector('.play-period').value;
 
         var frame = 0;
-        var current = parsed[frame];
 
-        drawFrame(current);
+        drawFrame(parsed[frame]);
 
         frame++;
 
         playerInterval = setInterval(function () {
-          current = parsed[frame];
-
-          if (current) {
-            drawFrame(current);
+          if (parsed[frame]) {
+            drawFrame(parsed[frame]);
           }
 
           frame++;
-        }, 300);
+        }, period);
       }
 
       function drawFrame (frame) {
@@ -153,6 +158,7 @@
         }, period);
 
         console.log('recording...');
+        storeAudio();
       }
 
       function storeCurrentFrame () {
@@ -164,7 +170,7 @@
       }
 
       function stopRecord () {
-        console.log('STOP! In the name of love!');
+        console.log('STOP!');
         clearInterval(recorderInterval);
         clearInterval(drawingInterval);
       }
@@ -248,6 +254,32 @@
         createdImage.data.set(dataArr);
 
         context.putImageData(createdImage, 0, 0);
+      }
+
+      function storeAudio () {
+        // Create an <audio> element dynamically.
+        var audio = new Audio();
+        // audio.src = 'http://dailydevtips.com/cards-no-cache/sfm_mp3_street_fighter_hadouken_sound_effect(1).mp3';
+        audio.src = document.querySelector('.audio').value;
+        audio.controls = true;
+        audio.autoplay = true;
+        document.body.appendChild(audio);
+
+        var context = new (webkitAudioContext || audioContext)();
+        // var analyser = context.createAnalyser();
+
+        // Wait for window.onload to fire. See crbug.com/112368
+
+        // Our <audio> element will be the audio source.
+        var source = context.createMediaElementSource(audio);
+        console.log(source)
+        console.log(source.mediaElement.getChannelData(0))
+        console.log(audio)
+          // source.connect(analyser);
+          // analyser.connect(context.destination);
+
+          // ...call requestAnimationFrame() and render the analyser's output to canvas.
+
       }
     })();
   </script>

@@ -2,6 +2,7 @@
 var startOffset = 0;
 var startTime = 0;
 var filters = [];
+var audioInput;
 var sample, analyser, soundBuffer, source;
 
 var init = function () {
@@ -24,41 +25,42 @@ var init = function () {
 }
 
 var connectNodes = function (stream) {
-	var audioInput = context.createMediaStreamSource(stream);
+  sample = new VisualizerSample();
+  analyser = sample.getAnalyser();
+  sample.draw2();
+
+	audioInput = context.createMediaStreamSource(stream);
 
 	var bufferSize = 512;
-	var recorder = context.createScriptProcessor(bufferSize, 2, 2);
 
-	var counter = 0;
-  time1 = new Date().getTime();
-	recorder.onaudioprocess = onAudioProcess;
+	// var recorder = context.createScriptProcessor(bufferSize, 2, 2);
+	// recorder.onaudioprocess = onAudioProcess;
 
-	audioInput.connect(recorder);
-	recorder.connect(context.destination);
+	// audioInput.connect(recorder);
+	// recorder.connect(context.destination);
+
+  setInterval(function () {
+    console.log(window.MAX_FREQ)
+  }, 1000)
+
+  audioInput.connect(analyser);
+
+  audioInput.connect(context.destination)
 }
 
-var send = function (data) {
-  $.ajax({
-    type: 'POST',
-    dataType: 'json',
-    url: '/sendData',
-    data: {audio: JSON.stringify(data)}
-  }).done(function (received) {
-    console.log(received)
-  });
-}
+var connectFilter = function () {
+  audioInput.disconnect();
 
-var process = function (data) {
-  var i;
-  var len = data.length;
+  audioInput.connect(analyser);
 
-  for (i = 0; i < len; i++) {
-    data[i] = Math.round(data[i]*10)/10;
-  }
+  var filter = context.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.value = window.MAX_FREQ;
 
-  var processed = compress(data);
-  
-  return processed;
+  audioInput.connect(filter);
+  filter.connect(context.destination);
+
+  return filter;
 }
 
 var inputBuffer, outputBuffer, inputData, outputData, compressed, decompressed;
@@ -75,17 +77,8 @@ var onAudioProcess = function (ev) {
   inputData = inputBuffer.getChannelData(0);
   outputData = outputBuffer.getChannelData(1);
 
-  var processed = process(inputData);
-
-  for (var sample = 0; sample < processed.length; sample++) {
-    total.push(processed[sample]);
-  }
-
-  if (counter == 100) {
-    // console.log(new Date().getTime() - time1);
-    send(total);
-    total = [];
-    counter = 0;
+  for (var sample = 0; sample < inputData.length; sample++) {
+    outputData[sample] = inputData[sample];
   }
 
   counter++;

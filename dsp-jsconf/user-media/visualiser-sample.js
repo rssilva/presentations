@@ -150,6 +150,8 @@ VisualizerSample.prototype.draw2 = function() {
   canvas.width = WIDTH;
   canvas.height = HEIGHT;
   // Draw the frequency domain chart.
+  window.MAX_FREQ = _.max(this.freqs);
+  
   for (var i = 0; i < this.analyser.frequencyBinCount; i++) {
     var value = this.freqs[i];
     var percent = value / 256;

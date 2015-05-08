@@ -40,15 +40,15 @@
         <span>Record Period</span><input class="record-period" type="text" value="1000"><span>ms</span>
       </li>
       <li>
-        <button class="clear">clear</button>
-      </li>
-      <li>
         <button class="play">play</button>
         <button class="stop">stop</button>
         <span>Execution Period</span><input class="play-period" type="text" value="1000"><span>ms</span>
       </li>
       <li>
         <span>Audio</span><input class="audio-track" type="text" value="sfm_mp3_street_fighter_hadouken_sound_effect.mp3">
+      </li>
+      <li>
+        <button class="clear">clear</button>
       </li>
     </ul>
     <canvas id="canvas" width="100" height="75"></canvas>
@@ -60,7 +60,7 @@
       var video = document.querySelector("#videoElement");
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
-      var audioContext = new AudioContext();
+      var audioContext = new (webkitAudioContext || AudioContext)();
       var recorderInterval, playerInterval, drawingInterval;
       var v,w,h;
 
@@ -105,6 +105,7 @@
 
         document.querySelector('.play').addEventListener('click', function () {
           play('timelapse');
+          playAudio(getStoredAudio('audioTrack'));
         }, false);
       }
 

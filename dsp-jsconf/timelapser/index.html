@@ -27,11 +27,7 @@
 </head>
  
 <body>
-  <!-- For devices that support getUserMedia and have a webcam we can display the feed in a video element -->
   <div id="container">
-    <!--
-    <audio src="http://dailydevtips.com/cards-no-cache/sfm_mp3_street_fighter_hadouken_sound_effect(1).mp3" controls="true"></audio>
- -->
     <video autoplay id="videoElement"></video>
     <ul>
       <li>
@@ -56,7 +52,7 @@
 
   <script type="text/javascript" src="../compress.js"></script>
   <script>
-    // (function () {
+    (function () {
       var video = document.querySelector("#videoElement");
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
@@ -66,7 +62,7 @@
 
       bindEvents();
       getUserMedia();
-      // startDrawing(context);
+      startDrawing(context);
 
       function getUserMedia() {
         // check for getUserMedia support
@@ -104,9 +100,65 @@
         }, false);
 
         document.querySelector('.play').addEventListener('click', function () {
-          play('timelapse');
-          playAudio(getStoredAudio('audioTrack'));
+          onPlay();
         }, false);
+      }
+
+      function onPlay () {
+        play('timelapse');
+        loadSound();
+      }
+
+      function loadSound () {
+        var request = new XMLHttpRequest();
+
+        var url = document.querySelector('.audio-track').value.trim();
+
+        request.open("GET", url, true);
+        request.responseType = "arraybuffer";
+
+        request.onload = function() {
+          setBuffer(request.response)
+        }
+
+        request.onerror = function() {
+          console.log('BufferLoader: XHR error');
+        }
+
+        request.send();
+      }
+
+      function setBuffer (data) {
+        audioContext.decodeAudioData(
+          data,
+          onBufferLoad,
+          function(error) {
+            console.error('decodeAudioData error', error);
+          }
+        );
+      }
+
+      function onBufferLoad (buffer) {
+        if (!buffer) {
+          console.log('error on file parse')
+        }
+
+        if (buffer) {
+          playBuffer(buffer)
+        }
+      }
+
+      function playBuffer (buffer) {
+        var startTime = audioContext.currentTime;
+
+        var bufferSource = audioContext.createBufferSource();
+
+        bufferSource.connect(audioContext.destination);
+
+        bufferSource.buffer = buffer;
+        bufferSource.loop = false;
+
+        bufferSource.start();
       }
 
       function play (name) {
@@ -326,7 +378,7 @@
 
         source.start();
       }
-    // })();
+    })();
   </script>
 </body>
 </html>

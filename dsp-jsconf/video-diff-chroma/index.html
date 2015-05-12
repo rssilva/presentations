@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Display Webcam Stream</title>
+ 
+<style>
+    #container {
+      margin: 0px auto;
+      width: 1100px;
+      height: 375px;
+    }
+    #videoElement {
+      width: 500px;
+      height: 375px;
+      border: 1px solid #000;
+      display: none;
+    }
+    #canvas {
+      /*width: 500px;
+      height: 375px;*/
+
+      background-color: #CCC;
+    }
+
+    #canvasCamera {
+      /*width: 500px;
+      height: 375px;*/
+
+      background-color: red;
+    }
+    </style>
+
+</head>
+ 
+<body>
+  <!-- For devices that support getUserMedia and have a webcam we can display the feed in a video element -->
+  <div id="container">
+    <video autoplay id="videoElement" src="sample.mp4"></video>
+    <video autoplay id="cameraElement"></video>
+    <canvas id="canvas" width="100" height="75"></canvas>
+    <canvas id="canvas2" width="100" height="75"></canvas>
+    <canvas id="canvasCamera" width="100" height="75"></canvas>
+  </div>
+
+  <script type="text/javascript" src="../compress.js"></script>
+  <script>
+    var video = document.querySelector("#videoElement");
+    var cameraElement = document.querySelector("#cameraElement");
+    var previous = [];
+    var canvas = document.getElementById('canvas');
+    var canvas2 = document.getElementById('canvas2');
+    var canvasCamera = document.getElementById('canvasCamera');
+    var context = canvas.getContext('2d');
+    var ctx2 = canvas2.getContext('2d');
+    var cameraContext = canvasCamera.getContext('2d');
+    var v,canvas,context,w,h, cv;
+
+    // check for getUserMedia support
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+     
+    if (navigator.getUserMedia) {      
+        // get webcam feed if available
+        navigator.getUserMedia({video: true}, handleVideo, function () {});
+    }
+     
+    function handleVideo(stream) {
+        // if found attach feed to video element
+        cameraElement.src = window.URL.createObjectURL(stream);
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+        // when DOM loaded, get canvas 2D context and store width and height of element
+        v = document.getElementById('videoElement');
+        cameraNode = document.getElementById('cameraElement');
+        
+        w = canvas.width;
+        h = canvas.height;
+
+        setInterval(function () {
+          draw(v,context,w,h)
+          drawCamera(cameraNode, cameraContext, w, h)
+          // #2CFF20 rgb(44,255,32)
+        }, 100)
+
+    },false);
+
+    function draw(v,c,w,h) {
+      context.drawImage(v,0,0,w,h); // draw video feed to canvas
+
+      var current = context.getImageData(0,0,canvas.width, canvas.height);
+
+      var camera = cameraContext.getImageData(0,0,canvas.width, canvas.height);
+
+      removeColor(camera, current, {r: 44, g: 255, b: 32, a:255});
+
+      // var diff = doDiff(previous, current);
+
+      // if (diff && diff.length) {
+      //   plotDiff(current, diff)
+      // }
+
+      // previous = current;
+    }
+
+    function drawCamera (cn, c, w, h) {
+      cameraContext.drawImage(cn,0,0,w,h); // draw video feed to canvas
+      // ctx2.putImageData(imgData, 0, 0)
+    }
+
+    function removeColor (current, image, color) {
+      var dataArr = new Uint8ClampedArray(image.data.length);
+      var counter = 0;
+      var counter2 = 0;
+
+      var key;
+      // console.log(image.data[0], color.r)
+      for (var i = 0, len = image.data.length; i < len; i+=4) {
+        if (Math.abs(image.data[i] - color.r) > 2) {
+          dataArr[i] = image.data[i]
+        } else {
+          dataArr[i] = current.data[i]
+        }
+
+        if (Math.abs(image.data[i+1] - color.g) > 2) {
+          dataArr[i+1] = image.data[i+1]
+        } else {
+          dataArr[i+1] = current.data[i+1]
+        }
+
+        if (Math.abs(image.data[i+2] - color.b) > 2) {
+          dataArr[i+2] = image.data[i+2]
+        } else {
+          dataArr[i+2] = current.data[i+2]
+        }
+
+        dataArr[i+3] = 255;
+        
+      }
+
+      var imgData = ctx2.createImageData(image.width, image.height);
+      imgData.data.set(dataArr);
+
+      ctx2.putImageData(imgData, 0, 0)
+    }
+
+    var pixel = 0;
+
+    function plotDiff (current, diff) {
+      var dataArr = new Uint8ClampedArray(current.data.length);
+      var counter = 0;
+      var counter2 = 0;
+
+      var key;
+
+      for (var i = 0, len = current.data.length; i < len; i++) {
+        key = null;
+
+        if (diff[0]) {
+          key = Object.keys(diff[0])[0]
+        }
+
+        if (i == key) {
+          dataArr[i] = diff[0][key];
+          diff.splice(0, 1);
+        } else {
+          if (pixel != 3) {
+            // dataArr[i] = previous.data[i];
+            dataArr[i] = 0;
+          } else {
+            dataArr[i] = 255;
+          }
+        }
+
+        pixel++;
+        pixel = pixel == 4 ? 0 : pixel;
+      }
+
+      var imgData = ctx2.createImageData(current.width, current.height);
+      imgData.data.set(dataArr);
+
+      ctx2.putImageData(imgData, 0, 0)
+    }
+
+    function doDiff (previous, current) {
+      var diff = [];
+      var len = current.data.length;
+      var diffObj = {};
+      var i;
+
+      if (previous && previous.data) {
+
+        for (i = 0; i < len; i++) {
+          diffObj = {};
+
+          if (Math.abs(previous.data[i] - current.data[i]) > 10) {
+            diffObj[i] = current.data[i];
+            diff.push(diffObj);
+          }
+        }
+      }
+
+      return diff;
+    }
+
+  </script>
+</body>
+</html>

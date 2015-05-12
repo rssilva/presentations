@@ -68,7 +68,7 @@
       var video = document.querySelector("#videoElement");
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
-      var audioContext = new (webkitAudioContext || AudioContext)();
+      var audioContext = new (window.webkitAudioContext || AudioContext)();
       var recorderInterval, playerInterval, drawingInterval;
       var v,w,h;
 

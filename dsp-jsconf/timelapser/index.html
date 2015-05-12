@@ -123,21 +123,25 @@
 
       function loadSound () {
         var request = new XMLHttpRequest();
+        var audioInput = document.querySelector('.audio-track');
+        var url;
 
-        var url = document.querySelector('.audio-track').value.trim();
+        if (audioInput) {
+          url = audioInput.value.trim();
 
-        request.open("GET", url, true);
-        request.responseType = "arraybuffer";
+          request.open("GET", url, true);
+          request.responseType = "arraybuffer";
 
-        request.onload = function() {
-          setBuffer(request.response)
+          request.onload = function() {
+            setBuffer(request.response)
+          }
+
+          request.onerror = function() {
+            console.log('BufferLoader: XHR error');
+          }
+
+          request.send();
         }
-
-        request.onerror = function() {
-          console.log('BufferLoader: XHR error');
-        }
-
-        request.send();
       }
 
       function setBuffer (data) {

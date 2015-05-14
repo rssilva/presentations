@@ -37,7 +37,7 @@
 <body>
   <div id="container">
     <video autoplay id="videoElement"></video>
-    <canvas id="canvas" width="100" height="75"></canvas>
+    <canvas id="canvas" width="200" height="150"></canvas>
     <h3>Video</h3>
     <ul>
       <li>
@@ -68,13 +68,13 @@
       var video = document.querySelector("#videoElement");
       var canvas = document.getElementById('canvas');
       var context = canvas.getContext('2d');
-      var audioContext = new (webkitAudioContext || AudioContext)();
+      var audioContext = new (window.webkitAudioContext || AudioContext)();
       var recorderInterval, playerInterval, drawingInterval;
       var v,w,h;
 
       bindEvents();
       getUserMedia();
-      startDrawing(context);
+      // startDrawing(context);
 
       function getUserMedia() {
         // check for getUserMedia support

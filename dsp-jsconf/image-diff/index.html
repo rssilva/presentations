@@ -5,7 +5,7 @@
 	<title>Image Filter</title>
 	<style type="text/css">
 		body {
-			width: 700px;
+			width: 1200px;
 			margin: 0 auto;
 		}
 		.canvas {
@@ -16,8 +16,8 @@
 </head>
 <body>
 
-	<canvas id="canvas" class="canvas" width="259" height="194"></canvas>
-	<canvas id="canvas2" class="canvas" width="259" height="194"></canvas>
+	<canvas id="canvas" class="canvas" width="583" height="397"></canvas>
+	<canvas id="canvas2" class="canvas" width="583" height="397"></canvas>
 
 	<script type="text/javascript" src="../lodash.js"></script>
 
@@ -73,7 +73,7 @@
 			ctx2.putImageData(imgData, 0, 0)
 		}
 
-		make_base('park.jpeg');
+		make_base('01.jpg');
 
 		function make_base(src, targetContext) {
 		  base_image = new Image();
@@ -100,7 +100,7 @@
 				for (i = 0; i < len; i++) {
 					diffObj = {};
 					
-					if (Math.abs(previous.data[i] - current.data[i]) > 2) {
+					if (Math.abs(previous.data[i] - current.data[i]) > 10) {
 						diffObj[i] = current.data[i];
 						diff.push(diffObj);
 					}

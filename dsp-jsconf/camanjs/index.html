@@ -1,0 +1,128 @@
+<html>
+<head>
+  <title></title>
+  <meta charset="utf8">
+  <title>CamanJS - Interactive Examples</title>
+
+  <style type="text/css">
+    #videoElement {
+      width: 500px;
+      height: 375px;
+      border: 1px solid #000;
+      display: none;
+    }
+  </style>
+
+  <script type="text/javascript" src="caman.full.js"></script>  
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+  
+  <script type="text/javascript">
+    Caman.DEBUG = true
+  </script>
+  
+</head>
+<body>
+  <div id="Content">
+    <video autoplay id="videoElement"></video>
+    <canvas id="preset-example"  width="100" height="75" ></canvas>
+    <canvas id="canvas2" width="100" height="75"></canvas>
+
+    <div id="PresetFilters">
+    
+      <a data-preset="vintage">Vintage</a>    
+      <a data-preset="lomo">Lomo</a>    
+      <a data-preset="clarity">Clarity</a>    
+      <a data-preset="sinCity">Sin City</a>    
+      <a data-preset="sunrise">Sunrise</a>    
+      <a data-preset="crossProcess">Cross Process</a>    
+      <a data-preset="orangePeel">Orange Peel</a>    
+      <a data-preset="love">Love</a>    
+      <a data-preset="grungy">Grungy</a>    
+      <a data-preset="jarques">Jarques</a>    
+      <a data-preset="pinhole">Pinhole</a>    
+      <a data-preset="oldBoot">Old Boot</a>    
+      <a data-preset="glowingSun">Glowing Sun</a>    
+      <a data-preset="hazyDays">Hazy Days</a>    
+      <a data-preset="herMajesty">Her Majesty</a>    
+      <a data-preset="nostalgia">Nostalgia</a>    
+      <a data-preset="hemingway">Hemingway</a>    
+      <a data-preset="concentrate">Concentrate</a>    
+    </div>
+  </div>
+  <script type="text/javascript">
+    var video = document.querySelector("#videoElement");
+    var canvas = document.getElementById('preset-example');
+    var canvas2 = document.getElementById('canvas2');
+    var ctx = canvas.getContext('2d');
+    var ctx2 = canvas2.getContext('2d');
+
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+     
+    if (navigator.getUserMedia) {      
+        // get webcam feed if available
+        navigator.getUserMedia({video: true}, handleVideo, function () {});
+    }
+     
+    function handleVideo(stream) {
+        // if found attach feed to video element
+        video.src = window.URL.createObjectURL(stream);
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+        // when DOM loaded, get canvas 2D context and store width and height of element
+        v = document.getElementById('videoElement');
+        
+        w = canvas.width;
+        h = canvas.height;
+
+        setTimeout(function () {
+          draw(v,ctx,w,h)
+        }, 3000)
+
+    },false);
+
+    function draw(v,c,w,h) {
+      ctx.drawImage(v,0,0,w,h); // draw video feed to canvas
+
+      var current = ctx.getImageData(0,0,canvas.width, canvas.height);
+      var dataArr = [];
+
+      for (var i = 0, len = current.data.length; i < len; i++) {
+        dataArr.push(current.data[i])
+      }
+
+      var imgData = ctx2.createImageData(current.width, current.height);
+      imgData.data.set(dataArr);
+
+      ctx2.putImageData(imgData, 0, 0)
+    }
+
+    var IMAGE2 = Caman("#canvas2", function () {});
+    var IMAGE = Caman("#preset-example", function () {});
+
+    $('#PresetFilters').find('a').each(function (index, item) {
+      var $item = $(item)
+
+      $item.on('click', function () {
+        onPresetClick($item);
+      });
+    })
+
+    function onPresetClick (el) {
+      var preset = el.data().preset;
+      var current = el.data().current;
+      current = current ? current : 0;
+
+      current += 10;
+
+      // IMAGE[preset](current)
+      el.data('current', current);
+      // IMAGE.render();
+      IMAGE.render()
+
+      
+    }
+  </script>
+</body>
+</html>

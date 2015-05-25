@@ -1,0 +1,31 @@
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <h1>Even-Odd example</h1>
+  <script type="text/javascript">
+    var numbers = [1, 3, 4, 6, 7, 2, 3, 5];
+
+    function isOdd (number) {
+      return number % 2 != 0;
+    }
+
+    function isEven (number) {
+      return number % 2 == 0;
+    }
+
+    function separate (number, result) {
+      isOdd(number) ? result.odd.push(number) : result.even.push(number);
+    }
+
+    var result = {odd: [], even: []};
+
+    numbers.forEach(function (item) {
+      separate(item, result);
+    });
+
+    console.log(result)
+  </script>
+</body>
+</html>

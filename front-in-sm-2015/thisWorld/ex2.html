@@ -1,0 +1,49 @@
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <h1>This Word 2</h1>
+  <script type="text/javascript">
+    var Human = {
+      setName: function (name) {
+        this.name = name;
+      },
+
+      sayHi: function () {
+        return 'Hi! My name is ' + this.name + '!';
+      }
+    }
+
+    var Ninja = {
+
+      setName: Human.setName,
+
+      setStealhLevel: function (level) {
+        this.stealthLevel = level;
+      }
+    }
+
+    var Turtle = {
+      setHullLevel: function (level) {
+        this.hullLevel = level;
+      }
+    }
+
+    var NinjaTurtle = {
+      setName: Ninja.setName,
+      setStealhLevel: Ninja.setStealhLevel,
+      setHullLevel: Turtle.setHullLevel
+    }
+
+    var raphael = Object.create(NinjaTurtle, {});
+
+    raphael.setName('Raphael');
+    raphael.setStealhLevel(50);
+    raphael.setHullLevel(100);
+
+    console.log(raphael);
+    console.log(raphael.sayHi)
+  </script>
+</body>
+</html>

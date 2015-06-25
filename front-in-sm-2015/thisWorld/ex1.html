@@ -1,0 +1,48 @@
+<html>
+<head>
+  <title></title>
+  <style>
+    .odd {
+      background-color: #abcdef;
+    }
+  </style>
+</head>
+<body>
+  <h1>This Word</h1>
+  <input class="name">
+  <button class="hit">Hit me!</button>
+  <script src="jquery.js"></script>
+  <script type="text/javascript">
+    console.log(this); // Window
+
+    var User = function () {
+      function setName (name) {
+        this.name = name;
+
+        console.log(this);
+      }
+
+      function setEvents () {
+        var that = this;
+
+        $('.hit').on('click', function () {
+          console.log(this); // <button class="hit">Hit me!</button>
+
+          $(this).toggleClass('odd');
+
+          that.setName($('.name').val());
+        });
+      }
+
+      return {
+        setEvents: setEvents,
+        setName: setName
+      }
+    }
+
+    var user = new User();
+    user.setEvents();
+
+  </script>
+</body>
+</html>

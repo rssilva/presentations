@@ -1,0 +1,108 @@
+<html>
+<head>
+  <title></title>
+  <meta charset="utf-8">
+  <style>
+    .modal {
+      width: 400px;
+      height: 400px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin-left: -200px;
+      margin-top: -200px;
+      background-color: #EEEDDD;
+      box-shadow: 5px 5px
+    }
+
+    .hide {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Objetos que mantém referência</h1>
+  <div class="modal hide">
+    <label>Nome: </label>
+    <input class="name">
+    <button class="cancel">Cancel</button>
+    <button class="save">Save</button>
+  </div>
+  <ul class="users-list">
+    
+  </ul>
+  <script src="jquery.js"></script>
+  <script type="text/javascript">
+    var users = [
+      {name: 'Luke'},
+      {name: 'Vader'},
+    ];
+
+    render(users);
+    bind();
+
+    function render (data) {
+      var ul = $('<ul></ul>');
+      var li;
+
+      data.forEach(function (user) {
+        li = $('<li>' + user.name + '<button class="edit">Edit</button></li>');
+        ul.append(li);
+      });
+
+      $('.users-list').empty().append(ul.html());
+    }
+
+    function bind () {
+      $('.edit').each(function (i, el) {
+        $(el).on('click', {index: i}, function (ev, data) {
+          var index = ev.data.index
+          Modal.show();
+          Modal.setData(users[index]);
+        });
+      })
+    }
+
+    var Modal = {
+      init: function (el) {
+        this.el = el;
+      },
+
+      setData: function (data) {
+        this.data = data;
+        this.el.find('.name').val(data.name);
+      },
+
+      show: function () {
+        this.el.removeClass('hide');
+      },
+
+      hide: function () {
+        this.el.addClass('hide');
+      },
+
+      setEvents: function () {
+        var that = this;
+        var nameInput = this.el.find('.name');
+
+        nameInput.on('keyup', function () {
+          that.data.name = nameInput.val();
+        });
+
+        this.el.find('.cancel').on('click', function () {
+          that.hide();
+        });
+
+        this.el.find('.save').on('click', function () {
+          that.data.name = nameInput.val();
+          that.hide();
+          render(users);
+        });
+      }
+    }
+
+    Modal.init($('.modal'));
+    Modal.setEvents();
+  </script>
+</body>
+</html>

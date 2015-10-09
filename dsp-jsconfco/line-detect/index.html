@@ -12,10 +12,19 @@
 			margin: 10px auto;
 			border: 1px solid #000;
 		}
+
+    video {
+      width: 500px;
+      display: none;
+    }
 	</style>
 </head>
 <body>
-
+  <video autoplay id="videoElement" ></video>
+  <div>
+    <select id="audioSource"></select>
+    <select id="videoSource"></select>
+  </div>
 	<canvas id="canvas" class="canvas" width="460" height="300"></canvas>
   <!-- 
 	<canvas id="canvas2" class="canvas" width="990" height="350"></canvas>
@@ -24,30 +33,109 @@
 	<script type="text/javascript" src="../lodash.js"></script>
 	<script type="text/javascript" src="../compress.js"></script>
  -->
+  <script src="/socket.io/socket.io.js"></script>
   <script type="text/javascript" src="../lodash.js"></script>
 	<script type="text/javascript">
+    var audioSelect = document.querySelector('select#audioSource');
+    var videoSelect = document.querySelector('select#videoSource');
+
+    var video = document.querySelector("#videoElement");
 		var canvas = document.getElementById('canvas');
 		var ctx = canvas.getContext('2d');
     var lefter = canvas.width * 4;
     var righter = 0;
+    var SOURCE_INFOS
 
     var r = 255;
     var g = 255;
     var b = 255;
 
-    var tolerance = 15;
+    var tolerance = 10;
 
     var isRed
     var isGreen
     var isBlue
 
     // loadImage('elipse.png');
-    loadImage('eye3.jpg')
+    init()
+    // loadImage('eye3.jpg')
+
+    var socket = io('http://localhost:3000');
+    socket.on('news', function (data) {
+      console.log(data);
+      socket.emit('my other event', { my: 'data' });
+    });
+
+    function init () {
+      if (typeof MediaStreamTrack === 'undefined' ||
+          typeof MediaStreamTrack.getSources === 'undefined') {
+        alert('This browser does not support MediaStreamTrack.\n\nTry Chrome.');
+      } else {
+        MediaStreamTrack.getSources(gotSources);
+      }
+    }
 
 		function imageLoaded () {
-    
       iterateLines()
 		}
+
+    function videoError () {}
+
+    function gotSources(sourceInfos) {
+      SOURCE_INFOS = sourceInfos;
+
+      for (var i = 0; i !== sourceInfos.length; ++i) {
+        var sourceInfo = sourceInfos[i];
+        var option = document.createElement('option');
+        option.value = sourceInfo.id;
+
+        if (sourceInfo.kind === 'audio') {
+          option.text = sourceInfo.label || 'microphone ' +
+            (audioSelect.length + 1);
+          audioSelect.appendChild(option);
+        } else if (sourceInfo.kind === 'video') {
+          option.text = sourceInfo.label || 'camera ' + (videoSelect.length + 1);
+          videoSelect.appendChild(option);
+        } else {
+          console.log('Some other kind of source: ', sourceInfo);
+        }
+      }
+
+      videoInit()
+    }
+
+    function videoInit () {
+      var videoSource = videoSelect.value;
+
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+       
+      if (navigator.getUserMedia) {      
+        // get webcam feed if available
+        navigator.getUserMedia(
+          {
+            video: {optional: [{sourceId: SOURCE_INFOS[1].id}]}
+          }, 
+          handleVideo,
+          videoError);
+      }
+    }
+
+    function handleVideo(stream) {
+      // if found attach feed to video element
+      video.src = window.URL.createObjectURL(stream);
+
+      setInterval(function () {
+        draw(video, ctx, canvas.width, canvas.height)
+      }, 1000)
+    }
+
+    function draw(v,c,w,h) {
+      if(v.paused || v.ended) return false; // if no video, exit here
+
+      c.drawImage(v,0,0,w,h); // draw video feed to canvas
+
+      iterateLines();
+    }
 
     function iterateLines () {
       var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);

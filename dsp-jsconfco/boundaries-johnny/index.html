@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Color Boundaries w/ Johnny Five</title>
+	<style type="text/css">
+		body {
+			width: 1000px;
+			margin: 0 auto;
+		}
+		.canvas {
+			margin: 10px auto;
+			border: 1px solid #000;
+		}
+
+    video {
+      display: none
+    }
+	</style>
+</head>
+<body>
+  <video autoplay id="videoElement" ></video>
+	<canvas id="canvas" class="canvas" width="259" height="194"></canvas>
+
+  <script src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+    var video = document.querySelector("#videoElement");
+		var canvas = document.getElementById('canvas');
+		var canvas2 = document.getElementById('canvas2');
+		var ctx = canvas.getContext('2d');
+
+    var socket = io('http://192.168.0.9:3000');
+
+    var r = 153;
+    var g = 36;
+    var b = 47;
+
+    var tolerance = 10;
+
+    var isRed
+    var isGreen
+    var isBlue
+
+    videoInit();
+
+		function imageLoaded () {
+      drawRects()
+      foundBoundaries()
+		}
+
+    function videoInit () {
+      // var videoSource = videoSelect.value;
+
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+       
+      if (navigator.getUserMedia) {      
+        // get webcam feed if available
+        navigator.getUserMedia(
+          {
+            video: true
+          }, 
+          handleVideo,
+          function () {});
+      }
+    }
+
+    function handleVideo(stream) {
+      // if found attach feed to video element
+      video.src = window.URL.createObjectURL(stream);
+
+      setInterval(function () {
+        draw(video, ctx, canvas.width, canvas.height)
+        foundBoundaries()
+      }, 1000)
+    }
+
+    function draw(v,c,w,h) {
+      if(v.paused || v.ended) return false; // if no video, exit here
+
+      c.drawImage(v,0,0,w,h); // draw video feed to canvas
+
+      // iterateLines();
+    }
+
+    function foundBoundaries () {
+      var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var pos;
+
+      var lefter = canvas.width * 4;
+      var righter = 0;
+
+      for (var i = 0; i < imgData.data.length; i+=4) {
+        isRed = (r + tolerance) > imgData.data[i] && imgData.data[i] > (r - tolerance) 
+        isGreen = (g + tolerance) > imgData.data[i+1] && imgData.data[i+1] > (g - tolerance)
+        isBlue = (b + tolerance) > imgData.data[i+2] && imgData.data[i+2] > (b - tolerance)
+
+        if (isRed && isGreen && isBlue) { 
+          pos = i % (canvas.width * 4)
+
+          pos < lefter ? lefter = pos : null
+          pos > righter ? righter = pos : null
+        }
+
+      }
+
+      ctx.fillStyle = "rgb(255,0,0)";
+      
+      // console.log(lefter, righter)
+      paintColumn(lefter, canvas, imgData)
+      paintColumn(righter, canvas, imgData)
+
+      // ctx.fillStyle = "rgb(0,0,255)";
+      // paintColumn(Math.round(canvas.width*2), canvas, imgData)
+
+      ctx.putImageData(imgData, 0, 0)
+
+      checkPosition(canvas, lefter/4, righter/4)
+    }
+
+    function checkPosition (canvas, left, right) {
+      var w = right - left;
+      var center = left + w/2;
+      var diff = center - canvas.width/2
+
+      console.log(left, right, w, center, diff)
+      socket.emit('diff', {diff: diff})
+    }
+
+    function paintLine (line, canvas, imgData) {
+      var start = line * 4 * canvas.width
+      var end = line * 4 * canvas.width +  4 * canvas.width
+
+      for (var i = start; i < end; i+= 4) {
+        imgData.data[i] = 255;
+        imgData.data[i+1] = 0;
+      }
+    }
+
+    function paintColumn (col, canvas, imgData) {
+      var h = canvas.height
+      var w = canvas.width
+      var colIndex;
+
+      for (var i = 0; i < h; i++) {
+        colIndex = i * w * 4 + col
+        imgData.data[colIndex] = 255;
+      }
+    }
+
+    function drawRects () {
+      ctx.fillStyle = "rgb(200,100,0)";
+
+      ctx.fillRect(20, 10, 20, 10)
+      ctx.fillRect(70, 30, 10, 30)
+      ctx.fillRect(50, 90, 5, 20)
+      ctx.fillRect(90, 100, 20, 5)
+    }
+
+		function loadImage(src) {
+		  base_image = new Image();
+
+		  base_image.src = src;
+		  base_image.onload = function(){
+		    ctx.drawImage(base_image, 0, 0);
+		    imageLoaded(base_image);
+		  }
+		}
+	</script>
+</body>
+</html>

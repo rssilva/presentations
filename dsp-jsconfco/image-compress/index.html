@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Image Compress</title>
+	<style type="text/css">
+		body {
+			width: 1000px;
+			margin: 0 auto;
+		}
+		.canvas {
+			margin: 0 auto;
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+<body>
+
+	<canvas id="canvas" class="canvas" width="1024" height="576"></canvas>
+	<canvas id="canvas2" class="canvas" width="1024" height="576"></canvas>
+
+	<script type="text/javascript" src="../lodash.js"></script>
+	<script type="text/javascript" src="../compress.js"></script>
+
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas');
+		var canvas2 = document.getElementById('canvas2');
+		var ctx = canvas.getContext('2d');
+		var ctx2 = canvas2.getContext('2d');
+		var buffer = [];
+		var previous = [];
+		var red = [];
+		var green = [];
+		var blue = [];
+		var alpha = [];
+		var compressedRed = [];
+		var compressedGreen = [];
+		var compressedBlue = [];
+		var compressedAlpha = [];
+
+		var imageLoaded = function () {
+			var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+			
+			for (var i = 4; i < imgData.data.length; i+=4) {
+				red.push(imgData.data[i])
+				green.push(imgData.data[i+1])
+				blue.push(imgData.data[i+2])
+				alpha.push(imgData.data[i+3])
+			}
+
+			compressedRed = compress(red);
+			compressedGreen = compress(green);
+			compressedBlue = compress(blue);
+			compressedAlpha = compress(alpha);
+
+			plot(compressedRed, compressedGreen, compressedBlue, compressedAlpha, imgData.width, imgData.height);
+
+			var compressedData = {
+				height: imgData.height,
+				width: imgData.width,
+				r: compressedRed,
+				g: compressedGreen,
+				b: compressedBlue,
+				a: compressedAlpha
+			}
+
+			console.log(JSON.stringify(compressedData).length/JSON.stringify(imgData).length)
+		}
+
+		function quantize (data, factor) {
+			var len = data.length;
+			var quantized = [];
+			var newValue, i;
+
+			for (i = 0; i < len; i++) {
+				newValue = Math.round(data[i]/factor)*factor;
+				if (newValue > 255) {
+					newValue = 255;
+				}
+				quantized[i] = newValue;
+			}
+
+			return quantized;
+		}
+
+		function plot (red, green, blue, alpha, w, h) {
+			var decRed = decompress(red);
+			var decGreen = decompress(green);
+			var decBlue = decompress(blue);
+			var decAlpha = decompress(alpha);
+			var len = decRed.length * 4;
+			var dataArr = new Uint8ClampedArray(len);
+			var counter = 0
+			var key;
+
+			var createdImage = ctx2.createImageData(w, h);
+			
+			var counter = 0;
+
+			for (var i = 0, len = dataArr.length; i < len; i+=4) {
+				counter++;
+				dataArr[i] = decRed[counter];
+				dataArr[i+1] = decGreen[counter];
+				dataArr[i+2] = decBlue[counter];
+				dataArr[i+3] = decAlpha[counter];
+
+			}
+
+			createdImage.data.set(dataArr);
+
+			ctx2.putImageData(createdImage, 0, 0)
+		}
+
+		// make_base('park.jpeg');
+		make_base('skyline.jpg');
+
+		function make_base(src) {
+		  base_image = new Image();
+
+		  base_image.src = src;
+		  base_image.onload = function(){
+		    ctx.drawImage(base_image, 0, 0);
+		    imageLoaded(base_image);
+		  }
+		}
+	</script>
+</body>
+</html>

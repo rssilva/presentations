@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Canvas Timelapser</title>
+
+  <style>
+    ul {
+      list-style: none;
+      width: 500px;
+      margin: 0 auto;
+      text-align: left;
+      padding: 0;
+    }
+    #container {
+      margin: 0px auto;
+      width: 1100px;
+      height: 375px;
+      text-align: center;
+    }
+    #videoElement {
+      width: 500px;
+      height: 375px;
+      border: 1px solid #000;
+      display: none;
+    }
+    #canvas {
+      width: 500px;
+      height: 375px;
+      /*display: none;*/
+      background-color: #CCC;
+    }
+  </style>
+
+</head>
+ 
+<body>
+  <div id="container">
+    <video autoplay id="videoElement"></video>
+    <canvas id="canvas" width="200" height="150"></canvas>
+    <h3>Video</h3>
+    <ul>
+      <li>
+        <button class="start-record">start record</button>
+        <button class="stop-record">stop record</button>
+        <span>Record Period</span><input class="record-period" type="text" value="1000"><span>ms</span>
+      </li>
+      <li>
+        <button class="play">play</button>
+        <button class="stop">stop</button>
+        <span>Execution Period</span><input class="play-period" type="text" value="1000"><span>ms</span>
+      </li>
+      <li>
+        <button class="clear">clear all data</button>
+      </li>
+    </ul>
+    <!-- <h3>Audio</h3>
+    <ul>
+      <li>
+        <span>src: </span><input class="audio-track" type="text" value="sfm_mp3_street_fighter_hadouken_sound_effect.mp3">
+      </li>
+    </ul> -->
+  </div>
+
+  <script type="text/javascript" src="../compress.js"></script>
+  <script>
+    (function () {
+      var video = document.querySelector("#videoElement");
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      var audioContext = new (window.webkitAudioContext || AudioContext)();
+      var recorderInterval, playerInterval, drawingInterval;
+      var v,w,h;
+
+      bindEvents();
+      getUserMedia();
+      // startDrawing(context);
+
+      function getUserMedia() {
+        // check for getUserMedia support
+        navigator.getUserMedia = navigator.getUserMedia || 
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia ||
+            navigator.oGetUserMedia;
+         
+        if (navigator.getUserMedia) {      
+          navigator.getUserMedia({video: true}, handleVideo, videoError);
+        }
+      }
+       
+      function handleVideo(stream) {
+        // if found attach feed to video element
+        video.src = window.URL.createObjectURL(stream);
+      }
+       
+      function videoError(e) {
+        // no webcam found - do something
+      }
+
+      function bindEvents () {
+        document.querySelector('.clear').addEventListener('click', function () {
+          window.localStorage.clear();
+        }, false);
+
+        document.querySelector('.start-record').addEventListener('click', function () {
+          startRecord();
+        }, false);
+
+        document.querySelector('.stop-record').addEventListener('click', function () {
+          stopRecord();
+        }, false);
+
+        document.querySelector('.play').addEventListener('click', function () {
+          onPlay();
+        }, false);
+      }
+
+      function onPlay () {
+        play('timelapse');
+        loadSound();
+      }
+
+      function loadSound () {
+        var request = new XMLHttpRequest();
+        var audioInput = document.querySelector('.audio-track');
+        var url;
+
+        if (audioInput) {
+          url = audioInput.value.trim();
+
+          request.open("GET", url, true);
+          request.responseType = "arraybuffer";
+
+          request.onload = function() {
+            setBuffer(request.response)
+          }
+
+          request.onerror = function() {
+            console.log('BufferLoader: XHR error');
+          }
+
+          request.send();
+        }
+      }
+
+      function setBuffer (data) {
+        audioContext.decodeAudioData(
+          data,
+          onBufferLoad,
+          function(error) {
+            console.error('decodeAudioData error', error);
+          }
+        );
+      }
+
+      function onBufferLoad (buffer) {
+        if (!buffer) {
+          console.log('error on file parse')
+        }
+
+        if (buffer) {
+          playBuffer(buffer)
+        }
+      }
+
+      function playBuffer (buffer) {
+        var startTime = audioContext.currentTime;
+
+        var bufferSource = audioContext.createBufferSource();
+
+        bufferSource.connect(audioContext.destination);
+
+        bufferSource.buffer = buffer;
+        bufferSource.loop = false;
+
+        bufferSource.start();
+      }
+
+      function play (name) {
+        var stored = window.localStorage.getItem(name);
+        var parsed = JSON.parse(stored);
+        var period = document.querySelector('.play-period').value;
+
+        var frame = 0;
+
+        drawFrame(parsed[frame]);
+
+        frame++;
+
+        playerInterval = setInterval(function () {
+          if (parsed[frame]) {
+            drawFrame(parsed[frame]);
+          }
+
+          frame++;
+        }, period);
+      }
+
+      function drawFrame (frame) {
+        plot(frame.r, frame.g, frame.b, frame.a, frame.width, frame.height);
+      }
+
+      function storeFrame (name, frame) {
+        var stored = window.localStorage.getItem(name);
+
+        if (!stored) {
+          stored = [];
+        }
+
+        if (typeof stored == 'string') {
+          stored = JSON.parse(stored);
+        }
+
+        stored.push(frame);
+
+        window.localStorage.setItem(name, JSON.stringify(stored));
+      }
+
+      function startRecord () {
+        var period = document.querySelector('.record-period').value;
+        startDrawing(context, period);
+
+        storeCurrentFrame();
+
+        recorderInterval = setInterval(function () {
+          storeCurrentFrame();
+        }, period);
+
+        console.log('recording...');
+        // storeAudio();
+      }
+
+      function storeCurrentFrame () {
+        var imageData = getImageData();
+
+        storeFrame('timelapse', imageData);
+
+        return imageData;
+      }
+
+      function stopRecord () {
+        console.log('STOP!');
+        clearInterval(recorderInterval);
+        clearInterval(drawingInterval);
+      }
+
+      function startDrawing (context, period) {
+        period = period || 5000;
+
+        v = document.getElementById('videoElement');
+        
+        w = canvas.width;
+        h = canvas.height;
+
+        draw(v,context,w,h);
+
+        drawingInterval = setInterval(function () {
+          draw(v,context,w,h);
+        }, period)
+      }
+
+      function draw(v,c,w,h) {
+        if(v.paused || v.ended) return false; // if no video, exit here
+
+        c.drawImage(v,0,0,w,h); // draw video feed to canvas
+      }
+
+      function getImageData () {
+        var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+        var red = [];
+        var green = [];
+        var blue = [];
+        var alpha = [];
+
+        for (var i = 4; i < imgData.data.length; i+=4) {
+          red.push(imgData.data[i])
+          green.push(imgData.data[i+1])
+          blue.push(imgData.data[i+2])
+          alpha.push(imgData.data[i+3])
+        }
+
+        compressedRed = compress(red);
+        compressedGreen = compress(green);
+        compressedBlue = compress(blue);
+        compressedAlpha = compress(alpha);
+
+        var compressedData = {
+          height: imgData.height,
+          width: imgData.width,
+          r: compressedRed,
+          g: compressedGreen,
+          b: compressedBlue,
+          a: compressedAlpha
+        }
+
+        // console.log(JSON.stringify(compressedData).length/JSON.stringify(imgData).length)
+
+        return compressedData;
+      }
+
+      function plot (red, green, blue, alpha, w, h) {
+        var decRed = decompress(red);
+        var decGreen = decompress(green);
+        var decBlue = decompress(blue);
+        var decAlpha = decompress(alpha);
+        var len = decRed.length * 4;
+        var dataArr = new Uint8ClampedArray(len);
+        var counter = 0
+        var key;
+        
+        var counter = 0;
+
+        var createdImage = context.createImageData(w, h);
+
+        for (var i = 0, len = dataArr.length; i < len; i+=4) {
+          counter++;
+          dataArr[i] = decRed[counter];
+          dataArr[i+1] = decGreen[counter];
+          dataArr[i+2] = decBlue[counter];
+          dataArr[i+3] = decAlpha[counter];
+        }
+
+        createdImage.data.set(dataArr);
+
+        context.putImageData(createdImage, 0, 0);
+      }
+
+      function storeAudio () {
+        var audioSrc = document.querySelector('.audio-track').value.trim()
+        var audio = new Audio(audioSrc);
+
+        var source = audioContext.createMediaElementSource(audio);
+
+        var processor = audioContext.createScriptProcessor(1024, 2, 2);
+        processor.onaudioprocess = onAudioProcess;
+
+        source.connect(processor)
+        processor.connect(audioContext.destination)
+        source.connect(audioContext.destination);
+
+        audio.play();
+
+        audio.addEventListener('ended', function() {
+          processor.onaudioprocess = false;
+        }, true);
+      }
+
+      function onAudioProcess (ev) {
+        inputBuffer = ev.inputBuffer;
+
+        outputBuffer = ev.outputBuffer;
+
+        inputData = inputBuffer.getChannelData(0);
+
+        outputData0 = outputBuffer.getChannelData(0);
+
+        storeFrame('audioTrack', inputData);
+      }
+
+      function getStoredAudio(name) {
+        var signal = [];
+        var stored = window.localStorage.getItem(name);
+
+        stored = JSON.parse(stored);
+
+        stored.forEach(function (arr) {
+          Object.keys(arr).forEach(function (value) {
+            signal.push(arr[value]);
+          })
+        });
+
+        return signal;
+      }
+
+      function playAudio (signal) {
+        var buffer = audioContext.createBuffer(2, signal.length - 1, 44100);
+        var leftChannelData = buffer.getChannelData(0);
+        var rightChannelData = buffer.getChannelData(1);
+
+        var data = buffer.getChannelData(0);
+        var dataRight = buffer.getChannelData(1);
+
+        for (var i = 0; i < data.length; i++) {
+          data[i] = signal[i];
+        }
+
+        var source = audioContext.createBufferSource();
+
+        source.connect(audioContext.destination);
+
+        source.buffer = buffer;
+        source.loop = false;
+
+        source.start();
+      }
+    })();
+  </script>
+</body>
+</html>

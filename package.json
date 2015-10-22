@@ -1,0 +1,27 @@
+{
+  "name": "presentations",
+  "version": "0.0.1",
+  "description": "some of my presentations demos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rssilva/presentations.git"
+  },
+  "keywords": [
+    "presentations",
+    "js"
+  ],
+  "author": "@rssilva",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rssilva/presentations/issues"
+  },
+  "homepage": "https://github.com/rssilva/presentations#readme",
+  "devDependencies": {
+    "socket.io": "^1.3.7",
+    "johnny-five": "~0.8.100"
+  }
+}

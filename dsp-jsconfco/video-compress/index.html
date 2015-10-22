@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Display Webcam Stream</title>
+ 
+<style>
+    #container {
+      margin: 0px auto;
+      width: 1100px;
+      height: 375px;
+    }
+    #videoElement {
+      width: 500px;
+      height: 375px;
+      border: 1px solid #000;
+      display: none;
+    }
+    #canvas {
+      width: 500px;
+      height: 375px;
+      display: none;
+      background-color: #CCC;
+    }
+    </style>
+
+</head>
+ 
+<body>
+  <!-- For devices that support getUserMedia and have a webcam we can display the feed in a video element -->
+  <div id="container">
+    <video autoplay id="videoElement"></video>
+    <canvas id="canvas" width="500" height="375"></canvas>
+    <canvas id="canvas2" width="500" height="375"></canvas>
+  </div>
+
+  <script type="text/javascript" src="../compress.js"></script>
+  <script>
+    var video = document.querySelector("#videoElement");
+    var previous = [];
+    var canvas = document.getElementById('canvas');
+    var canvas2 = document.getElementById('canvas2');
+    var context = canvas.getContext('2d');
+    var ctx2 = canvas2.getContext('2d');
+    var canDoDiff = true;
+    var canPlotDiff = true;
+    var workerDiff, workerPlotDiff;
+
+    if (!!window.Worker) {
+      // workerDiff = new Worker('worker-diff.js');
+      // workerPlotDiff = new Worker('worker-plot-diff.js');
+    }
+
+    // check for getUserMedia support
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+     
+    if (navigator.getUserMedia) {      
+        // get webcam feed if available
+        navigator.getUserMedia({video: true}, handleVideo, videoError);
+    }
+     
+    function handleVideo(stream) {
+        // if found attach feed to video element
+        video.src = window.URL.createObjectURL(stream);
+    }
+     
+    function videoError(e) {
+        // no webcam found - do something
+    }
+
+    var v,canvas,context,w,h;
+    var imgtag = document.getElementById('imgtag'); // get reference to img tag
+
+    document.addEventListener('DOMContentLoaded', function(){
+        // when DOM loaded, get canvas 2D context and store width and height of element
+        v = document.getElementById('videoElement');
+        
+        w = canvas.width;
+        h = canvas.height;
+
+        setInterval(function () {
+          draw(v,context,w,h)
+        }, 1000)
+
+    },false);
+
+    function draw(v,c,w,h) {
+      if(v.paused || v.ended) return false; // if no video, exit here
+
+      context.drawImage(v,0,0,w,h); // draw video feed to canvas
+
+      getImageData();
+    }
+
+    function getImageData () {
+      var imgData = context.getImageData(0, 0, canvas.width, canvas.height);
+      var red = [];
+      var green = [];
+      var blue = [];
+      var alpha = [];
+
+      for (var i = 4; i < imgData.data.length; i+=4) {
+        red.push(imgData.data[i])
+        green.push(imgData.data[i+1])
+        blue.push(imgData.data[i+2])
+        alpha.push(imgData.data[i+3])
+      }
+
+      compressedRed = compress(red);
+      compressedGreen = compress(green);
+      compressedBlue = compress(blue);
+      compressedAlpha = compress(alpha);
+
+      plot(compressedRed, compressedGreen, compressedBlue, compressedAlpha, imgData.width, imgData.height);
+
+      var compressedData = {
+        height: imgData.height,
+        width: imgData.width,
+        r: compressedRed,
+        g: compressedGreen,
+        b: compressedBlue,
+        a: compressedAlpha
+      }
+
+      console.log(JSON.stringify(compressedData).length/JSON.stringify(imgData).length)
+    }
+
+    function plot (red, green, blue, alpha, w, h) {
+      var decRed = decompress(red);
+      var decGreen = decompress(green);
+      var decBlue = decompress(blue);
+      var decAlpha = decompress(alpha);
+      var len = decRed.length * 4;
+      var dataArr = new Uint8ClampedArray(len);
+      var counter = 0
+      var key;
+      
+      var counter = 0;
+
+      var createdImage = context.createImageData(w, h);
+
+      for (var i = 0, len = dataArr.length; i < len; i+=4) {
+        counter++;
+        dataArr[i] = decRed[counter];
+        dataArr[i+1] = decGreen[counter];
+        dataArr[i+2] = decBlue[counter];
+        dataArr[i+3] = decAlpha[counter];
+
+      }
+
+      createdImage.data.set(dataArr);
+
+      ctx2.putImageData(createdImage, 0, 0)
+    }
+
+  </script>
+</body>
+</html>

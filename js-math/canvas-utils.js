@@ -6,6 +6,10 @@ const Kanvas = {
     this.context = canvas.getContext('2d')
   },
 
+  getImageData () {
+    return this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
+  },
+
   toBlack (imageData) {
     const { data } = imageData
     const toBlack = new ImageData(imageData.data, imageData.width, imageData.height)
@@ -26,10 +30,6 @@ const Kanvas = {
     }
 
     return toBlack
-  },
-
-  getImageData () {
-    return this.context.getImageData(0, 0, this.canvas.width, this.canvas.height)
   },
 
   splitRGB (imageData) {

@@ -175,11 +175,11 @@ const Kanvas = {
         if (!areEqualSide) {
           lastLeft = current
 
-          resultLine[col] = {r: 255, g: 0, b: 100, a: 255}
+          resultLine[col] = {r: 240, g: 0, b: 100, a: 255}
         }
 
         if (!areEqualVertical) {
-          resultLine[col] = {r: 0, g: 0, b: 255, a: 255}
+          resultLine[col] = {r: 0, g: 0, b: 245, a: 255}
         }
       })
 
@@ -187,6 +187,20 @@ const Kanvas = {
     })
 
     return result
+  },
+
+  getMatrixData (RGBMatrix) {
+    const points = []
+
+    RGBMatrix.forEach((line, y) => {
+      line.forEach(({r, g, b}, x) => {
+        if (r != 255 && g != 255 && b != 255) {
+          points.push({r, g, b, x, y})
+        }
+      })
+    })
+
+    return points
   },
 
   arePointsEqual (point1, point2, tolerance) {

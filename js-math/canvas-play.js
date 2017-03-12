@@ -2,24 +2,39 @@
 
 const canvasOrigin = document.getElementById('canvas')
 const canvasResult = document.getElementById('canvas-result')
-const KanvasOrigin = Kanvas.new()
-const KanvasResult = Kanvas.new()
+const canvasResult2 = document.getElementById('canvas-result2')
 
-KanvasOrigin.init(canvasOrigin)
-KanvasResult.init(canvasResult)
+const kanvasOrigin = Kanvas.new()
+const kanvasResult = Kanvas.new()
+const kanvasResult2 = Kanvas.new()
+const svg1 = SVG.new()
+const svg2 = SVG.new()
 
-KanvasOrigin.context.fillStyle = 'tomato'
-KanvasOrigin.context.fillRect(10, 10, 50, 30)
-KanvasOrigin.context.fillStyle = 'limegreen'
-KanvasOrigin.context.ellipse(60, 100, 50, 50, 0, 0, 2 * Math.PI)
-KanvasOrigin.context.stroke()
-KanvasOrigin.context.fillStyle = 'dodgerblue'
-KanvasOrigin.context.fillRect(120, 30, 40, 100)
-KanvasOrigin.context.fillStyle = '#FFFFFF'
-KanvasOrigin.context.fillRect(130, 40, 20, 80)
+kanvasOrigin.init(canvasOrigin)
+kanvasResult.init(canvasResult)
+kanvasResult2.init(canvasResult2)
 
-var imageData = KanvasOrigin.getImageData()
-// const filtered = KanvasOrigin.getColor(imageData, {r: 30, g: 144, b: 254, a: 255}, 2)
-var toBlack = KanvasOrigin.toBlack(imageData)
+svg1.init(document.getElementById('svg1'))
+svg2.init(document.getElementById('svg2'))
 
-KanvasResult.plotImageData(toBlack)
+const baseImage = new Image()
+baseImage.src = 'hand.jpg'
+
+baseImage.onload = function () {
+  kanvasOrigin.context.drawImage(baseImage, 0, 0, 200, 356)
+
+  const imageData = kanvasOrigin.getImageData()
+  const filtered = kanvasOrigin.getColor(imageData, {r: 165, g: 161, b: 154}, 60)
+  const toBlack = kanvasOrigin.toBlack(imageData, {r: 165, g: 161, b: 154})
+  const blackRGBMatrix = kanvasOrigin.toRGBMatrix(toBlack)
+  const edgesMatrix = kanvasOrigin.getEdges(blackRGBMatrix)
+  const matrixData = kanvasOrigin.getMatrixData(edgesMatrix)
+  const closerPoints = PointUtils.getCloserPoints(matrixData)
+
+  kanvasResult.plotImageData(filtered)
+  // kanvasResult.plotRGBMatrix(blackRGBMatrix)
+  kanvasResult2.plotRGBMatrix(edgesMatrix)
+
+  svg1.plotPoints(matrixData)
+  svg2.plotLines(closerPoints)
+}

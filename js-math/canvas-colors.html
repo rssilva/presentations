@@ -5,18 +5,28 @@
     <title></title>
     <style media="screen">
       canvas {
-        display: block;
+        display: inline-block;
         margin: 0 auto;
         border: 1px solid #333;
-        margin-bottom: 1rem;
+      }
+
+      svg {
+        border: 1px solid #333;
+        display: inline-block;
       }
     </style>
   </head>
   <body>
-    <h1>hey</h1>
-    <canvas id="canvas" height="200" width="200"></canvas>
-    <canvas id="canvas-result" height="200" width="200"></canvas>
+
+    <canvas id="canvas" height="356" width="200"></canvas>
+    <canvas id="canvas-result" height="356" width="200"></canvas>
+    <canvas id="canvas-result2" height="356" width="200"></canvas>
+    <svg id="svg1" width="200" height="356" xmlns="http://www.w3.org/2000/svg"></svg>
+    <svg id="svg2" width="200" height="356" xmlns="http://www.w3.org/2000/svg"></svg>
+
     <script type="text/javascript" src="canvas-utils.js"></script>
+    <script type="text/javascript" src="svg-utils.js"></script>
+    <script type="text/javascript" src="points-utils.js"></script>
     <script type="text/javascript" src="canvas-play.js"></script>
   </body>
 </html>

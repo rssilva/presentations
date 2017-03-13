@@ -35,18 +35,30 @@ const SVG = {
     this.el.innerHTML += str
   },
 
-  plotLines (points) {
-    let d = ''
+  plotPaths (paths) {
+    paths.forEach((path) => {
+      this.plotSinglePath(path)
+      // this.plotPoints(path)
+    })
+  },
 
-    d += `M${points[0].x} ${points[0].y}`
+  plotSinglePath (points = []) {
+    let d = ''
+    const initial = points[0]
+
+    if (!initial) {
+      return
+    }
+
+    d += `M${initial.x} ${initial.y} `
 
     points.forEach((point, i) => {
       const {r, g, b} = colorPlot(i)
 
-      d += `L${point.x} ${point.y}`
+      d += `L${point.x} ${point.y} `
     })
 
-    let path = `<path fill="#F7931E" stroke="tomato" d="${d}"/>`
+    let path = `<path fill="#FFF" stroke="tomato" d="${d}"/>`
 
     this.el.innerHTML += path
   },

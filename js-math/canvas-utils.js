@@ -20,7 +20,7 @@ const Kanvas = {
       const b = data[i + 2]
       const a = data[i + 3]
 
-      const areEqual = this.arePointsEqual({r: r, g: g, b: b}, color, 60)
+      const areEqual = this.arePointsEqual({r: r, g: g, b: b}, color, 50)
 
       toBlack.data[i] = 255
       toBlack.data[i + 1] = 255

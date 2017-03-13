@@ -1,19 +1,17 @@
 const PointUtils = {
   getCloserPoints (points) {
-    const closer = []
+    const distanceMapped = []
 
     points.forEach((point) => {
-      closer.push({
+      distanceMapped.push({
         point,
         distances: this.getCloserByDistance(points, point)
       })
     })
 
-    const sorted = this.sortByCloser(closer)
-    console.log(closer)
-    console.log(sorted)
+    const paths = this.detectPaths(distanceMapped)
 
-    return sorted
+    return paths
   },
 
   getCloserByDistance (arr, point, distance = 1) {
@@ -27,29 +25,48 @@ const PointUtils = {
     return distances.sort((a, b) => a.d - b.d).splice(1)
   },
 
-  sortByCloser (points) {
+  detectPaths (points) {
+    const paths = [[]]
     const added = []
+    let pathIndex = 0
 
-    points = points.concat([])
-    let sorted = []
     let index = 0
 
-    for (let i = 0; i < points.length - 1; i++) {
-      const current = points[index]
-      sorted.push(current.point)
+    points = points.concat([])
 
-      const next = this.findNotAdded(added, current.distances)[0] || {}
-      index = next.index
+    for (let i = 0; i < points.length - 1; i++) {
+      const current = points[index] || {}
+      const notAdded = this.findNotAdded(added, current.distances)
+      let next = notAdded[0] || {}
+
+      if (current.point) {
+        paths[pathIndex].push(current.point)
+      }
+
+      if (!next.index) {
+        next = this.findNextPathBegin(points, added)[0] || {}
+        next = next[0] || {}
+
+        pathIndex++
+        paths.push([])
+      }
 
       added.push(index)
+      index = next.index
     }
 
-    return sorted
+    return paths
   },
 
-  findNotAdded (added, distances) {
-    return distances.filter(({index}) => {
-      return !added.includes(index)
+  findNextPathBegin (points, added) {
+    return points.map(({distances}) => {
+      return distances.filter((distance) => !added.includes(distance.index))
+    })
+  },
+
+  findNotAdded (added, distances = []) {
+    return distances.filter((distance) => {
+      return !added.includes(distance.index) && distance.d < 10
     })
   }
 }

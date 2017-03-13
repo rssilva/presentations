@@ -18,23 +18,23 @@ svg1.init(document.getElementById('svg1'))
 svg2.init(document.getElementById('svg2'))
 
 const baseImage = new Image()
-baseImage.src = 'hand.jpg'
+baseImage.src = 'hand2.jpg'
 
 baseImage.onload = function () {
   kanvasOrigin.context.drawImage(baseImage, 0, 0, 200, 356)
 
   const imageData = kanvasOrigin.getImageData()
   const filtered = kanvasOrigin.getColor(imageData, {r: 165, g: 161, b: 154}, 60)
-  const toBlack = kanvasOrigin.toBlack(imageData, {r: 165, g: 161, b: 154})
+  const toBlack = kanvasOrigin.toBlack(imageData, {r: 138, g: 150, b: 153})
   const blackRGBMatrix = kanvasOrigin.toRGBMatrix(toBlack)
   const edgesMatrix = kanvasOrigin.getEdges(blackRGBMatrix)
   const matrixData = kanvasOrigin.getMatrixData(edgesMatrix)
   const closerPoints = PointUtils.getCloserPoints(matrixData)
 
   kanvasResult.plotImageData(filtered)
-  // kanvasResult.plotRGBMatrix(blackRGBMatrix)
+  kanvasResult.plotRGBMatrix(blackRGBMatrix)
   kanvasResult2.plotRGBMatrix(edgesMatrix)
 
   svg1.plotPoints(matrixData)
-  svg2.plotLines(closerPoints)
+  svg2.plotPaths(closerPoints)
 }

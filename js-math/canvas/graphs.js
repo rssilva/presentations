@@ -7,7 +7,7 @@ for (let i = 0; i <= 24; i+= 0.1) {
   xAxis.push(i)
 }
 
-const AMOUNT = 100
+const AMOUNT = 10
 const TAX = 10
 const points = []
 const colors = ['#1aa6b7', '#fe424d', '#000']
@@ -21,7 +21,7 @@ for (let i = 0; i < xAxis.length; i++) {
   const values = [
     3 * Math.sin(xAxis[i]),
     2 * Math.sin(xAxis[i]),
-    AMOUNT * Math.pow((1 + TAX/100), xAxis[i])
+    AMOUNT * Math.pow((1 + TAX/1000), xAxis[i])
   ]
 
   const x = sliceSize * i
@@ -35,8 +35,8 @@ for (let i = 0; i < xAxis.length; i++) {
   points.push({x, values})
 }
 
-const rangeSize = Math.abs(max) + Math.abs(min)
-
+const rangeSize = Math.abs(Math.abs(max) + Math.abs(min))
+console.log(rangeSize, max, min)
 ctx.lineWidth = 5
 
 points[0].values.forEach((v, index) => {
@@ -45,11 +45,9 @@ points[0].values.forEach((v, index) => {
 
   points.forEach(({x, values}) => {
     let scaledY = (values[index] / rangeSize) * height
-    scaledY += Math.abs(min)
-
+    scaledY += Math.abs(min) / rangeSize * height
 
     ctx.lineTo(x, height - scaledY)
-
   })
 
   ctx.stroke()

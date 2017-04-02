@@ -1,0 +1,26 @@
+.square1 {
+  width: 100px;
+  height: 100px;
+  background: #fe424d;
+  animation-duration: 1s;
+  animation-name: slidein;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+@keyframes slidein {
+  0% {
+    margin-left: 0;
+    opacity: 0;
+  }
+
+  75% {
+    margin-left: 550px;
+    opacity: 0.75;
+  }
+
+  100% {
+    margin-left: 500px;
+    opacity: 1;
+  }
+}

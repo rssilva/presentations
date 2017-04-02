@@ -3,24 +3,54 @@ const ctx = canvas.getContext('2d')
 const { height, width } = ctx.canvas
 const xAxis = []
 
-for (let i = 0; i <= 24; i++) {
+for (let i = 0; i <= 24; i+= 0.1) {
   xAxis.push(i)
 }
 
-// [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+const AMOUNT = 100
+const TAX = 10
+const points = []
+const colors = ['#1aa6b7', '#fe424d', '#000']
 
-ctx.beginPath()
+const sliceSize = width / (xAxis.length - 1)
 
-const amount = 100
-const tax = 10
-
-ctx.strokeStyle = '#1aa6b7'
-ctx.lineWidth = 5
+let max = null
+let min = null
 
 for (let i = 0; i < xAxis.length; i++) {
-  const value = amount * Math.pow((1 + tax/100), i)
+  const values = [
+    3 * Math.sin(xAxis[i]),
+    2 * Math.sin(xAxis[i]),
+    AMOUNT * Math.pow((1 + TAX/100), xAxis[i])
+  ]
 
-  ctx.lineTo(i, value)
+  const x = sliceSize * i
+
+  const currentMax = _.max(values)
+  const currentMin = _.min(values)
+
+  max = currentMax > max ? currentMax : max
+  min = currentMin < min ? currentMin : min
+
+  points.push({x, values})
 }
 
-ctx.stroke()
+const rangeSize = Math.abs(max) + Math.abs(min)
+
+ctx.lineWidth = 5
+
+points[0].values.forEach((v, index) => {
+  ctx.strokeStyle = colors[index]
+  ctx.beginPath()
+
+  points.forEach(({x, values}) => {
+    let scaledY = (values[index] / rangeSize) * height
+    scaledY += Math.abs(min)
+
+
+    ctx.lineTo(x, height - scaledY)
+
+  })
+
+  ctx.stroke()
+})

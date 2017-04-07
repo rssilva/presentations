@@ -8,7 +8,7 @@ const initial = 10
 
 for (let i = 0; i < 20; i += 1) {
   const side = initial * Math.pow(Math.sqrt(2), i)
-  const angle = Math.round(Math.sin(counter % 2)) * 45
+  const angle = (counter % 2) * 45
 
   plotSquare(width/2, height/2, side, angle)
 

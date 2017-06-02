@@ -75,9 +75,9 @@ const playSignal = (signal) => {
 	processor.onaudioprocess = onAudioProcess
 
   const filter = audioContext.createBiquadFilter()
-  filter.type = 'bandpass'
-  filter.frequency.value = 100
-  filter.Q.value = 0.2
+  filter.type = 'highpass'
+  filter.frequency.value = 10
+  // filter.Q.value = 0.2
 
   for (var i = 0; i < signal.length; i++) {
     data[i] = signal[i]
@@ -119,7 +119,7 @@ const plotFiltered = (signal) => {
 
     dataArr[i] = signal[Math.floor(i/4)]
     dataArr[i + 1] = 0
-    dataArr[i + 2] = 0 //imgData.data[i+2]
+    dataArr[i + 2] = 100 //imgData.data[i+2]
     dataArr[i + 3] = 255
   }
 

@@ -8,31 +8,41 @@ const yc = height / 2
 
 context.fillStyle = 'dodgerblue'
 
-const radius = 110
+const radius = width / 2.5
 
 let x = radius
 let y = yc
 
+const start = new Date().getTime()
+let t = 0
+
+const ps = new ParticleSource(context, {x, y})
+let first = true
+
 const draw = () => {
-  // context.clearRect(0, 0, 300, 300)
-  context.beginPath()
-  // context.arc(xc, yc, radius, 0, 2 * Math.PI, false)
-  context.stroke()
+  context.clearRect(0, 0, width, height)
 
-  x -= 2
-
-  if (x < -radius) {
-    x = radius
-  }
+  t = new Date().getTime() - start
+  x = radius * Math.sin(t/1000)
 
   y = Math.sqrt(radius * radius - (x * x))
 
-  context.fillRect(x + xc, yc + y, 3, 3)
-  context.fillRect(x + xc, yc - y, 3, 3)
+  ps.setPosition(x + xc, yc - y)
+  ps.draw()
+
+  if (first) {
+    ps.setParticles()
+    first = false
+  }
+
+  // context.stroke()
 
   window.requestAnimationFrame(() => {
     draw()
   })
+  // setTimeout(() => {
+  //   draw()
+  // }, 33)
 }
 
 draw()

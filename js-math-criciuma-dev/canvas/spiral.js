@@ -18,7 +18,7 @@ let initialAngle = 0
 let donePrint = true
 
 const draw = () => {
-  context.clearRect(0, 0, 300, 300)
+  context.clearRect(0, 0, width, height)
 
   context.beginPath()
 

@@ -42,7 +42,7 @@ const draw = () => {
   })
   // setTimeout(() => {
   //   draw()
-  // }, 33)
+  // }, 500)
 }
 
 draw()

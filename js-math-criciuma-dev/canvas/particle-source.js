@@ -2,7 +2,7 @@ class Particle {
   constructor({ context, lifetime, x, y, speed, start }) {
     this.ctx = context
     this.start = start
-    this.lifeTime = lifetime || Math.round(Math.random() * 3000)
+    this.lifeTime = lifetime || Math.round(Math.random() * 5000)
     this.x = x || 0
     this.y = y || 0
     this.speed = speed || Math.round(Math.random() * 3)
@@ -11,7 +11,7 @@ class Particle {
     this.g = Math.random() * 255
     this.b = Math.random() * 255
 
-    this.radius = Math.random() * 10
+    this.radius = Math.random() * 15
   }
 
   draw(currentTime) {
@@ -21,7 +21,7 @@ class Particle {
 
     const gradient = this.ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, radius);
 
-    const opacity = timeDiff/this.lifeTime
+    const opacity = 1 - timeDiff/this.lifeTime
 
     this.ctx.beginPath()
     gradient.addColorStop(0, "rgba("+this.r+", "+this.g+", "+this.b+", "+opacity+")")

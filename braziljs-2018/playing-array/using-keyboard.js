@@ -27,6 +27,8 @@ random = random.slice(0, random.length / 4)
 
 let node = {}
 
+analyser.start()
+
 window.addEventListener('keyup', (ev) => {
   const { keyCode } = ev
   play(keyCode)
@@ -70,6 +72,6 @@ const play = (code) => {
   }
 
   if (node.connect) {
-    node.connect(analyser)
+    node.connect(analyser.node)
   }
 }

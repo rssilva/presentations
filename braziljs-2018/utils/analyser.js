@@ -7,6 +7,8 @@ class Analyser {
     this.height = canvasCtx.canvas.height
 
     this.node = audioContext.createAnalyser()
+    // this.node.smoothingTimeConstant = 0.9
+    // this.node.fftSize = 128
 
     this.setTimeConfig()
     this.setFrequencyConfig()
@@ -14,7 +16,7 @@ class Analyser {
     this.drawTime()
     this.drawFrequency()
 
-    return this.node
+    this.isDrawing = false
   }
 
   setTimeConfig () {
@@ -38,6 +40,11 @@ class Analyser {
 
   drawTime () {
     window.requestAnimationFrame(() => this.drawTime())
+
+    if (!this.isDrawing) {
+      return
+    }
+
     const analyser = this.node
     const canvasCtx = this.canvasCtx
     const bufferLength = this.t.bufferLength
@@ -75,6 +82,11 @@ class Analyser {
 
   drawFrequency () {
     window.requestAnimationFrame(() => this.drawFrequency())
+
+    if (!this.isDrawing) {
+      return
+    }
+
     const analyser = this.node
 
     analyser.getByteFrequencyData(this.f.dataArray)
@@ -89,6 +101,14 @@ class Analyser {
 
       x += this.f.barWidth + 2
     }
+  }
+
+  start () {
+    this.isDrawing = true
+  }
+
+  stop () {
+    this.isDrawing = false
   }
 }
 

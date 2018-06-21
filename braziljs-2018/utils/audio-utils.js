@@ -1,5 +1,5 @@
 class AudioUtils {
-  playSignal ({signal = [], audioContext, sampleRate, to}) {
+  playSignal ({signal = [], audioContext, sampleRate, to, onended}) {
     const signalLength = signal.length
     const node = audioContext.createBufferSource()
 
@@ -18,7 +18,9 @@ class AudioUtils {
     node.start(audioContext.currentTime)
 
     node.onended = () => {
-      console.log('ended')
+      if (onended) {
+        onended()
+      }
     }
 
     return node

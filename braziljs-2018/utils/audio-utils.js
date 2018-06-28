@@ -1,5 +1,10 @@
 class AudioUtils {
-  playSignal ({signal = [], audioContext, sampleRate, to, onended}) {
+  constructor (context) {
+    this.audioContext = context
+  }
+
+  playSignal ({signal = [], sampleRate, to, onended}) {
+    const { audioContext } = this
     const signalLength = signal.length
     const node = audioContext.createBufferSource()
 
@@ -26,7 +31,8 @@ class AudioUtils {
     return node
   }
 
-  loadSound (path, audioContext) {
+  loadSound (path) {
+    const { audioContext } = this
     const request = new XMLHttpRequest()
     request.open('GET', path, true)
     request.responseType = 'arraybuffer'

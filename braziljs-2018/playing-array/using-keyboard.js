@@ -4,7 +4,7 @@ const duration = 0.5
 const increment = 1 / SAMPLE_RATE
 
 const analyser = new modules.Analyser(audioContext, document.getElementById('canvas').getContext('2d'))
-const audioUtils = new modules.AudioUtils()
+const audioUtils = new modules.AudioUtils(audioContext)
 
 const sin1 = []
 const sin2 = []
@@ -65,27 +65,27 @@ const play = (code) => {
   }
   console.log(code)
   if (code == 65) {
-    node = audioUtils.playSignal({ signal: sin1, audioContext, sampleRate: SAMPLE_RATE })
+    node = audioUtils.playSignal({ signal: sin1, sampleRate: SAMPLE_RATE })
   }
 
   if (code == 68) {
-    node = audioUtils.playSignal({ signal: kick1, audioContext, sampleRate: SAMPLE_RATE })
+    node = audioUtils.playSignal({ signal: kick1, sampleRate: SAMPLE_RATE })
   }
 
   if (code == 83) {
-    node = audioUtils.playSignal({ signal: sin2, audioContext, sampleRate: SAMPLE_RATE })
+    node = audioUtils.playSignal({ signal: sin2, sampleRate: SAMPLE_RATE })
   }
 
   if (code == 70) {
-    node = audioUtils.playSignal({ signal: random, audioContext, sampleRate: SAMPLE_RATE })
+    node = audioUtils.playSignal({ signal: random, sampleRate: SAMPLE_RATE })
   }
 
   if (code == 71) {
-    node = audioUtils.playSignal({ signal: kick2, audioContext, sampleRate: SAMPLE_RATE })
+    node = audioUtils.playSignal({ signal: kick2, sampleRate: SAMPLE_RATE })
   }
 
   if (code == 72) {
-    node = audioUtils.playSignal({ signal: violin, audioContext, sampleRate: SAMPLE_RATE })
+    node = audioUtils.playSignal({ signal: violin, sampleRate: SAMPLE_RATE })
   }
 
   if (node.connect) {

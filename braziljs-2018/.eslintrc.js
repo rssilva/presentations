@@ -11,5 +11,8 @@ module.exports = {
     splitRGB: true,
     XMLHttpRequest: true,
     modules: true,
+    LenaJS: true,
+    _: true,
+    plotGraph: true
   }
 }

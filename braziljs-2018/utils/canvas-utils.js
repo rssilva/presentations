@@ -63,6 +63,16 @@ class CanvasUtils {
 
     return arr
   }
+
+  parseToAudio (signal) {
+    const parsed = []
+
+    signal.forEach((value) => {
+      parsed.push((value - 127.5) / 127.5)
+    })
+
+    return parsed
+  }
 }
 
 modules.CanvasUtils = CanvasUtils

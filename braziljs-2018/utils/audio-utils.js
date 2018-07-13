@@ -53,6 +53,16 @@ class AudioUtils {
 
     return promise
   }
+
+  parseToImage (signal) {
+    const parsed = []
+
+    signal.forEach((value) => {
+      parsed.push((value + 1) * 255 / 2)
+    })
+
+    return parsed
+  }
 }
 
 modules.AudioUtils = AudioUtils

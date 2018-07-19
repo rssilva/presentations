@@ -23,8 +23,7 @@ class Analyser {
     const bufferLength = this.node.fftSize
 
     this.t = {
-      bufferLength,
-      dataArray: new Uint8Array(bufferLength)
+      bufferLength
     }
   }
 
@@ -32,7 +31,6 @@ class Analyser {
     const bufferLength = this.node.frequencyBinCount
 
     this.f = {
-      dataArray: new Uint8Array(bufferLength),
       bufferLength: bufferLength,
       barWidth: (this.width / bufferLength) * 5
     }
@@ -48,9 +46,9 @@ class Analyser {
     const analyser = this.node
     const canvasCtx = this.canvasCtx
     const bufferLength = this.t.bufferLength
-    const dataArray = this.t.dataArray
+    const dataArray = new Uint8Array(bufferLength)
 
-    analyser.getByteTimeDomainData(this.t.dataArray)
+    analyser.getByteTimeDomainData(dataArray)
 
     canvasCtx.fillStyle = 'rgb(255, 255, 255)'
     canvasCtx.fillRect(0, 0, this.width, this.height)
@@ -88,13 +86,14 @@ class Analyser {
     }
 
     const analyser = this.node
+    const dataArray = new Uint8Array(this.f.bufferLength)
 
-    analyser.getByteFrequencyData(this.f.dataArray)
+    analyser.getByteFrequencyData(dataArray)
 
     let x = 0
 
     for (let i = 0; i < this.f.bufferLength; i++) {
-      let barHeight = this.f.dataArray[i]
+      let barHeight = dataArray[i]
 
       this.canvasCtx.fillStyle = 'rgb(' + (barHeight + 10) + ', 50, 50)'
       this.canvasCtx.fillRect(x, this.height - 1.4 * barHeight, this.f.barWidth, barHeight * 1.4)

@@ -39,13 +39,13 @@ audioUtils
 
     analyser.start()
 
+    // starts song on 75 seconds
     source.start(audioContext.currentTime, 75)
-
-    const duration = 1
 
     source.onended = onEnded
 
-    source.stop(audioContext.currentTime + Math.round(duration))
+    // stops song 1 second after starts, this will trigger 'onended' callback
+    source.stop(audioContext.currentTime + 1)
   })
 
 const onEnded = () => {

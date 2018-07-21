@@ -1,5 +1,5 @@
 class Recorder { // eslint-disable-line
-  constructor (audioContext, { bufferSize = 4096, channels = 2 }) {
+  constructor (audioContext, { bufferSize = 4096, channels = 2 } = {}) {
     this.audioContext = audioContext
 
     this.node = this.audioContext.createScriptProcessor(bufferSize, 2, channels)

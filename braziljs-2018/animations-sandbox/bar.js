@@ -1,6 +1,8 @@
 const canvas = document.querySelector('#canvas')
 const ctx = canvas.getContext('2d')
 
+canvas.width = window.innerWidth - 10
+
 const { width, height } = ctx.canvas
 
 const barsSample = BARS // eslint-disable-line
@@ -26,7 +28,8 @@ const draw = () => {
 
   BAR_WIDTH = Math.ceil(width / bars.length)
 
-  const red = `rgba(${255}, ${30}, ${0}, ${1})`
+  // const red = `rgba(${255}, ${30}, ${0}, ${1})`
+  const red = `hsla(7, 80%, 50%, 1)`
   const blue = `rgba(${82}, ${115}, ${255}, ${1})`
   // const black = `rgba(${44}, ${38}, ${38}, ${1})`
 
@@ -41,6 +44,8 @@ const draw = () => {
     gradient.addColorStop(0.7, blue)
 
     ctx.fillStyle = gradient
+    // ctx.shadowBlur = 100
+    // ctx.shadowColor = blue
 
     ctx.fillRect(x, y, BAR_WIDTH, colHeight)
   })

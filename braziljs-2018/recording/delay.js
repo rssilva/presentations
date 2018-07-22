@@ -66,18 +66,11 @@ const onEnded = () => {
   analyser.node.disconnect()
   delay.disconnect()
 
-  const recordedToPlot = RECORDED1.slice(0, 1000)
-
-  const axis = []
-
-  recordedToPlot.forEach((v, i) => axis.push(i))
-
   plotGraph({
     signals: [
-      recordedToPlot,
+      RECORDED1.slice(0, 1000),
       RECORDED2.slice(0, 1000)
     ],
-    axis,
     context: document.getElementById('comparison').getContext('2d'),
     suggestedMin: -1,
     suggestedMax: 1,

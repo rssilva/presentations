@@ -24,6 +24,11 @@ const getDataSets = (signals, colors) => {
 }
 
 const plotGraph = ({signals, axis, context, colors, suggestedMin = 0, suggestedMax = 255}) => {
+  if (!axis) {
+    axis = []
+    signals[0].forEach((v, i) => axis.push(i))
+  }
+
   const chart = new Chart(context, {
     type: 'line',
     data: {

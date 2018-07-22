@@ -1,17 +1,16 @@
 const audioContext = new AudioContext()
 const analyser = new modules.Analyser(audioContext, document.getElementById('analyser').getContext('2d'))
-
-const RECORDED1 = []
-const RECORDED2 = []
-
-let delay
-
 const SAMPLE_RATE = audioContext.sampleRate
+
 const duration = 0.5
 const increment = 1 / SAMPLE_RATE
+const RECORDED1 = []
+const RECORDED2 = []
+let delay
 
 let recorder1 = new Recorder(audioContext, { channels: 1 }) // eslint-disable-line
 let recorder2 = new Recorder(audioContext, { channels: 1 }) // eslint-disable-line
+
 const source = audioContext.createBufferSource()
 
 const init = () => {

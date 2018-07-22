@@ -13,6 +13,9 @@ module.exports = {
     modules: true,
     LenaJS: true,
     _: true,
-    plotGraph: true
+    plotGraph: true,
+    Flanger: true,
+    Recorder: true,
+    ImagePedal: true
   }
 }

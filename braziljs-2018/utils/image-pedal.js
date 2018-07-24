@@ -42,7 +42,6 @@ class ImagePedal { // eslint-disable-line
       }
     })
 
-    source.connect(pedal.node)
     pedal.node.connect(recorder.node)
     recorder.node.connect(this.audioContext.destination)
 
@@ -92,7 +91,7 @@ class ImagePedal { // eslint-disable-line
         this.applyEffect(sourceBlue, parsedBlue, pedal, (blueData) => {
           this.plot(red, green, blueData)
         }).then((blue) => {
-          this.plot(red, green, blue)
+          // this.plot(red, green, blue)
         })
       })
     })

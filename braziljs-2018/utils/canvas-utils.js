@@ -40,6 +40,7 @@ class CanvasUtils {
 
     const imgData = plotContext.getImageData(0, 0, width, height)
     const dataArr = new Uint8ClampedArray(imgData.data.length)
+    // plotContext.clearRect(0, 0, width, height)
 
     for (let i = 0; i < signal.length; i += 4) {
       dataArr[i] = signal[i]

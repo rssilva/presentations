@@ -23,5 +23,5 @@ baseImage.onload = () => {
 
   const toRGB = canvasUtils.mountRGB(splitted)
   console.log(splitted)
-  canvasUtils.plotFiltered(toRGB, context2, true)
+  canvasUtils.plotArray(toRGB, context2, true)
 }

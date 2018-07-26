@@ -62,7 +62,7 @@ const onEnded = () => {
   })
 
   // there is a problem with opacity here... because it used to be setted always to 255
-  canvasUtils.plotFiltered(soundToImageParsed, soundToImageContext, true)
+  canvasUtils.plotArray(soundToImageParsed, soundToImageContext, true)
 
   LenaJS.filterImage(filteredImage, LenaJS['lowpass3'], soundToImage)
 

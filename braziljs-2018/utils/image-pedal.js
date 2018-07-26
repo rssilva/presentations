@@ -105,6 +105,6 @@ class ImagePedal { // eslint-disable-line
       alpha: []
     })
 
-    this.canvasUtils.plotFiltered(arr, this.canvasContext, false)
+    this.canvasUtils.plotArray(arr, this.canvasContext, false)
   }
 }

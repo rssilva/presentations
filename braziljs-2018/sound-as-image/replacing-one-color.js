@@ -69,7 +69,7 @@ const onEnded = (splittedImage) => {
   splittedImage.red = soundParsed
   const mounted = canvasUtils.mountRGB(splittedImage)
 
-  canvasUtils.plotFiltered(mounted, soundToImageContext, false)
+  canvasUtils.plotArray(mounted, soundToImageContext, false)
 
   LenaJS.filterImage(filteredImage, LenaJS['highpass'], soundToImage)
 

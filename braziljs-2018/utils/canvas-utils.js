@@ -35,7 +35,7 @@ class CanvasUtils {
     return arr
   }
 
-  plotFiltered (signal, plotContext, plotOpacity) {
+  plotArray (signal, plotContext, plotOpacity) {
     const { width, height } = plotContext.canvas
 
     const imgData = plotContext.getImageData(0, 0, width, height)

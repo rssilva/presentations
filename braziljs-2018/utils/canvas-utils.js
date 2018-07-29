@@ -65,6 +65,123 @@ class CanvasUtils {
     return arr
   }
 
+  toMatrix (data, width) {
+    const rows = []
+
+    for (let i = 0; i < data.length - 1; i += 4 * width) {
+      const current = []
+
+      for (let k = 0; k < 4 * width; k += 4) {
+        current.push({
+          r: data[i + k],
+          g: data[i + k + 1],
+          b: data[i + k + 2]
+        })
+      }
+
+      rows.push(current)
+    }
+
+    return rows
+  }
+
+  toMatrixByColumns (data, width, height) {
+    const columns = []
+    let index
+
+    for (let i = 0; i < data.length - 1; i += 4 * width) {
+      index = Math.floor(i / (4 * width))
+
+      if (!columns[index]) {
+        columns[index] = []
+      }
+
+      for (let k = 0; k < 4 * width; k += 4) {
+        columns[index].push({
+          r: data[k],
+          g: data[k + 1],
+          b: data[k + 2]
+        })
+      }
+    }
+
+    return columns
+  }
+
+  plotMatrix (matrix, plotContext) {
+    const { width, height } = plotContext.canvas
+    plotContext.clearRect(0, 0, width, height)
+    const imageInfo = plotContext.getImageData(0, 0, width, height)
+    const imgData = imageInfo.data
+    let counter = 0
+    let row
+
+    for (let i = 0; i < matrix.length; i++) {
+      row = matrix[i]
+
+      for (let k = 0; k < row.length; k++) {
+        counter += 4
+
+        imgData[counter] = row[k].r
+        imgData[counter + 1] = row[k].g
+        imgData[counter + 2] = row[k].b
+        imgData[counter + 3] = 255
+      }
+    }
+
+    plotContext.putImageData(imageInfo, 0, 0)
+  }
+
+  toGrayScale (imageData) {
+    const toGrayScale = []
+    let luma
+
+    for (let i = 0; i < imageData.length; i += 4) {
+      luma = imageData[i] * 0.2126 + imageData[i + 1] * 0.7152 + imageData[i + 2] * 0.0722
+
+      toGrayScale[i] = luma
+      toGrayScale[i + 1] = luma
+      toGrayScale[i + 2] = luma
+      toGrayScale[i + 3] = 255
+    }
+
+    return toGrayScale
+  }
+
+  drawColumn (imageData, width, column) {
+    const step = width * 4
+
+    for (let i = 0; i < imageData.length; i += step) {
+      const index = i + column * 4
+
+      imageData[index] = 0
+      imageData[index + 1] = 255
+      imageData[index + 2] = 0
+    }
+
+    return imageData
+  }
+
+  mergeMatrix (image1, image2, points) {
+    const merged = []
+
+    for (let row = 0; row < image1.length; row++) {
+      if (!merged[row]) {
+        merged[row] = []
+      }
+
+      for (let k = 0; k < image1[row].length; k++) {
+        if (row > points[k]) {
+          merged[row][k] = image2[row][k]
+        } else {
+          merged[row][k] = image1[row][k]
+        }
+      }
+    }
+
+    return merged
+  }
+
   parseToAudio (signal) {
     const parsed = []
 

@@ -16,6 +16,9 @@ module.exports = {
     plotGraph: true,
     Flanger: true,
     Recorder: true,
-    ImagePedal: true
+    ImagePedal: true,
+    PedalsUtils: true,
+    Delay: true,
+    WaveShaper: true
   }
 }

@@ -164,6 +164,7 @@ class CanvasUtils {
 
   mergeMatrix (image1, image2, points) {
     const merged = []
+    const height = image1.length
 
     for (let row = 0; row < image1.length; row++) {
       if (!merged[row]) {
@@ -171,7 +172,7 @@ class CanvasUtils {
       }
 
       for (let k = 0; k < image1[row].length; k++) {
-        if (row > points[k]) {
+        if (row > (height - points[k])) {
           merged[row][k] = image2[row][k]
         } else {
           merged[row][k] = image1[row][k]

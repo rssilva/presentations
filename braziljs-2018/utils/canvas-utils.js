@@ -171,11 +171,11 @@ class CanvasUtils {
         merged[row] = []
       }
 
+      merged[row] = merged[row].concat(image1[row])
+
       for (let k = 0; k < image1[row].length; k++) {
         if (row > (height * points[k] / 255)) {
           merged[row][k] = image2[row][k]
-        } else {
-          merged[row][k] = image1[row][k]
         }
       }
     }

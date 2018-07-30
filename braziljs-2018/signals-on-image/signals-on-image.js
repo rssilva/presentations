@@ -7,7 +7,7 @@ const canvas2 = document.getElementById('canvas2')
 const context2 = canvas2.getContext('2d')
 
 const baseImage = new Image()
-baseImage.src = './david-bowie-low.jpg'
+baseImage.src = '../david-bowie-low-small.jpg'
 
 baseImage.onload = () => {
   const { width, height } = context1.canvas

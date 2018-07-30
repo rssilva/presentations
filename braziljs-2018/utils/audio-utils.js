@@ -63,18 +63,18 @@ class AudioUtils {
 
     return parsed
   }
+
+  getUserMedia (cb) {
+    if (!navigator.getUserMedia) {
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
+    }
+
+    if (navigator.getUserMedia) {
+      navigator.getUserMedia({ audio: true }, cb, (e) => console.error(e))
+    } else {
+      console.log('getUserMedia not supported in this browser.')
+    }
+  }
 }
 
 modules.AudioUtils = AudioUtils
-
-// const playBuffer = (buffer, audioContext) => {
-//   const startTime = audioContext.currentTime
-//
-//   const source = audioContext.createBufferSource()
-//   source.buffer = buffer
-//
-//   source.connect(audioContext.destination)
-//
-//   source.start(startTime)
-//   source.stop(startTime + 2)
-// }

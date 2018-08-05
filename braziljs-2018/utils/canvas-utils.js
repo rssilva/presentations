@@ -108,10 +108,14 @@ class CanvasUtils {
     return columns
   }
 
-  plotMatrix (matrix, plotContext) {
-    const { width, height } = plotContext.canvas
-    plotContext.clearRect(0, 0, width, height)
-    const imageInfo = plotContext.getImageData(0, 0, width, height)
+  plotMatrix ({matrix, context, initialX = 0, initialY = 0}) {
+    // const { width, height } = context.canvas
+    const width = matrix[0].length
+    const height = matrix.length
+
+    context.clearRect(initialX, initialY, width, height)
+
+    const imageInfo = context.getImageData(initialX, initialY, width, height)
     const imgData = imageInfo.data
     let counter = 0
     let row
@@ -129,7 +133,30 @@ class CanvasUtils {
       }
     }
 
-    plotContext.putImageData(imageInfo, 0, 0)
+    context.putImageData(imageInfo, initialX, initialY)
+  }
+
+  cloneMatrixAddingPositions (matrix, initialX, initialY) {
+    const cloned = []
+    let row
+
+    for (let i = 0; i < matrix.length; i++) {
+      row = matrix[i]
+
+      if (!cloned[i]) {
+        cloned[i] = []
+      }
+
+      for (let k = 0; k < row.length; k++) {
+        cloned[i][k] = {
+          ...matrix[i][k],
+          x: initialX + k,
+          y: initialY + i
+        }
+      }
+    }
+
+    return cloned
   }
 
   toGrayScale (imageData) {

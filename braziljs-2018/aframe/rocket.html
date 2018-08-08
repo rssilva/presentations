@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <style>
+    </style>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <!-- <a-asset-item id="crate-obj" src="./assets/rocket-ship2/10475_Rocket_Ship_v1_L3.obj"></a-asset-item>
+        <a-asset-item id="crate-mtl" src="./assets/rocket-ship2/10475_Rocket_Ship_v1_L3.mtl"></a-asset-item> -->
+        <a-asset-item id="crate-obj" src="./assets/rocket-ship/rocket-ship.obj"></a-asset-item>
+        <a-asset-item id="crate-mtl" src="./assets/rocket-ship/rocket-ship.mtl"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 4 30"></a-camera>
+
+      <a-sky color="#000"></a-sky>
+      <a-light id="light" color="white" position="0 10 10"></a-light>
+      
+      <a-sphere position="0 0 -3" radius="1" color="#FFF"></a-sphere>
+      <a-obj-model scale="0.01 0.01 0.01" src="#crate-obj" mtl="#crate-mtl" position="0 0 0"></a-obj-model>
+    </a-scene>
+    <script src="../vendor/aframe.js"></script>
+    <script src="../vendor/aframe-inspector.js"></script>
+    <script type="text/javascript" src="../utils/config.js"></script>
+    <script type="text/javascript" src="../utils/audio-utils.js"></script>
+    <script type="text/javascript" src="../utils/analyser-real-time.js"></script>
+    <script src="rocket.js"></script>
+  </body>
+</html>

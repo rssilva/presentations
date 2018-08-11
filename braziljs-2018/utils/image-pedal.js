@@ -20,7 +20,7 @@ class ImagePedal { // eslint-disable-line
 
   applyEffect (source, signal, pedal, partialCb) {
     const recorded = []
-    const recorder = new this.RecorderClass(this.audioContext)
+    const recorder = new this.RecorderClass(this.audioContext, { makeSound: false })
 
     const finish = (resolve) => {
       source.onended = () => {

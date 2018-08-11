@@ -17,7 +17,7 @@ const RECORDED = []
 let processorNode
 
 audioUtils
-  .loadSound('../sound-and-vision.mp3', audioContext)
+  .loadSound('../assets/musics/sound-and-vision.mp3', audioContext)
   .then((buffer) => {
     processorNode = audioContext.createScriptProcessor(4096, 2, 2)
     const source = audioContext.createBufferSource()

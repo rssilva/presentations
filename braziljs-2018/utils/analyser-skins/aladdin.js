@@ -10,8 +10,10 @@ class Aladdin { // eslint-disable-line
   }
 
   drawTime (dataArray) {
-    this.canvasCtx.fillStyle = 'rgb(255, 255, 255)'
+    this.canvasCtx.fillStyle = 'rgb(0, 0, 0)'
     this.canvasCtx.fillRect(0, 0, this.width, this.height)
+
+    this.canvasCtx.strokeStyle = 'rgb(255, 255, 255)'
 
     this.canvasCtx.beginPath()
 

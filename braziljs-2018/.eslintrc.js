@@ -4,6 +4,7 @@ module.exports = {
     eqeqeq: 'off',
   },
   globals: {
+    $: true,
     Image: true,
     AudioContext: true,
     Filter: true,

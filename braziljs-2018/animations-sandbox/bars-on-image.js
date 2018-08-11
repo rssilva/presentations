@@ -18,7 +18,10 @@ const draw = (originalMatrix, grayMatrix) => {
   const bars = barsSample[currentRow]
 
   merged = canvasUtils.mergeMatrix(grayMatrix, originalMatrix, bars)
-  canvasUtils.plotMatrix(merged, contextResult)
+  canvasUtils.plotMatrix({
+    matrix: merged,
+    context: contextResult
+  })
 
   setTimeout(() => {
     draw(originalMatrix, grayMatrix)
@@ -26,7 +29,7 @@ const draw = (originalMatrix, grayMatrix) => {
 }
 
 const baseImage = new Image()
-baseImage.src = '../david-bowie-low-small.jpg'
+baseImage.src = '../assets/images/david-bowie-low-small.jpg'
 
 baseImage.onload = () => {
   const context1 = document.getElementById('canvas-image').getContext('2d')

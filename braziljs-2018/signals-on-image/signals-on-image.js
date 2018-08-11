@@ -46,7 +46,7 @@ const draw = (imageInfo) => {
 
 const loadImage = () => {
   const baseImage = new Image()
-  baseImage.src = '../david-bowie-low-small.jpg'
+  baseImage.src = '../assets/images/david-bowie-low-small.jpg'
 
   baseImage.onload = () => {
     const { width, height } = context1.canvas

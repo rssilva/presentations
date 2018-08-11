@@ -23,7 +23,7 @@ for (let t = 0; t < (duration - increment); t += increment) {
   const value1 = Math.sin(6.28 * 300 * t)
   const value2 = Math.sin(6.28 * 600 * t)
   const kickValue1 = Math.exp(-t * 10) * Math.sin(6.28 * 150 * t)
-  const kickValue2 = Math.exp(-t * 10) * Math.sin(6.28 * 2000 * t)
+  const kickValue2 = Math.exp(-t * 5) * Math.sin(6.28 * 5000 * Math.exp(-t * 40) * t)
   // const kickValue2 = t / (duration) * Math.exp(-t * 10) * Math.sin(6.28 * 2000 * t)
   const randomValue = 0.3 - (Math.random() / 2)
 

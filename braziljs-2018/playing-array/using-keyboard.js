@@ -3,11 +3,17 @@ const SAMPLE_RATE = 8000
 const duration = 0.5
 const increment = 1 / SAMPLE_RATE
 
-const aladdinSkin = new Aladdin() // eslint-disable-line
+const aladdinSkin = new Aladdin(true) // eslint-disable-line
+const canvasCtx = document.getElementById('analyser').getContext('2d')
+canvasCtx.canvas.width = window.innerWidth
+canvasCtx.canvas.height = window.innerHeight
 
-const analyser = new modules.Analyser(audioContext, document.getElementById('canvas').getContext('2d'), {
+const analyser = new modules.Analyser(audioContext, canvasCtx, {
   skin: aladdinSkin
 })
+
+aladdinSkin.setLightning()
+
 const audioUtils = new modules.AudioUtils(audioContext)
 
 const sin1 = []

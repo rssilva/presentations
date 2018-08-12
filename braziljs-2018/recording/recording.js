@@ -12,7 +12,7 @@ let recorder1 = new Recorder(audioContext) // eslint-disable-line
 let recorder2 = new Recorder(audioContext) // eslint-disable-line
 
 audioUtils
-  .loadSound('../sound-and-vision.mp3', audioContext)
+  .loadSound('../assets/musics/sound-and-vision.mp3', audioContext)
   .then((buffer) => {
     source = audioContext.createBufferSource()
     delay = audioContext.createDelay(2)

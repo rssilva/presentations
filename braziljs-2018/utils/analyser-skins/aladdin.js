@@ -48,10 +48,6 @@ class Aladdin { // eslint-disable-line
     const red = `hsla(7, 80%, 50%, 1)`
     const blue = `rgba(${82}, ${115}, ${255}, ${1})`
 
-    if (this.drawLightning) {
-      this.lightning.draw()
-    }
-
     for (let i = 0; i < this.fBufferLength; i++) {
       const value = bars[i]
       const colHeight = value * this.height / 255
@@ -69,6 +65,10 @@ class Aladdin { // eslint-disable-line
 
       if (i < this.width) {
         this.canvasCtx.fillRect(x, y, this.barWidth, colHeight)
+      }
+
+      if (this.drawLightning && i == Math.round(this.width / 2)) {
+        this.lightning.draw(colHeight / this.height)
       }
     }
   }

@@ -4,6 +4,8 @@ class Lightning { //eslint-disable-line
     this.canvasWidth = ctx.canvas.width
     this.canvasHeight = ctx.canvas.height
 
+    this._colors = colors
+
     this.setColors(colors)
     this.setDimensions(width, startY)
   }
@@ -25,10 +27,20 @@ class Lightning { //eslint-disable-line
     this.startRedX = this.startBlueX + 0.0968 * this.width
   }
 
-  draw () {
+  draw (opacity = 1) {
     // this.drawBars()
 
     this.ctx.lineWidth = 1
+
+    if (opacity < 1) {
+      const colors = this._colors.map((color) => {
+        color.a = opacity
+
+        return color
+      })
+
+      this.setColors(colors)
+    }
 
     // cool effects, remember it
     // this.ctx.shadowBlur = 100

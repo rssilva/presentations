@@ -4,6 +4,7 @@ class FadeImageSkin { // eslint-disable-line
     this.canvasUtils = canvasUtils
 
     this.isDestructured = false
+    this.onPlace = {}
   }
 
   set ({ fBufferLength, tBufferLength, canvasCtx, barWidth = 3 }) {
@@ -87,6 +88,7 @@ class FadeImageSkin { // eslint-disable-line
 
     this.matrix[this.currentLine].forEach((pixel, i) => {
       const pos = this.evaluateNewPosition({
+        pixel,
         x: pixel.x,
         y: pixel.y,
         width: this.matrix[0].length,
@@ -100,11 +102,11 @@ class FadeImageSkin { // eslint-disable-line
 
     this.currentLine++
 
-    this.drawPixels()
+    // this.drawPixels()
   }
 
-  evaluateNewPosition ({x, y, width, index, number}) {
-    let newX
+  evaluateNewPosition ({x, y, width, index, number, pixel}) {
+    let newX = x
     let newY = y
 
     if (this.isDestructured) {
@@ -112,7 +114,13 @@ class FadeImageSkin { // eslint-disable-line
 
       if (x != number) {
         let signal = x < number ? +1 : -1
-        newX = x + signal * 300 * Math.random()
+        newX = x + signal * Math.abs(x - number) * Math.round(Math.random())
+      } else {
+        if (!this.onPlace[number]) {
+          this.onPlace[number] = []
+        }
+
+        this.onPlace[number].push(pixel)
       }
     } else {
       let signal = x < number ? +1 : -1
@@ -143,7 +151,7 @@ class FadeImageSkin { // eslint-disable-line
     this.canvasCtx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
 
     this.canvasCtx.strokeStyle = 'rgb(255, 255, 255)'
-    this.canvasCtx.lineWidth = 3
+    this.canvasCtx.lineWidth = 2
 
     this.canvasCtx.beginPath()
 
@@ -163,8 +171,8 @@ class FadeImageSkin { // eslint-disable-line
       x += sliceWidth
     }
 
-    // this.canvasCtx.lineTo(this.canvasCtx.width, this.canvasCtx.height / 2)
-    // this.canvasCtx.stroke()
+    this.canvasCtx.lineTo(this.canvasCtx.width, this.canvasCtx.height / 2)
+    this.canvasCtx.stroke()
   }
 
   drawFrequency (bars) {
@@ -181,28 +189,20 @@ class FadeImageSkin { // eslint-disable-line
 
     this.movePixels()
 
-    // for (let i = 0; i < this.fBufferLength; i++) {
-    //   const value = bars[i]
-    //   const colHeight = value * this.canvasHeight / 255
+    for (let i = 0; i < this.fBufferLength; i += 1) {
+      const value = bars[i]
+      const colHeight = value * this.canvasHeight / 255
 
-    //   const x = i * (BAR_SPACE + this.barWidth)
-    //   const y = this.canvasHeight - colHeight
+      // const x = i * (BAR_SPACE + this.barWidth)
+      const y = this.canvasHeight - colHeight
 
-    //   const gradient = this.canvasCtx.createLinearGradient(x, this.canvasHeight, x, value)
-    //   gradient.addColorStop(0, red)
-    //   gradient.addColorStop(0.7, blue)
+      if (i < this.canvasWidth && this.onPlace[i]) {
+        this.onPlace[i].forEach((pixel) => {
+          pixel.y = y + Math.round(Math.random() * 5)
+        })
+      }
+    }
 
-    //   this.canvasCtx.fillStyle = gradient
-    //   this.canvasCtx.shadowBlur = 2
-    //   this.canvasCtx.shadowColor = '#FFF'
-
-    //   if (i < this.canvasWidth) {
-    //     this.canvasCtx.fillRect(x, y, this.barWidth, colHeight)
-    //   }
-
-    //   if (this.drawLightning && i == Math.round(this.canvasWidth / 2)) {
-    //     this.lightning.draw(colHeight / this.canvasHeight)
-    //   }
-    // }
+    this.drawPixels()
   }
 }

@@ -151,7 +151,7 @@ class FadeImageSkin { // eslint-disable-line
     this.canvasCtx.fillRect(0, 0, this.canvasWidth, this.canvasHeight)
 
     this.canvasCtx.strokeStyle = 'rgb(255, 255, 255)'
-    this.canvasCtx.lineWidth = 2
+    this.canvasCtx.lineWidth = 1
 
     this.canvasCtx.beginPath()
 

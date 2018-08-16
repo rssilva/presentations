@@ -16,7 +16,7 @@ let convolver
 const source = audioContext.createBufferSource()
 
 let ajaxRequest = new XMLHttpRequest()
-ajaxRequest.open('GET', '../hall-reverb.ogg', true)
+ajaxRequest.open('GET', '../assets/pedals/hall-reverb.ogg', true)
 ajaxRequest.responseType = 'arraybuffer'
 
 ajaxRequest.onload = function () {
@@ -34,7 +34,7 @@ const init = (convolverBuffer) => {
   const signal = []
 
   for (let t = 0; t < (duration - increment); t += increment) {
-    signal.push(Math.sin(2 * 3.14 * 300 * t))
+    signal.push(0.95 * Math.sin(2 * 3.14 * 300 * t))
   }
 
   const buffer = audioContext.createBuffer(1, signal.length, audioContext.sampleRate)
@@ -91,6 +91,6 @@ const onEnded = () => {
     context: document.getElementById('comparison').getContext('2d'),
     suggestedMin: -1,
     suggestedMax: 1,
-    colors: ['red', 'orange']
+    colors: ['orange', 'white']
   })
 }

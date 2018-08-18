@@ -4,8 +4,10 @@ const fs = require('fs')
 let DATA = []
 
 const save = () => {
+  const data = DATA.map((val) => Number(val))
+
   const content = `
-    const SAMPLE = ${JSON.stringify(DATA)}
+    const SAMPLE = ${JSON.stringify(data)}
   `
 
   fs.writeFile('sample.js', content, (err) => {

@@ -19,7 +19,7 @@ frequencyRange.addEventListener('change', () => {
   play(audioContext, sourceNode)
 })
 
-audioUtils.loadSound('../sound-and-vision.mp3', audioContext)
+audioUtils.loadSound('../assets/musics/sound-and-vision.mp3', audioContext)
   .then((buffer) => {
     sourceNode = getSourceNode(audioContext, buffer)
     play(audioContext, sourceNode)

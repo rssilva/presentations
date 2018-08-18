@@ -26,7 +26,7 @@ const init = (stream) => {
   // stops song 1 second after starts, this will trigger 'onended' callback
   setTimeout(() => {
     onEnded()
-  }, 500)
+  }, 3000)
 }
 
 const onEnded = () => {
@@ -34,15 +34,15 @@ const onEnded = () => {
   audioInput.disconnect()
   analyser.node.disconnect()
 
-  plotGraph({
-    signals: [
-      RECORDED1.slice(0, 2000)
-    ],
-    context: document.getElementById('comparison').getContext('2d'),
-    suggestedMin: -1,
-    suggestedMax: 1,
-    colors: ['red', 'orange']
-  })
+  // plotGraph({
+  //   signals: [
+  //     RECORDED1.slice(0, 2000)
+  //   ],
+  //   context: document.getElementById('comparison').getContext('2d'),
+  //   suggestedMin: -1,
+  //   suggestedMax: 1,
+  //   colors: ['red', 'orange']
+  // })
 
   $.ajax({
     url: 'http://localhost:3000/clear'
@@ -74,7 +74,15 @@ const sendData = (arr, index = 0) => {
   })
 }
 
-setTimeout(() => {
-  console.log('GOOOOO')
-  audioUtils.getUserMedia(init)
-})
+let counter = 5
+
+const interval = setInterval(() => {
+  counter--
+  console.log(counter)
+
+  if (!counter) {
+    console.log('GOOOOO')
+    clearInterval(interval)
+    audioUtils.getUserMedia(init)
+  }
+}, 1000)

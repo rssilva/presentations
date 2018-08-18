@@ -60,8 +60,6 @@ class Aladdin { // eslint-disable-line
       gradient.addColorStop(0.7, blue)
 
       this.canvasCtx.fillStyle = gradient
-      this.canvasCtx.shadowBlur = 2
-      this.canvasCtx.shadowColor = '#FFF'
 
       if (i < this.width) {
         this.canvasCtx.fillRect(x, y, this.barWidth, colHeight)
@@ -71,6 +69,9 @@ class Aladdin { // eslint-disable-line
         this.lightning.draw(colHeight / this.height)
       }
     }
+
+    // this.canvasCtx.shadowBlur = 2
+    // this.canvasCtx.shadowColor = '#FFF'
   }
 
   setLightning () {

@@ -7,8 +7,8 @@ const increment = 1 / SAMPLE_RATE
 const RECORDED1 = []
 const RECORDED2 = []
 
-let recorder1 = new Recorder(audioContext, { channels: 1, makeSound: false }) // eslint-disable-line
-let recorder2 = new Recorder(audioContext, { channels: 1, makeSound: true }) // eslint-disable-line
+let recorder1 = new Recorder(audioContext, { channels: 1, makeSound: false, bufferSize: 256 }) // eslint-disable-line
+let recorder2 = new Recorder(audioContext, { channels: 1, makeSound: true, bufferSize: 256 }) // eslint-disable-line
 
 const source = audioContext.createBufferSource()
 

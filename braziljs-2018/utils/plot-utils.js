@@ -1,5 +1,5 @@
 const COLORS = {
-  orange: 'rgba(247, 158, 2, 1)',
+  orange: 'rgba(240, 109, 53, 1)',
   red: 'rgba(255, 0, 0, 1)',
   green: 'rgba(0, 255, 0, 1)',
   blue: 'rgba(0, 0, 255, 1)',

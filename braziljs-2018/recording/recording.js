@@ -7,7 +7,8 @@ const RECORDED1 = []
 const RECORDED2 = []
 
 let source
-let delay
+// let delay
+let filter
 let recorder1 = new Recorder(audioContext) // eslint-disable-line
 let recorder2 = new Recorder(audioContext) // eslint-disable-line
 
@@ -15,11 +16,13 @@ audioUtils
   .loadSound('../assets/musics/sound-and-vision.mp3', audioContext)
   .then((buffer) => {
     source = audioContext.createBufferSource()
-    delay = audioContext.createDelay(2)
+    filter = audioContext.createBiquadFilter()
+    filter.type = 'lowpass'
+    filter.frequency.value = 1000
 
     source.buffer = buffer
     source.looping = false
-    delay.delayTime.setValueAtTime(0.01, audioContext.currentTime)
+    // delay.delayTime.setValueAtTime(0.01, audioContext.currentTime)
 
     recorder1.onAudioProcess((data) => {
       RECORDED1.push(...data)
@@ -29,12 +32,12 @@ audioUtils
       RECORDED2.push(...data)
     })
 
-    source.connect(delay)
+    source.connect(filter)
     source.connect(recorder1.node)
     source.connect(analyser.node)
     recorder1.node.connect(audioContext.destination)
 
-    delay.connect(recorder2.node)
+    filter.connect(recorder2.node)
     recorder2.node.connect(audioContext.destination)
 
     analyser.start()
@@ -53,7 +56,7 @@ const onEnded = () => {
   recorder2.node.disconnect()
   source.disconnect()
   analyser.node.disconnect()
-  delay.disconnect()
+  // delay.disconnect()
 
   const recordedToPlot = RECORDED1.slice(0, 600)
 
@@ -70,6 +73,6 @@ const onEnded = () => {
     context: document.getElementById('comparison').getContext('2d'),
     suggestedMin: -1,
     suggestedMax: 1,
-    colors: ['red', 'orange']
+    colors: ['orange', 'white']
   })
 }

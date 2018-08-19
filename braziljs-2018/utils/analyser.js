@@ -14,7 +14,7 @@ class AnalyserDefaultSkin {
     this.canvasCtx.fillRect(0, 0, this.width, this.height)
 
     this.canvasCtx.lineWidth = 2
-    this.canvasCtx.strokeStyle = 'rgb(0, 100, 0)'
+    this.canvasCtx.strokeStyle = 'rgb(255, 255, 255)'
 
     this.canvasCtx.beginPath()
 
@@ -44,7 +44,7 @@ class AnalyserDefaultSkin {
     for (let i = 0; i < this.fBufferLength; i++) {
       let barHeight = bars[i]
 
-      this.canvasCtx.fillStyle = 'rgb(' + (barHeight + 10) + ', 50, 50)'
+      this.canvasCtx.fillStyle = 'hsla(7, 80%, 50%, 1)'
       this.canvasCtx.fillRect(x, this.height - 1.4 * barHeight, this.barWidth, barHeight * 1.4)
 
       x += this.barWidth + 2

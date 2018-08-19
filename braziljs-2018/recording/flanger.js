@@ -7,7 +7,7 @@ const increment = 1 / SAMPLE_RATE
 const RECORDED1 = []
 const RECORDED2 = []
 
-let recorder1 = new Recorder(audioContext, { channels: 1, makeSound: false }) // eslint-disable-line
+let recorder1 = new Recorder(audioContext, { channels: 1, makeSound: true }) // eslint-disable-line
 let recorder2 = new Recorder(audioContext, { channels: 1, makeSound: true }) // eslint-disable-line
 const source = audioContext.createBufferSource()
 
@@ -29,7 +29,7 @@ const init = () => {
     data1[i] = signal[i]
   }
 
-  const flanger = new Flanger({ audioContext, delayTime: 0.005, feedbackValue: 0.9, speedValue: 0.1, gainValue: 0.1 })
+  const flanger = new Flanger({ audioContext, delayTime: 0.00005, feedbackValue: 0.5, speedValue: 0.3, gainValue: 0.1 })
 
   source.buffer = buffer
   source.looping = false
@@ -42,7 +42,8 @@ const init = () => {
     RECORDED2.push(...data)
   })
 
-  source.connect(flanger.inputGain)
+  // source.connect(flanger.inputGain)
+  flanger.setInput(source)
   source.connect(recorder1.node)
   flanger.node.connect(analyser.node)
   recorder1.node.connect(audioContext.destination)
@@ -66,15 +67,20 @@ const onEnded = () => {
   source.disconnect()
   analyser.node.disconnect()
 
+  console.log('pew')
+  // window.localStorage.setItem('recorded', RECORDED2)
+  const recorded = window.localStorage.getItem('recorded').split(',').slice(0, 1500)
+
   plotGraph({
     signals: [
-      RECORDED1.slice(0, 2000),
-      RECORDED2.slice(0, 2000)
+      RECORDED1.slice(0, 1500),
+      RECORDED2.slice(0, 1500),
+      recorded
     ],
     context: document.getElementById('comparison').getContext('2d'),
     suggestedMin: -1,
     suggestedMax: 1,
-    colors: ['orange', 'white']
+    colors: ['orange', 'white', 'yellow']
   })
 }
 

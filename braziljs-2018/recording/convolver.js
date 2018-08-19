@@ -7,30 +7,16 @@ const increment = 1 / SAMPLE_RATE
 const RECORDED1 = []
 const RECORDED2 = []
 
-let recorder1 = new Recorder(audioContext, { channels: 1 }) // eslint-disable-line
-let recorder2 = new Recorder(audioContext, { channels: 1 }) // eslint-disable-line
-let convolver
-// let concertHallBuffer
-// let soundSource
-
+let recorder1 = new Recorder(audioContext, { channels: 1, makeSound: false }) // eslint-disable-line
+let recorder2 = new Recorder(audioContext, { channels: 1, makeSound: true }) // eslint-disable-line
 const source = audioContext.createBufferSource()
+let convolver = new Convolver({ audioContext })
 
-let ajaxRequest = new XMLHttpRequest()
-ajaxRequest.open('GET', '../assets/pedals/hall-reverb.ogg', true)
-ajaxRequest.responseType = 'arraybuffer'
+convolver.loadFile('../assets/pedals/hall-reverb.ogg').then(() => {
+  init()
+})
 
-ajaxRequest.onload = function () {
-  var audioData = ajaxRequest.response
-  audioContext.decodeAudioData(audioData, function (buffer) {
-    init(buffer)
-  }, function (e) {
-    console.log(`Error with decoding audio data ${e.err}`)
-  })
-}
-
-ajaxRequest.send()
-
-const init = (convolverBuffer) => {
+const init = () => {
   const signal = []
 
   for (let t = 0; t < (duration - increment); t += increment) {
@@ -48,9 +34,6 @@ const init = (convolverBuffer) => {
     data1[i] = signal[i]
   }
 
-  convolver = audioContext.createConvolver()
-  convolver.buffer = convolverBuffer
-
   source.buffer = buffer
   source.looping = false
 
@@ -62,12 +45,12 @@ const init = (convolverBuffer) => {
     RECORDED2.push(...data)
   })
 
-  source.connect(convolver)
+  convolver.setInput(source)
   source.connect(recorder1.node)
   source.connect(analyser.node)
   recorder1.node.connect(audioContext.destination)
 
-  convolver.connect(recorder2.node)
+  convolver.node.connect(recorder2.node)
   recorder2.node.connect(audioContext.destination)
 
   analyser.start()
@@ -87,14 +70,17 @@ const onEnded = () => {
   analyser.node.disconnect()
   // delay.disconnect()
 
+  // window.localStorage.setItem('recorded', RECORDED2)
+
   plotGraph({
     signals: [
-      RECORDED1.slice(0, 2500),
-      RECORDED2.slice(0, 2500)
+      RECORDED1.slice(0, 1500),
+      RECORDED2.slice(0, 1500)
+      // window.localStorage.getItem('recorded').split(',').slice(0, 300)
     ],
     context: document.getElementById('comparison').getContext('2d'),
     suggestedMin: -1,
     suggestedMax: 1,
-    colors: ['orange', 'white']
+    colors: ['orange', 'white', 'yellow']
   })
 }

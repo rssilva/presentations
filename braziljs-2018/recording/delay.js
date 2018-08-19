@@ -72,8 +72,8 @@ const onEnded = () => {
 
   plotGraph({
     signals: [
-      RECORDED1.slice(0, 600),
-      RECORDED2.slice(0, 600)
+      RECORDED1.slice(0, 450),
+      RECORDED2.slice(0, 450)
     ],
     context: document.getElementById('comparison').getContext('2d'),
     suggestedMin: -1,

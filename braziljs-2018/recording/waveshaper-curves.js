@@ -9,6 +9,8 @@ let recorder1 = new Recorder(audioContext, { channels: 1, makeSound: false }) //
 const source = audioContext.createBufferSource()
 let curve1 = []
 let curve2 = []
+let curve3 = []
+let curve4 = []
 
 const init = () => {
   const signal = SAMPLE // eslint-disable-line
@@ -21,8 +23,10 @@ const init = () => {
   }
 
   const waveshaper = new WaveShaper({ audioContext })
-  curve1 = waveshaper.makeDistortionCurve(400)
-  curve2 = waveshaper.makeDistortionCurve2(600)
+  curve1 = waveshaper.makeDistortionCurve(100)
+  curve2 = waveshaper.makeDistortionCurve(500)
+  curve3 = waveshaper.makeDistortionCurve(1000)
+  curve4 = waveshaper.makeDistortionCurve(1500)
 
   source.buffer = buffer
   source.looping = false
@@ -66,13 +70,15 @@ const onEnded = () => {
 
   plotGraph({
     signals: [
-      curve1.slice(21000, 23000),
-      curve2.slice(21000, 23000)
+      curve1.slice(21500, 22500),
+      curve2.slice(21500, 22500),
+      curve3.slice(21500, 22500),
+      curve4.slice(21500, 22500)
     ],
     context: document.getElementById('curve').getContext('2d'),
-    suggestedMin: -1,
-    suggestedMax: 1,
-    colors: ['red', 'orange']
+    suggestedMin: -0.6,
+    suggestedMax: 0.6,
+    colors: ['orange', 'lightOrange', 'yellow', 'white'].reverse()
   })
 }
 

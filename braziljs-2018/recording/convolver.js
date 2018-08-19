@@ -34,7 +34,11 @@ const init = (convolverBuffer) => {
   const signal = []
 
   for (let t = 0; t < (duration - increment); t += increment) {
-    signal.push(0.95 * Math.sin(2 * 3.14 * 300 * t))
+    if (t < 0.00665) {
+      signal.push(0.95 * Math.sin(2 * 3.14 * 300 * t))
+    } else {
+      signal.push(0)
+    }
   }
 
   const buffer = audioContext.createBuffer(1, signal.length, audioContext.sampleRate)

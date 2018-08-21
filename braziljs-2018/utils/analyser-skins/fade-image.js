@@ -1,7 +1,9 @@
 class FadeImageSkin { // eslint-disable-line
-  constructor ({ imageCanvasCtx, canvasUtils }) {
+  constructor ({ imageCanvasCtx, canvasUtils, image }) {
     this.imageCanvasCtx = imageCanvasCtx
     this.canvasUtils = canvasUtils
+
+    this.image = image
 
     this.isDestructured = false
     this.onPlace = {}
@@ -43,7 +45,7 @@ class FadeImageSkin { // eslint-disable-line
 
   loadImage () {
     const baseImage = new Image()
-    baseImage.src = '../assets/images/david-bowie-low-small100x100.jpg'
+    baseImage.src = this.image || '../assets/images/david-bowie-low-small100x100.jpg'
 
     baseImage.onload = () => {
       // const context1 = document.getElementById('canvas-image').getContext('2d')

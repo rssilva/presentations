@@ -8,6 +8,7 @@ const save = () => {
 
   const content = `
     const SAMPLE = ${JSON.stringify(data)}
+    module.exports = SAMPLE
   `
 
   fs.writeFile('sample.js', content, (err) => {

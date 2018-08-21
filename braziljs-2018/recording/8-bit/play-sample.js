@@ -30,13 +30,13 @@ const init = () => {
   filter.type = 'lowpass'
   // console.log(filter)
   // filter.frequency.value = 100
-  filter.frequency.setValueAtTime(10000, audioContext.currentTime)
+  filter.frequency.setValueAtTime(5000, audioContext.currentTime)
 
   // source.connect(analyser.node)
-  source.connect(filter)
+  // source.connect(filter)
   // filter.connect(analyser.node)
-  // source.connect(recorder1.node)
-  filter.connect(recorder1.node)
+  source.connect(recorder1.node)
+  // filter.connect(recorder1.node)
   recorder1.node.connect(analyser.node)
   analyser.node.connect(audioContext.destination)
 
@@ -56,14 +56,17 @@ const onEnded = () => {
   analyser.node.disconnect()
   // delay.disconnect()
   // console.log(RECORDED1.slice(RECORDED1.length - 2000))
+  // window.localStorage.setItem('recorded', RECORDED1)
   plotGraph({
     signals: [
-      RECORDED1.slice(RECORDED1.length - 5500, RECORDED1.length - 5000)
+      window.localStorage.getItem('recorded').split(',').slice(RECORDED1.length - 10200, RECORDED1.length - 10000),
+      RECORDED1.slice(RECORDED1.length - 10200, RECORDED1.length - 10000),
+      // RECORDED1.slice(RECORDED1.length - 15500, RECORDED1.length - 10000)
     ],
     context: document.getElementById('comparison').getContext('2d'),
     suggestedMin: -1,
     suggestedMax: 1,
-    colors: ['red', 'orange']
+    colors: ['orange', 'white']
   })
 }
 

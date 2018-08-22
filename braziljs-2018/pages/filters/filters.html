@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../slides.css">
+  </head>
+  <body>
+    <div class="slide current">
+      <canvas id="analyser" width="1000" height="600"></canvas>
+      <div class="">
+        <label>Filter</label>
+        <select id="filter-selector" class="" name="">
+          <option value="lowpass">lowpass</option>
+          <option value="highpass">highpass</option>
+          <!-- <option value="bandpass">bandpass</option>
+          <option value="notch">notch</option> -->
+        </select>
+        <label>Frequency</label>
+        <input id="frequency-range" type="range" value="400" min="20" max="20000" />
+        <input type="text" value="400" id="current-frequency" />
+      </div>
+    </div>
+    <div class="slide">
+      <img src="../../assets/output-graphs/lowpass-output-1000.png" alt="">
+    </div>
+    <div class="slide">
+      <video id="video1" autoplay loop>
+        <source src="../../assets/images-affected-video/lowpass-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide">
+      <img src="../../assets/images-affected/lowpass-affecting-earthling-result.png" alt="">
+    </div>
+    <div class="slide">
+      <img src="../../assets/output-graphs/highpass-output-4000.png" alt="">
+    </div>
+    <div class="slide">
+      <video id="video2" autoplay loop>
+        <source src="../../assets/images-affected-video/highpass-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide">
+      <img src="../../assets/images-affected/highpass-affecting-earthling-result.png" alt="">
+    </div>
+    <script>
+      const SLIDES_ORDER = [0, 1, 2, 3, 4, 5, 6]
+      document.querySelector('#video1').playbackRate = 10.0
+      document.querySelector('#video2').playbackRate = 10.0
+    </script>
+    <script src="../../vendor/jquery.js" charset="utf-8"></script>
+    <script src="../slides-handler.js" charset="utf-8"></script>
+    <script src="../../vendor/chart.js" charset="utf-8"></script>
+    <script src="../../utils/config.js" charset="utf-8"></script>
+    <script src="../../utils/audio-utils.js"></script>
+    <script src="../../utils/analyser.js"></script>
+    <script src="../../utils/plot-utils.js" charset="utf-8"></script>
+    <script src="../../utils/canvas-utils.js" charset="utf-8"></script>
+    <script src="simple-filter.js" charset="utf-8"></script>
+  </body>
+</html>

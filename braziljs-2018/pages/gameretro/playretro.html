@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../slides.css">
+  </head>
+  <body>
+    <div class="slide current">
+      <canvas id="analyser" width="1000" height="500"></canvas>
+    </div>
+    <div class="slide">
+      <img src="../../assets/output-graphs/8bit-output-mario-theme.png" alt="">
+    </div>
+    <div class="slide">
+      <video autoplay loop>
+        <source src="../../assets/images-affected-video/gameretro-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide">
+      <img src="../../assets/images-affected/gameretro-affecting-earthling-result.png" alt="">
+    </div>
+    <div class="links-list">
+      <a class="link-back" href="delay-without-direct.html">no direct</a>
+      <a class="link-next" href="delay-retro.html">retro</a>
+    </div>
+    <script>
+      const SLIDES_ORDER = [0, 1, 2, 3]
+      document.querySelector('video').playbackRate = 10.0
+    </script>
+    <script src="../../vendor/jquery.js" charset="utf-8"></script>
+    <script src="../../vendor/chart.js" charset="utf-8"></script>
+    <script src="../../utils/config.js" charset="utf-8"></script>
+    <script src="../../utils/recorder.js" charset="utf-8"></script>
+    <script src="../../utils/pedals-utils.js" charset="utf-8"></script>
+    <script src="../../utils/analyser.js" charset="utf-8"></script>
+    <script src="../../effects/delay.js" charset="utf-8"></script>
+    <script src="../slides-handler.js"></script>
+    <script src="parsed-mario.js" charset="utf-8"></script>
+    <script src="sample-guitar-mario.js" charset="utf-8"></script>
+    <script src="playretro.js" charset="utf-8"></script>
+  </body>
+</html>

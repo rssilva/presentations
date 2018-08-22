@@ -5,9 +5,9 @@ class ImageBars { // eslint-disable-line
     this.imageCanvas = imageCanvas
   }
 
-  loadImage () {
+  loadImage (path) {
     const baseImage = new Image()
-    baseImage.src = '../../assets/images/david-bowie-low-small.jpg'
+    baseImage.src = path || '../../assets/images/david-bowie-low-small.jpg'
 
     baseImage.onload = () => {
       const { width, height } = this.imageCanvas.canvas
@@ -41,26 +41,26 @@ class ImageBars { // eslint-disable-line
     this.canvasCtx.fillStyle = 'rgb(255, 255, 255)'
     this.canvasCtx.fillRect(0, 0, this.width, this.height)
 
-    this.canvasCtx.beginPath()
+    // this.canvasCtx.beginPath()
 
-    var sliceWidth = this.width * 1.0 / this.tBufferLength
-    var x = 0
+    // var sliceWidth = this.width * 1.0 / this.tBufferLength
+    // var x = 0
 
-    for (let i = 0; i < this.tBufferLength; i++) {
-      var v = dataArray[i] / 128
-      var y = v * this.height / 2
+    // for (let i = 0; i < this.tBufferLength; i++) {
+    //   var v = dataArray[i] / 128
+    //   var y = v * this.height / 2
 
-      if (i === 0) {
-        this.canvasCtx.moveTo(x, y)
-      } else {
-        this.canvasCtx.lineTo(x, y)
-      }
+    //   if (i === 0) {
+    //     this.canvasCtx.moveTo(x, y)
+    //   } else {
+    //     this.canvasCtx.lineTo(x, y)
+    //   }
 
-      x += sliceWidth
-    }
+    //   x += sliceWidth
+    // }
 
-    this.canvasCtx.lineTo(this.canvasCtx.width, this.canvasCtx.height / 2)
-    this.canvasCtx.stroke()
+    // this.canvasCtx.lineTo(this.canvasCtx.width, this.canvasCtx.height / 2)
+    // this.canvasCtx.stroke()
   }
 
   drawFrequency (bars) {

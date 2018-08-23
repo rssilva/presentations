@@ -3,6 +3,9 @@ const audioUtils = new modules.AudioUtils(audioContext)
 const select = document.querySelector('#filter-selector')
 const frequencyRange = document.querySelector('#frequency-range')
 const currentFrequency = document.querySelector('#current-frequency')
+const canvasCtx = document.getElementById('analyser').getContext('2d')
+
+canvasCtx.canvas.width = window.innerWidth
 
 let sourceNode = null
 let filter = null
@@ -50,7 +53,7 @@ const getFilter = (audioContext, type, frequency) => {
 }
 
 const getAnalyser = () => {
-  return new modules.Analyser(audioContext, document.getElementById('analyser').getContext('2d'))
+  return new modules.Analyser(audioContext, canvasCtx)
 }
 
 const play = (audioContext, sourceNode) => {

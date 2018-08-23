@@ -87,17 +87,21 @@ const onFrequency = (dataArray) => {
 }
 
 const setLight = (average) => {
-  // proportion = Math.round(AVG / MAX * 255)
-
-  // if (c % 100 == 0) {
-  //   console.log(rocketData)
-  // }
-
-  // c++
-
-  // light.attributes.color.value = `rgb(${proportion}, ${proportion}, ${proportion})`
-  light.attributes.intensity.value = Math.pow(0.5 + average / MAX, 2)
+  light.attributes.intensity.value = Math.pow(0.5 + average / MAX, 2) * (ADDITION + 1)
   // light.attributes.intensity.value = 2 * average / MAX + 2
+}
+
+let hasMusicChanged = false
+let ADDITION = 0
+
+const change = () => {
+  if (!hasMusicChanged) {
+    // light.attributes.intensity.value = 5
+    ADDITION = 5
+    light.attributes.color.value = '#FDB813'
+  }
+
+  hasMusicChanged = true
 }
 
 setInterval(() => {
@@ -105,29 +109,12 @@ setInterval(() => {
   deltaTime = currentTime - previousTime
   // previousTime = currentTime
 
-  setRocketPosition()
-  // setCameraPosition()
-}, 100)
-
-const setCameraPosition = () => {
-  const { previous, speed } = cameraData
-
-  const currentZ = cameraData.z
-
-  cameraData.z = previous.z + speed.z * deltaTime / 1000
-  // cameraData.y += previous.y + speed.y * deltaTime
-  // cameraData.z += previous.z + speed.z * deltaTime
-
-  previous.z = currentZ
-
-  if (c % 100 == 0) {
-    // console.log(cameraData)
+  if (deltaTime > 69400) {
+    change()
   }
 
-  c++
-
-  cameraWrapper.object3D.position.set(cameraData.x, cameraData.y, cameraData.z)
-}
+  setRocketPosition()
+}, 100)
 
 const setRocketPosition = () => {
   const { previous, speed } = rocketData

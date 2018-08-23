@@ -55,7 +55,7 @@ class AnalyserDefaultSkin {
 const defaultSkin = new AnalyserDefaultSkin()
 
 class Analyser {
-  constructor (audioContext, canvasCtx, { skin = defaultSkin } = {}) {
+  constructor (audioContext, canvasCtx, { skin = defaultSkin, fftSize = 2048 } = {}) {
     this.audioContext = audioContext
     this.canvasCtx = canvasCtx
 
@@ -63,8 +63,9 @@ class Analyser {
     this.height = canvasCtx.canvas.height
 
     this.node = audioContext.createAnalyser()
+    console.log(this.node.fftSize)
     // this.node.smoothingTimeConstant = 0.9
-    // this.node.fftSize = 128
+    this.node.fftSize = fftSize
 
     this.setTimeConfig()
     this.setFrequencyConfig()

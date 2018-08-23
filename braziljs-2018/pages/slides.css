@@ -33,6 +33,8 @@ body {
 .mr10 { margin-right: 10px; }
 .mr30 { margin-right: 30px; }
 
+.bottom20p { bottom: 20%; }
+
 input[type="range"] {
   width: 400px
 }

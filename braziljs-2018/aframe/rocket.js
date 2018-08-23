@@ -128,7 +128,7 @@ const setRocketPosition = () => {
   previous.z = currentZ
 
   if (c % 100 == 0) {
-    // console.log(rocketData)
+    // git.log(rocketData)
   }
 
   c++

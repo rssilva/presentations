@@ -6,10 +6,11 @@
     <link rel="stylesheet" href="../slides.css">
   </head>
   <body>
-    <div class="slide current">
-      <canvas id="analyser" width="1000" height="600"></canvas>
+    <div class="slide current direction-column">
+      <div>
+        <canvas id="analyser" width="1000" height="600"></canvas>
+      </div>
       <div class="">
-        <label>Filter</label>
         <select id="filter-selector" class="" name="">
           <option value="lowpass">lowpass</option>
           <option value="highpass">highpass</option>
@@ -21,27 +22,35 @@
         <input type="text" value="400" id="current-frequency" />
       </div>
     </div>
-    <div class="slide">
-      <img src="../../assets/output-graphs/lowpass-output-1000.png" alt="">
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/output-graphs/lowpass-output-1000.png" alt="">
+      </div>
     </div>
-    <div class="slide">
+    <div class="slide justify-center">
       <video id="video1" autoplay loop>
         <source src="../../assets/images-affected-video/lowpass-affecting-earthling.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="slide">
-      <img src="../../assets/images-affected/lowpass-affecting-earthling-result.png" alt="">
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images-affected/lowpass-affecting-earthling-result.png" alt="">
+      </div>
     </div>
-    <div class="slide">
-      <img src="../../assets/output-graphs/highpass-output-4000.png" alt="">
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/output-graphs/highpass-output-4000.png" alt="">
+      </div>
     </div>
-    <div class="slide">
+    <div class="slide justify-center">
       <video id="video2" autoplay loop>
         <source src="../../assets/images-affected-video/highpass-affecting-earthling.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="slide">
-      <img src="../../assets/images-affected/highpass-affecting-earthling-result.png" alt="">
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images-affected/highpass-affecting-earthling-result.png" alt="">
+      </div>
     </div>
     <script>
       const SLIDES_ORDER = [0, 1, 2, 3, 4, 5, 6]

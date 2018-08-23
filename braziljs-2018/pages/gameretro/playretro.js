@@ -1,6 +1,10 @@
 const audioContext = new AudioContext()
-const analyser = new modules.Analyser(audioContext, document.getElementById('analyser').getContext('2d'))
+const canvasCtx = document.getElementById('analyser').getContext('2d')
 
+canvasCtx.canvas.width = window.innerWidth
+canvasCtx.canvas.height = window.innerHeight * 0.8
+
+const analyser = new modules.Analyser(audioContext, canvasCtx)
 const RECORDED1 = []
 
 let recorder1 = new Recorder(audioContext, { channels: 1, makeSound: true }) // eslint-disable-line

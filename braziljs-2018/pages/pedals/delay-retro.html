@@ -6,33 +6,33 @@
     <link rel="stylesheet" href="../slides.css">
   </head>
   <body>
-    <div class="slide current">
-      <img src="../../assets/node-images/flanger.svg" alt="">
+    <div class="slide current justify-center">
+      <img src="../../assets/node-images/delay-retro.svg" alt="">
     </div>
-    <div class="slide">
+    <div class="slide justify-center">
       <canvas id="analyser" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div class="">
+          <input class="delay-range" type="range" min="0" max="3" step="0.01">
+          <input class="delay-range-value" type="text" >
+        </div>
+        <div class="">
+          <input class="gain-range" type="range" min="0" max="1" step="0.1">
+          <input class="gain-range-value" type="text" >
+        </div>
+      </div>
     </div>
-    <div class="slide">
+    <div class="slide justify-center">
       <img src="../../assets/output-graphs/delay-retro-output.png" alt="">
     </div>
-    <div class="slide">
+    <div class="slide justify-center">
       <video autoplay loop>
         <source src="../../assets/images-affected-video/delay-retro-affecting-earthling.mp4" type="video/mp4">
       </video>
     </div>
-    <div class="slide">
-      <img src="../../assets/images-affected/delay-retro-affecting-earthling-result.png" alt="">
+    <div class="slide justify-center">
+      <img class="mr10" src="../../assets/images-affected/delay-retro-affecting-earthling-result.png" alt="">
       <img src="../../assets/images-affected/delay-retro-affecting-earthling2.png" alt="">
-    </div>
-    <div class="pedal-controls">
-      <div class="">
-        <input class="delay-range" type="range" min="0" max="3" step="0.01">
-        <input class="delay-range-value" type="text" >
-      </div>
-      <div class="">
-        <input class="gain-range" type="range" min="0" max="1" step="0.1">
-        <input class="gain-range-value" type="text" >
-      </div>
     </div>
     <div class="links-list">
       <a class="link-back" href="delay-direct.html">direct</a>

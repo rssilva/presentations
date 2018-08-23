@@ -3,7 +3,7 @@ const canvasCtx = document.getElementById('analyser').getContext('2d')
 const pedalsUtils = new PedalsUtils()
 
 canvasCtx.canvas.width = window.innerWidth
-canvasCtx.canvas.height = window.innerHeight
+canvasCtx.canvas.height = window.innerHeight * 0.9
 
 const analyser = new modules.Analyser(audioContext, canvasCtx)
 

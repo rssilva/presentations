@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "Blippo Black D";
+  src: url("../assets/fonts/Blippo\ Black\ D.ttf");
+}
+
+h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background: #000;
   margin: 0;
@@ -6,21 +16,22 @@ body {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-.display-none {
-  display: none;
-}
-
-.direction-column {
-  flex-direction: column;
-}
-
-.align-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
+.blippo { font-family: "Blippo Black D"; }
+.display-none { display: none; }
+.direction-column { flex-direction: column; }
+.align-center { align-items: center; }
+.justify-center { justify-content: center; }
+.max-100p { max-width: 100%; }
+.orange { color: rgb(240,109,53); }
+.orange-light { color: rgb(240,176,79) }
+.yellow { color: rgb(245,238,97) }
+.fs80 { font-size: 80px }
+.fs90 { font-size: 90px }
+.fs100 { font-size: 100px }
+.line-through { text-decoration: line-through; }
+.text-center { text-align: center; }
+.mr10 { margin-right: 10px; }
+.mr30 { margin-right: 30px; }
 
 input[type="range"] {
   width: 400px
@@ -28,11 +39,13 @@ input[type="range"] {
 
 h1 {
   font-size: 60px;
+  text-align: center;
 }
 
 h2 {
   color: rgb(240,109,53);
   font-size: 40px;
+  text-align: center;
 }
 
 a {

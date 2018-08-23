@@ -137,10 +137,11 @@ class FadeImageSkin { // eslint-disable-line
   }
 
   drawPixels () {
+    const size = this.isDestructured ? 3 : 1
     this.matrix.forEach((row) => {
       row.forEach((pixel) => {
         this.canvasCtx.fillStyle = `rgba(${pixel.r}, ${pixel.g}, ${pixel.b}, 1)`
-        this.canvasCtx.fillRect(pixel.x, pixel.y, 1, 1)
+        this.canvasCtx.fillRect(pixel.x, pixel.y, size, size)
       })
     })
   }

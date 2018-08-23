@@ -4,13 +4,16 @@ const audioUtils = new modules.AudioUtils(audioContext)
 const canvasCtx = document.getElementById('analyser').getContext('2d')
 const canvasUtils = new modules.CanvasUtils()
 
+canvasCtx.canvas.width = window.innerWidth
+canvasCtx.canvas.height = window.innerHeight * 0.7
+
 const skin = new FadeImageSkin({
   imageCanvasCtx: document.getElementById('image-canvas-ctx').getContext('2d'),
   canvasUtils,
   image: '../../assets/images/david-bowie-low-small100x100.jpg'
 })
 
-const analyser = new modules.Analyser(audioContext, canvasCtx, { skin })
+const analyser = new modules.Analyser(audioContext, canvasCtx, { skin, fftSize: 4096 })
 
 const soundToImage = document.getElementById('sound-to-image')
 const soundToImageContext = soundToImage.getContext('2d')
@@ -18,46 +21,51 @@ const soundToImageContext = soundToImage.getContext('2d')
 const filteredImage = document.getElementById('filtered-image')
 const filteredImageContext = filteredImage.getContext('2d')
 
-analyser.start()
-
 const RECORDED = []
 let processorNode
 
-audioUtils
-  .loadSound('../../assets/musics/rebel-rebel.mp3', audioContext)
-  .then((buffer) => {
-    processorNode = audioContext.createScriptProcessor(4096, 2, 2)
-    const source = audioContext.createBufferSource()
+const start = () => {
+  audioUtils
+    .loadSound('../../assets/musics/rebel-rebel.mp3', audioContext)
+    .then((buffer) => {
+      processorNode = audioContext.createScriptProcessor(4096, 2, 2)
+      const source = audioContext.createBufferSource()
 
-    source.buffer = buffer
-    source.looping = false
+      source.buffer = buffer
+      source.looping = false
 
-    processorNode.onaudioprocess = (ev) => {
-      const inputData = ev.inputBuffer.getChannelData(0)
-      const outputData = ev.outputBuffer.getChannelData(0)
+      processorNode.onaudioprocess = (ev) => {
+        const inputData1 = ev.inputBuffer.getChannelData(0)
+        // const inputData2 = ev.inputBuffer.getChannelData(1)
+        const outputData1 = ev.outputBuffer.getChannelData(0)
+        const outputData2 = ev.outputBuffer.getChannelData(1)
 
-      const length = inputData.length
+        const length = inputData1.length
 
-      for (let sample = 0; sample < length; sample++) {
-        outputData[sample] = inputData[sample]
-        RECORDED.push(inputData[sample])
+        for (let sample = 0; sample < length; sample++) {
+          outputData1[sample] = inputData1[sample]
+          outputData2[sample] = inputData1[sample]
+          RECORDED.push(inputData1[sample])
+        }
       }
-    }
 
-    source.connect(processorNode)
-    source.connect(analyser.node)
-    processorNode.connect(audioContext.destination)
+      source.connect(processorNode)
+      source.connect(analyser.node)
+      processorNode.connect(audioContext.destination)
 
-    const OFFSET = 60
+      const OFFSET = 60
 
-    source.start(audioContext.currentTime)
+      analyser.start()
 
-    const duration = (soundToImageContext.canvas.width * soundToImageContext.canvas.height * 4) / SAMPLE_RATE
-    console.log(duration)
-    source.onended = onEnded
+      source.start(audioContext.currentTime)
 
-    source.stop(audioContext.currentTime + Math.round(duration))
-  })
+      const duration = (soundToImageContext.canvas.width * soundToImageContext.canvas.height * 4) / SAMPLE_RATE
+      console.log(duration)
+      source.onended = onEnded
+
+      source.stop(audioContext.currentTime + Math.round(duration))
+    })
+}
 
 const onEnded = () => {
   processorNode.disconnect()
@@ -111,3 +119,5 @@ const onEnded = () => {
     // node.connect(audioContext.destination)
   }, 1000)
 }
+
+document.getElementById('play-button').addEventListener('click', start)

@@ -1,9 +1,11 @@
 const audioContext = new AudioContext()
 const SAMPLE_RATE = audioContext.sampleRate
+const canvasCtx = document.getElementById('canvas1').getContext('2d')
+canvasCtx.canvas.width = window.innerWidth
 
 const aladdinSkin = new Aladdin(true) // eslint-disable-line
 
-const analyser = new modules.Analyser(audioContext, document.getElementById('canvas1').getContext('2d'), {
+const analyser = new modules.Analyser(audioContext, canvasCtx, {
   skin: aladdinSkin
 })
 

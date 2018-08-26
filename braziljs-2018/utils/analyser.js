@@ -10,11 +10,11 @@ class AnalyserDefaultSkin {
   }
 
   drawTime (dataArray) {
-    this.canvasCtx.fillStyle = 'rgb(255, 255, 255)'
+    this.canvasCtx.fillStyle = 'rgb(0, 0, 0)'
     this.canvasCtx.fillRect(0, 0, this.width, this.height)
 
     this.canvasCtx.lineWidth = 2
-    this.canvasCtx.strokeStyle = 'rgb(0, 100, 0)'
+    this.canvasCtx.strokeStyle = 'rgb(255, 255, 255)'
 
     this.canvasCtx.beginPath()
 
@@ -44,7 +44,7 @@ class AnalyserDefaultSkin {
     for (let i = 0; i < this.fBufferLength; i++) {
       let barHeight = bars[i]
 
-      this.canvasCtx.fillStyle = 'rgb(' + (barHeight + 10) + ', 50, 50)'
+      this.canvasCtx.fillStyle = 'hsla(7, 80%, 50%, 1)'
       this.canvasCtx.fillRect(x, this.height - 1.4 * barHeight, this.barWidth, barHeight * 1.4)
 
       x += this.barWidth + 2
@@ -55,7 +55,7 @@ class AnalyserDefaultSkin {
 const defaultSkin = new AnalyserDefaultSkin()
 
 class Analyser {
-  constructor (audioContext, canvasCtx, { skin = defaultSkin } = {}) {
+  constructor (audioContext, canvasCtx, { skin = defaultSkin, fftSize = 2048 } = {}) {
     this.audioContext = audioContext
     this.canvasCtx = canvasCtx
 
@@ -63,8 +63,9 @@ class Analyser {
     this.height = canvasCtx.canvas.height
 
     this.node = audioContext.createAnalyser()
+    console.log(this.node.fftSize)
     // this.node.smoothingTimeConstant = 0.9
-    // this.node.fftSize = 128
+    this.node.fftSize = fftSize
 
     this.setTimeConfig()
     this.setFrequencyConfig()

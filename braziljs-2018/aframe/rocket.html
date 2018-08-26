@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <style>
+    </style>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <a-asset-item id="rocket-obj" src="./assets/rocket-ship/rocket-ship.obj"></a-asset-item>
+        <a-asset-item id="rocket-mtl" src="./assets/rocket-ship/rocket-ship.mtl"></a-asset-item>
+        <a-asset-item id="terrain-obj" src="./assets/terrain/valley.obj"></a-asset-item>
+        <a-asset-item id="terrain-mtl" src="./assets/terrain/valley.mtl"></a-asset-item>
+      </a-assets>
+
+      <a-light id="light" type="spot" color="#FFF" position="-12 22 1550" intensity="1"></a-light>
+      <!-- <a-plane position="0 0 0" rotation="-90 0 0" width="150" height="150" color="#80b412"></a-plane> -->
+      <a-sky color="#000"></a-sky>
+      <!-- <a-sphere position="0 0 -1" radius="1" color="#FFF"></a-sphere> -->
+      <a-camera look-controls-enabled far position="20 15 25" ></a-camera>
+      <a-entity look-controls-enabled id='camera-wrapper' position="20 4 40">
+      </a-entity>
+      <a-obj-model id="rocket" position="0 2 0" src="#rocket-obj" mtl="#rocket-mtl" scale="0.01 0.01 0.01" ></a-obj-model>
+      <a-obj-model id="terrain" position="-200 -240 800" src="#terrain-obj" mtl="#terrain-mtl" color="#DDDDDD" scale="1 1 1" ></a-obj-model>
+    </a-scene>
+    <script src="../vendor/aframe.js"></script>
+    <script src="../vendor/aframe-inspector.js"></script>
+    <script type="text/javascript" src="../utils/config.js"></script>
+    <script type="text/javascript" src="../utils/audio-utils.js"></script>
+    <script type="text/javascript" src="../utils/analyser-real-time.js"></script>
+    <script src="rocket.js"></script>
+  </body>
+</html>

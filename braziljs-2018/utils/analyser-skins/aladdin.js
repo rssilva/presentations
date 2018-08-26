@@ -1,4 +1,8 @@
 class Aladdin { // eslint-disable-line
+  constructor (drawLightning = false) {
+    this.drawLightning = drawLightning
+  }
+
   set ({ fBufferLength, tBufferLength, canvasCtx, barWidth = 3 }) {
     this.fBufferLength = fBufferLength
     this.tBufferLength = tBufferLength
@@ -10,8 +14,11 @@ class Aladdin { // eslint-disable-line
   }
 
   drawTime (dataArray) {
-    this.canvasCtx.fillStyle = 'rgb(255, 255, 255)'
+    this.canvasCtx.fillStyle = 'rgb(0, 0, 0)'
     this.canvasCtx.fillRect(0, 0, this.width, this.height)
+
+    this.canvasCtx.strokeStyle = 'rgb(255, 255, 255)'
+    this.canvasCtx.lineWidth = 3
 
     this.canvasCtx.beginPath()
 
@@ -53,10 +60,26 @@ class Aladdin { // eslint-disable-line
       gradient.addColorStop(0.7, blue)
 
       this.canvasCtx.fillStyle = gradient
-      // this.canvasCtx.shadowBlur = 100
-      // this.canvasCtx.shadowColor = blue
 
-      this.canvasCtx.fillRect(x, y, this.barWidth, colHeight)
+      if (i < this.width) {
+        this.canvasCtx.fillRect(x, y, this.barWidth, colHeight)
+      }
+
+      if (this.drawLightning && i == Math.round(this.width / 2)) {
+        this.lightning.draw(colHeight / this.height)
+      }
     }
+
+    // this.canvasCtx.shadowBlur = 2
+    // this.canvasCtx.shadowColor = '#FFF'
+  }
+
+  setLightning () {
+    this.lightning = new Lightning({ // eslint-disable-line
+      ctx: this.canvasCtx,
+      colors: [{r: 82, g: 115, b: 255}, {r: 44, g: 38, b: 38}, {r: 255, g: 30, b: 0}],
+      width: this.height / 1.5,
+      startY: 0
+    })
   }
 }

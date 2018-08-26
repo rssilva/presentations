@@ -17,7 +17,11 @@ const init = () => {
   const signal = []
 
   for (let t = 0; t < (duration - increment); t += increment) {
-    signal.push(Math.sin(2 * 3.14 * 200 * t))
+    if (t < 0.00665) {
+      signal.push(0.95 * Math.sin(2 * 3.14 * 300 * t))
+    } else {
+      signal.push(0)
+    }
   }
 
   const buffer = audioContext.createBuffer(1, signal.length, audioContext.sampleRate)
@@ -68,13 +72,13 @@ const onEnded = () => {
 
   plotGraph({
     signals: [
-      RECORDED1.slice(0, 1000),
-      RECORDED2.slice(0, 1000)
+      RECORDED1.slice(0, 450),
+      RECORDED2.slice(0, 450)
     ],
     context: document.getElementById('comparison').getContext('2d'),
     suggestedMin: -1,
     suggestedMax: 1,
-    colors: ['red', 'orange']
+    colors: ['orange', 'white']
   })
 }
 

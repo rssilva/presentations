@@ -9,15 +9,13 @@ const RECORDED2 = []
 
 let recorder1 = new Recorder(audioContext, { channels: 1, makeSound: false }) // eslint-disable-line
 let recorder2 = new Recorder(audioContext, { channels: 1, makeSound: true }) // eslint-disable-line
-// let concertHallBuffer
-// let soundSource
 const source = audioContext.createBufferSource()
 
 const init = () => {
   const signal = []
 
   for (let t = 0; t < (duration - increment); t += increment) {
-    signal.push(Math.sin(2 * 3.14 * 300 * t))
+    signal.push(0.95 * Math.sin(2 * 3.14 * 300 * t))
   }
 
   const buffer = audioContext.createBuffer(1, signal.length, audioContext.sampleRate)
@@ -28,7 +26,7 @@ const init = () => {
   }
 
   const waveshaper = new WaveShaper({ audioContext })
-  waveshaper.makeDistortionCurve(400)
+  waveshaper.makeDistortionCurve(2000)
 
   source.buffer = buffer
   source.looping = false
@@ -66,15 +64,18 @@ const onEnded = () => {
   analyser.node.disconnect()
   // delay.disconnect()
 
+  // window.localStorage.setItem('recorded', RECORDED2)
+
   plotGraph({
     signals: [
-      RECORDED1.slice(0, 500),
-      RECORDED2.slice(0, 500)
+      RECORDED1.slice(0, 300),
+      RECORDED2.slice(0, 300),
+      window.localStorage.getItem('recorded').split(',').slice(0, 300)
     ],
     context: document.getElementById('comparison').getContext('2d'),
     suggestedMin: -1,
     suggestedMax: 1,
-    colors: ['red', 'orange']
+    colors: ['orange', 'white', 'yellow']
   })
 }
 

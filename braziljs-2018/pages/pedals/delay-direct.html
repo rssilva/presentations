@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../slides.css">
+  </head>
+  <body>
+    <div class="slide justify-center current">
+      <img src="../../assets/node-images/delay-direct.svg" alt="">
+    </div>
+    <div class="slide justify-center">
+      <canvas id="analyser" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <input class="delay-range" type="range" min="0" max="3" step="0.01">
+        <input class="delay-range-value" type="text" >
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <video autoplay loop>
+        <source src="../../assets/images-affected-video/delay-with-direct-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <img class="mr30" src="../../assets/images-affected/delay-affecting-earthling-result2.png" alt="">
+      <img src="../../assets/images-affected/delay-affecting-earthling-result.png" alt="">
+    </div>
+    <div class="links-list">
+      <a class="link-back" href="delay-without-direct.html">no direct</a>
+      <a class="link-next" href="delay-retro.html">retro</a>
+    </div>
+    <script>
+      const SLIDES_ORDER = [0, 1, 2, 3]
+      document.querySelector('video').playbackRate = 10.0
+    </script>
+    <script src="../../vendor/jquery.js" charset="utf-8"></script>
+    <script src="../../vendor/chart.js" charset="utf-8"></script>
+    <script src="../../utils/config.js" charset="utf-8"></script>
+    <script src="../../utils/recorder.js" charset="utf-8"></script>
+    <script src="../../utils/pedals-utils.js" charset="utf-8"></script>
+    <script src="../../utils/analyser.js" charset="utf-8"></script>
+    <script src="../../effects/delay.js" charset="utf-8"></script>
+    <script src="../slides-handler.js"></script>
+    <script src="delay-direct.js" charset="utf-8"></script>
+  </body>
+</html>

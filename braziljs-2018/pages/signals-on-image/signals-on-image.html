@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../slides.css">
+  </head>
+  <script>
+    const SLIDES_ORDER = [0, 1]
+  </script>
+  <body>
+    <div class="slide current code-bg justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images/code/signals-on-image.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center direction-column">
+      <div>
+        <canvas id="canvas" width="600" height="600"></canvas>
+        <canvas id="canvas2" width="600" height="600"></canvas>
+      </div>
+      <div>
+        <input class="divisor-range" type="range" min="1" max="100000">
+        <input class="divisor-range-value" type="text">
+      </div>
+    </div>
+    <script src="../../vendor/jquery.js" charset="utf-8"></script>
+    <script src="../slides-handler.js" charset="utf-8"></script>
+    <script src="../../vendor/chart.js" charset="utf-8"></script>
+    <script src="../../utils/config.js" charset="utf-8"></script>
+    <script src="../../utils/plot-utils.js" charset="utf-8"></script>
+    <script src="../../utils/canvas-utils.js" charset="utf-8"></script>
+    <script src="signals-on-image.js" charset="utf-8"></script>
+  </body>
+</html>

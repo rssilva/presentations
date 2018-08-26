@@ -18,7 +18,7 @@ let processorNode
 
 const init = (splitted) => {
   audioUtils
-    .loadSound('../sound-and-vision.mp3', audioContext)
+    .loadSound('../assets/musics/sound-and-vision.mp3', audioContext)
     .then((buffer) => {
       processorNode = audioContext.createScriptProcessor(4096, 2, 2)
       const source = audioContext.createBufferSource()
@@ -115,7 +115,7 @@ const onEnded = (splittedImage) => {
 
 const loadImage = () => {
   const baseImage = new Image()
-  baseImage.src = '../david-bowie-low-small.jpg'
+  baseImage.src = '../assets/images/david-bowie-low-small.jpg'
   const context1 = document.getElementById('base-image').getContext('2d')
 
   baseImage.onload = () => {

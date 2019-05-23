@@ -110,8 +110,8 @@ a {
   overflow: hidden;
 }
 
-.image-wrapper img {
-  max-width: 100%;
+ img {
+  max-width: 80%;
 }
 
 .title-over {

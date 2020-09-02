@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "google-auth-library": "^0.9.8",
-    "googleapis": "^12.0.0",
+    "googleapis": "^59.0.0",
     "node-simple-router": "~0.10.0",
     "watch": "^0.19.1"
   }

@@ -1,0 +1,148 @@
+<html>
+  <head></head>
+  <link rel="stylesheet" href="pages/slides.css">
+  <body>
+    <div class="slide direction-row justify-center">
+      <h1 class="orange blippo fs120">1977</h1>
+      <div class="image-wrapper">
+        <img src="assets/images/david-bowie-low.jpg" alt="">
+      </div>
+    </div>
+    <div class="slide direction-row justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/sound-and-vision-cover.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-row justify-center">
+      <h1 class="orange blippo fs120">Company Logo</h1>
+    </div>
+    <div class="slide direction-column justify-center">
+      <h1 class="yellow blippo fs80 title-over">Canvas</h1>
+      <div class="image-wrapper">
+        <img src="assets/images/david-bowie-canvas.jpg" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/code/code-canvas.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/rgb/rgba.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/rgb/rgb.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/rgb/rgb-splitted-line0.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/rgb/rgb-splitted-line200.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <h1 class="yellow blippo fs80 title-over">Web Audio API</h1>
+      <div class="image-wrapper">
+        <img src="assets/images/david-bowie-at-isle-of-wight.jpg" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/nodes.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/buffer.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/buffer-code.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="assets/images/buffer-code2.png" alt="">
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <h1 class="orange blippo fs80">Can arrays sing?</h1>
+      <a href="pages/playing-array/playing-array.html" target="_blank">
+        <div class="image-wrapper">
+          <!-- <img src="assets/images/ziggy-singing-floor.jpg" alt=""> -->
+          <img src="assets/images/ziggy-singing-mic-guitar.jpg" alt="">
+        </div>
+      </a>
+    </div>
+    <div class="slide current direction-column justify-center">
+      <iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" id="playing-array" src="pages/playing-array/playing-array.html" />
+    </div>
+
+
+
+    <div class="slide direction-column justify-center">
+      <h1 class="blippo fs100 bottom20p">Can we hear an image array?</h1>
+      <a href="pages/playing-image-color/playing-image-color.html" target="_blank">
+        <div class="image-wrapper">
+          <img src="assets/images/bowie-singing-arms-open.jpg" alt="">
+        </div>
+      </a>
+      <!-- <a href="pages/playing-image-color/playing-image-color.html" target="_blank">Play Color</a> -->
+    </div>
+    <div class="slide justify-center yellow">
+      <h1 class="text-center">
+        <div>Image: from 0 to 255</div>
+        <div>Audio: ~ -1 to 1</div>
+      </h1>
+    </div>
+    <div class="slide direction-column justify-center">
+      <h1 class="blippo yellow fs100">Filters</h1>
+      <a href="pages/filters/filters.html" target="_blank">
+        <div class="image-wrapper">
+          <img src="assets/images/ziggy-ink.jpg" alt="">
+        </div>
+      </a>
+      <!-- <a href="pages/filters/filters.html" target="_blank">Filters</a> -->
+    </div>
+    <div class="slide direction-column justify-center">
+      <h1 class="blippo orange fs100">Effects</h1>
+      <a href="pages/pedals/delay-without-direct.html" target="_blank">
+        <div class="image-wrapper">
+          <img src="assets/images/ziggy-guitar-black.jpg" alt="">
+        </div>
+      </a>
+    </div>
+    <div class="slide direction-column justify-center">
+      <h1 class="blippo orange fs100">Retro Sound</h1>
+      <a href="pages/gameretro/playretro.html" target="_blank">
+        <div class="image-wrapper">
+          <img src="assets/images/8-bit-bowie-rebel-rebel.jpg" alt="">
+        </div>
+      </a>
+    </div>  
+    <div class="slide direction-column justify-center fs80">
+      <h1 class="title-over fs80">Turn and face the <span class="line-through">strange</span> DIFFERENT!</h1>
+      <a href="pages/thank-you/thank-you.html" target="_blank">
+        <div class="image-wrapper">
+          <img src="/assets/images/ziggy-red-background.jpg" alt="">
+        </div>
+      </a>
+    </div>
+    <script src="vendor/jquery.js"></script>
+    <script src="pages/slides-handler.js"></script>
+    <script>
+      const SLIDES_ORDER = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+      const slidesHandler = new SlidesHandler()
+      slidesHandler.init('body', 0, SLIDES_ORDER)
+      console.log('oieeeeeeeeee')
+    </script>
+  </body>
+</html>

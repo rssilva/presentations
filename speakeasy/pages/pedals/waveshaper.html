@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../slides.css">
+  </head>
+  <body>
+    <div class="slide justify-center current">
+      <img src="../../assets/node-images/waveshaper.svg" alt="">
+    </div>
+    <div class="slide justify-center">
+      <img src="../../assets/output-graphs/sigmoid-function-graphs.png" alt="">
+    </div>
+    <div class="slide justify-center">
+      <img src="../../assets/images/metal.jpg" alt="">
+    </div>
+    <div class="slide justify-center">
+      <canvas id="analyser" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div><button class="start">Start</button></div>
+        <div class="">
+          <input class="distortion-range" type="range" min="100" max="1500" step="100">
+          <input class="distortion-range-value" type="text" >
+        </div>
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/output-graphs/waveshaper-output.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <video autoplay loop>
+        <source src="../../assets/images-affected-video/waveshaper-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <img class="mr30" src="../../assets/images-affected/waveshaper-affecting-earthling-result.png" alt="">
+      <img src="../../assets/images-affected/waveshaper-affecting-earthling-result2.png" alt="">
+    </div>
+    <div class="links-list">
+      <a class="link-back" href="flanger.html">flanger</a>
+      <a class="link-next" href=""></a>
+    </div>
+    <script>
+      const SLIDES_ORDER = [0, 1, 2, 3, 4, 5, 6]
+      document.querySelector('video').playbackRate = 10.0
+    </script>
+    <script src="../../vendor/jquery.js" charset="utf-8"></script>
+    <script src="../../vendor/chart.js" charset="utf-8"></script>
+    <script src="../../utils/config.js" charset="utf-8"></script>
+    <script src="../../utils/recorder.js" charset="utf-8"></script>
+    <script src="../../utils/pedals-utils.js" charset="utf-8"></script>
+    <script src="../../utils/analyser.js" charset="utf-8"></script>
+    <script src="../../effects/waveshaper.js" charset="utf-8"></script>
+    <script src="../slides-handler.js"></script>
+    <script src="waveshaper.js" charset="utf-8"></script>
+  </body>
+</html>

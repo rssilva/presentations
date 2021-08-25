@@ -2,6 +2,9 @@
   <head></head>
   <link rel="stylesheet" href="pages/slides.css">
   <body>
+    <div class="slide current justify-center">
+      <div class="splash" style="background-image: url(assets/images/cover.png);"></div>
+    </div>
     <div class="slide direction-row justify-center">
       <h1 class="orange blippo fs120">1977</h1>
       <div class="image-wrapper">
@@ -13,9 +16,9 @@
         <img src="assets/images/sound-and-vision-cover.png" alt="">
       </div>
     </div>
-    <div class="slide direction-row justify-center">
+    <!-- <div class="slide direction-row justify-center">
       <h1 class="orange blippo fs120">Company Logo</h1>
-    </div>
+    </div> -->
     <div class="slide direction-column justify-center">
       <h1 class="yellow blippo fs80 title-over">Canvas</h1>
       <div class="image-wrapper">
@@ -75,19 +78,41 @@
     </div>
     <div class="slide direction-column justify-center">
       <h1 class="orange blippo fs80">Can arrays sing?</h1>
-      <a href="pages/playing-array/playing-array.html" target="_blank">
-        <div class="image-wrapper">
-          <!-- <img src="assets/images/ziggy-singing-floor.jpg" alt=""> -->
-          <img src="assets/images/ziggy-singing-mic-guitar.jpg" alt="">
+      <div class="image-wrapper">
+        <img src="assets/images/ziggy-singing-mic-guitar.jpg" alt="">
+      </div>
+    </div>
+    
+    <!-- PLAYING EQUATIONS -->
+    <div class="slide code code-bg justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images/equations/sin300.png" alt="">
+      </div>
+    </div>
+    <!-- slide-index: 16 -->
+    <div class="slide justify-center">
+      <canvas id="analyser-math" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div>
+          <button class="start-math">Start</button>
+          <button class="stop-math">Stop</button>
         </div>
-      </a>
+      </div>
     </div>
-    <div class="slide current direction-column justify-center">
-      <iframe sandbox="allow-same-origin allow-scripts allow-popups allow-forms" id="playing-array" src="pages/playing-array/playing-array.html" />
+    <div class="slide code-bg justify-center">
+      <img src="../../assets/images/equations/sin600.png" alt="">
+    </div>
+    <div class="slide code-bg justify-center">
+      <img src="../../assets/images/equations/exp-sin.png" alt="">
+    </div>
+    <div class="slide code-bg justify-center">
+      <img src="../../assets/images/equations/random.png" alt="">
+    </div>
+    <div class="slide code-bg justify-center">
+      <img src="../../assets/images/equations/exp-dopler.png" alt="">
     </div>
 
-
-
+    <!-- PLAYING COLOR -->
     <div class="slide direction-column justify-center">
       <h1 class="blippo fs100 bottom20p">Can we hear an image array?</h1>
       <a href="pages/playing-image-color/playing-image-color.html" target="_blank">
@@ -95,54 +120,404 @@
           <img src="assets/images/bowie-singing-arms-open.jpg" alt="">
         </div>
       </a>
-      <!-- <a href="pages/playing-image-color/playing-image-color.html" target="_blank">Play Color</a> -->
     </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <canvas id="canvas-playing-color-original" width="600" height="600"></canvas>
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <canvas id="canvas-playing-color" width="1000" height="600"></canvas>
+      <div class="pedal-controls">
+        <div>
+          <button id="start-color-button">Start</button>
+          <button id="play-color-button">Play</button>
+          <button id="stop-color-button">Stop</button>
+        </div>
+      </div>
+    </div>
+
     <div class="slide justify-center yellow">
       <h1 class="text-center">
         <div>Image: from 0 to 255</div>
         <div>Audio: ~ -1 to 1</div>
       </h1>
     </div>
+
+    <!-- FILTERS -->
     <div class="slide direction-column justify-center">
       <h1 class="blippo yellow fs100">Filters</h1>
-      <a href="pages/filters/filters.html" target="_blank">
-        <div class="image-wrapper">
-          <img src="assets/images/ziggy-ink.jpg" alt="">
-        </div>
-      </a>
-      <!-- <a href="pages/filters/filters.html" target="_blank">Filters</a> -->
+      <div class="image-wrapper">
+        <img src="assets/images/ziggy-ink.jpg" alt="">
+      </div>
     </div>
+    <div class="slide direction-column">
+      <div>
+        <canvas id="analyser-filters" width="1000" height="600"></canvas>
+      </div>
+      <div class="">
+        <select id="filter-selector" class="" name="">
+          <option value="lowpass">lowpass</option>
+          <option value="highpass">highpass</option>
+        </select>
+        <label>Frequency</label>
+        <input id="frequency-range" type="range" value="400" min="20" max="20000" />
+        <input type="text" value="400" id="current-frequency" />
+      </div>
+      <div class="pedal-controls">
+        <div>
+          <button class="start-filters">Start</button>
+          <button class="stop-filters">Stop</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide direction-column justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/output-graphs/lowpass-output-1000.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <video id="video-filter-low" autoplay loop>
+        <source src="../../assets/images-affected-video/lowpass-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images-affected/lowpass-affecting-earthling-result.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/output-graphs/highpass-output-4000.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <video id="video-filter-high" autoplay loop>
+        <source src="../../assets/images-affected-video/highpass-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images-affected/highpass-affecting-earthling-result.png" alt="">
+      </div>
+    </div>
+    
+
     <div class="slide direction-column justify-center">
       <h1 class="blippo orange fs100">Effects</h1>
-      <a href="pages/pedals/delay-without-direct.html" target="_blank">
-        <div class="image-wrapper">
-          <img src="assets/images/ziggy-guitar-black.jpg" alt="">
-        </div>
-      </a>
+      <div class="image-wrapper">
+        <img src="assets/images/ziggy-guitar-black.jpg" alt="">
+      </div>
     </div>
+
+    <!-- DELAY NO DIRECT -->
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images/sam-bellen.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/node-images/delay-without-direct.svg" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <canvas id="analyser-without-direct" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div>
+          <button class="start-without-direct">Start</button>
+          <button class="stop-without-direct">Stop</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/output-graphs/delay-output.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <video id="delay-without-direct" autoplay loop>
+        <source src="../../assets/images-affected-video/delay-no-direct-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images-affected/delay-nodirect-affecting-earthling.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images-affected/delay-nodirect-big-value-affecting-earthling.png" alt="">
+      </div>
+    </div>
+
+    <!-- DELAY DIRECT -->
+    <div class="slide justify-center ">
+      <img src="../../assets/node-images/delay-direct.svg" alt="">
+    </div>
+    <div class="slide justify-center">
+      <canvas id="analyser-delay-direct" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div>
+          <button class="start-delay-direct">Start</button>
+          <button class="stop-delay-direct">Stop</button>
+        </div>
+        <input class="delay-range" type="range" min="0" max="3" step="0.01">
+        <input class="delay-range-value" type="text" >
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <video id="delay-direct-video" autoplay loop>
+        <source src="../../assets/images-affected-video/delay-with-direct-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <img class="mr30" src="../../assets/images-affected/delay-affecting-earthling-result2.png" alt="">
+      <img src="../../assets/images-affected/delay-affecting-earthling-result.png" alt="">
+    </div>
+
+
+    <!-- DELAY RETRO -->
+    <div class="slide justify-center">
+      <img src="../../assets/node-images/delay-retro.svg" alt="">
+    </div>
+    <div class="slide justify-center">
+      <canvas id="analyser-delay-retro" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div>
+          <button class="start-delay-retro">Start</button>
+          <button class="stop-delay-retro">Stop</button>
+        </div>
+        <div class="">
+          <input class="delay-retro-range" type="range" min="0" max="3" step="0.01">
+          <input class="delay-retro-range-value" type="text" >
+        </div>
+        <div class="">
+          <input class="delay-retro-gain-range" type="range" min="0" max="1" step="0.1">
+          <input class="delay-retro-gain-range-value" type="text" >
+        </div>
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <img src="../../assets/output-graphs/delay-retro-output.png" alt="">
+    </div>
+    <div class="slide justify-center">
+      <video id="delay-retro-video" autoplay loop>
+        <source src="../../assets/images-affected-video/delay-retro-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <img class="mr10" src="../../assets/images-affected/delay-retro-affecting-earthling-result.png" alt="">
+      <img src="../../assets/images-affected/delay-retro-affecting-earthling2.png" alt="">
+    </div>
+
+
+
+    <!-- FLANGER -->
+    <div class="slide justify-center">
+      <img src="../../assets/node-images/flanger.svg" alt="">
+    </div>
+    <div class="slide justify-center">
+      <canvas id="analyser-flanger" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div>
+          <button class="flanger-start">Start</button>
+          <button class="flanger-stop">Stop</button>
+        </div>
+        <div>
+          <input class="flanger-delay-range" type="range" min="0.001" max="0.02" step="0.001">
+          <input class="flanger-delay-range-value" type="text" >
+        </div>
+        <div class="">
+          <input class="flanger-feedback-range" type="range" min="0" max="1" step="0.1">
+          <input class="flanger-feedback-range-value" type="text" >
+        </div>
+        <div class="">
+          <input class="flanger-speed-range" type="range" min="0.05" max="1" step="0.1">
+          <input class="flanger-speed-range-value" type="text" >
+        </div>
+        <div class="">
+          <input class="flanger-depth-range" type="range" min="0" max="0.02" step="0.001">
+          <input class="flanger-depth-range-value" type="text" >
+        </div>
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <img src="../../assets/output-graphs/flanger-output.png" alt="">
+    </div>
+    <div class="slide justify-center">
+      <video id="flanger-video" autoplay loop>
+        <source src="../../assets/images-affected-video/flanger-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <img class="mr30" src="../../assets/images-affected/flanger-affecting-earthling-result.png" alt="">
+      <img src="../../assets/images-affected/flanger-affecting-earthling-result2.png" alt="">
+    </div>
+
+
+    <!-- REVERB -->
+    <div class="slide justify-center">
+      <img src="../../assets/node-images/convolver.svg" alt="">
+    </div>
+    <div class="slide justify-center">
+      <canvas id="analyser-reverb" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div>
+          <button class="start-reverb">Start</button>
+          <button class="stop-reverb">Stop</button>
+        </div>
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/output-graphs/reverb-output.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <video id="reverb-video" autoplay loop>
+        <source src="../../assets/images-affected-video/reverb-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <img src="../../assets/images-affected/convolver-affecting-earthling-result.png" alt="">
+    </div>
+
+
+    <!-- WAVESHAPER -->
+    <div class="slide justify-center">
+      <img src="../../assets/node-images/waveshaper.svg" alt="">
+    </div>
+    <div class="slide justify-center">
+      <img src="../../assets/output-graphs/sigmoid-function-graphs.png" alt="">
+    </div>
+    <div class="slide justify-center">
+      <img src="../../assets/images/metal.jpg" alt="">
+    </div>
+    <div class="slide justify-center">
+      <canvas id="analyser-waveshaper" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div>
+          <button class="start-waveshaper">Start</button>
+          <button class="stop-waveshaper">Stop</button>
+        </div>
+        <div class="">
+          <input class="distortion-range" type="range" min="100" max="1500" step="100">
+          <input class="distortion-range-value" type="text" >
+        </div>
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/output-graphs/waveshaper-output.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <video id="waveshaper-video" autoplay loop>
+        <source src="../../assets/images-affected-video/waveshaper-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <img class="mr30" src="../../assets/images-affected/waveshaper-affecting-earthling-result.png" alt="">
+      <img src="../../assets/images-affected/waveshaper-affecting-earthling-result2.png" alt="">
+    </div>
+
+    <!-- RETRO -->
     <div class="slide direction-column justify-center">
       <h1 class="blippo orange fs100">Retro Sound</h1>
-      <a href="pages/gameretro/playretro.html" target="_blank">
-        <div class="image-wrapper">
-          <img src="assets/images/8-bit-bowie-rebel-rebel.jpg" alt="">
+      <div class="image-wrapper">
+        <img src="assets/images/8-bit-bowie-rebel-rebel.jpg" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <canvas id="analyser-eight-bit" width="1000" height="500"></canvas>
+      <div class="pedal-controls">
+        <div>
+          <button class="start-8-bit">Start</button>
+          <button class="stop-8-bit">Stop</button>
         </div>
-      </a>
-    </div>  
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/output-graphs/8bit-output-mario-theme.png" alt="">
+      </div>
+    </div>
+    <div class="slide justify-center">
+      <video id="eight-bit-video" autoplay loop>
+        <source src="../../assets/images-affected-video/gameretro-affecting-earthling.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="slide justify-center">
+      <img src="../../assets/images-affected/gameretro-affecting-earthling-result.png" alt="">
+    </div>
+    <div class="slide justify-center">
+      <div class="image-wrapper">
+        <img src="../../assets/images/gunstarheroes.png" alt="">
+      </div>
+    </div>
     <div class="slide direction-column justify-center fs80">
       <h1 class="title-over fs80">Turn and face the <span class="line-through">strange</span> DIFFERENT!</h1>
-      <a href="pages/thank-you/thank-you.html" target="_blank">
-        <div class="image-wrapper">
-          <img src="/assets/images/ziggy-red-background.jpg" alt="">
-        </div>
-      </a>
+      <div class="image-wrapper">
+        <img src="/assets/images/ziggy-red-background.jpg" alt="">
+      </div>
     </div>
     <script src="vendor/jquery.js"></script>
     <script src="pages/slides-handler.js"></script>
+    <script src="./utils/config.js" charset="utf-8"></script>
+    <script src="./utils/audio-utils.js" charset="utf-8"></script>
+    <script src="./utils/analyser-skins/lightning.js" charset="utf-8"></script>
+    <script src="./utils/analyser-skins/aladdin.js" charset="utf-8"></script>
+    <script src="./utils/analyser.js" charset="utf-8"></script>
+    <script src="pages/playing-array/using-keyboard.js" charset="utf-8"></script>
+
+    <script src="./utils/canvas-utils.js" charset="utf-8"></script>
+    <script src="pages/playing-image-color/playing-image-color.js" charset="utf-8"></script>
+    <script src="pages/filters/simple-filter.js" charset="utf-8"></script>
+    
+    <script src="./utils/pedals-utils.js" charset="utf-8"></script>
+    <script src="./utils/recorder.js" charset="utf-8"></script>
+    <script src="./effects/delay.js" charset="utf-8"></script>
+    <script src="./effects/delay-retro.js" charset="utf-8"></script>
+    <script src="./effects/flanger.js" charset="utf-8"></script>
+    <script src="./effects/convolver.js" charset="utf-8"></script>
+    <script src="./effects/waveshaper.js" charset="utf-8"></script>
+
+    <script src="pages/pedals/delay-direct.js" charset="utf-8"></script>
+    <script src="pages/pedals/delay-without-direct.js" charset="utf-8"></script>
+    <script src="pages/pedals/delay-retro.js" charset="utf-8"></script>
+    <script src="pages/pedals/flanger.js" charset="utf-8"></script>
+    <script src="pages/pedals/reverb.js" charset="utf-8"></script>
+    <script src="pages/pedals/waveshaper.js" charset="utf-8"></script>
+    <script src="pages/gameretro/parsed-mario.js" charset="utf-8"></script>
+    <script src="pages/gameretro/sample-guitar-mario.js" charset="utf-8"></script>
+    <script src="pages/gameretro/playretro.js" charset="utf-8"></script>
+
     <script>
-      const SLIDES_ORDER = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+      const SLIDES_ORDER = [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+        15, 16, 17, 16, 18, 16, 19, 16, 20, 16,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+        31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+        41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+        51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+        61, 62, 63, 64, 65, 66, 67, 68, 69, 70,
+        71, 72, 73, 74, 75, 76
+      ]
+
       const slidesHandler = new SlidesHandler()
       slidesHandler.init('body', 0, SLIDES_ORDER)
-      console.log('oieeeeeeeeee')
+
+      document.querySelector('#video-filter-low').playbackRate = 10.0
+      document.querySelector('#video-filter-high').playbackRate = 10.0
+      document.querySelector('#delay-direct-video').playbackRate = 10.0
+      document.querySelector('#delay-without-direct').playbackRate = 10.0
+      document.querySelector('#delay-direct-video').playbackRate = 10.0
+      document.querySelector('#delay-retro-video').playbackRate = 10.0
+      document.querySelector('#flanger-video').playbackRate = 10.0
+      document.querySelector('#reverb-video').playbackRate = 10.0
+      document.querySelector('#waveshaper-video').playbackRate = 10.0
+      document.querySelector('#eight-bit-video').playbackRate = 10.0
     </script>
   </body>
 </html>
